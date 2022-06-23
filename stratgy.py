@@ -15,7 +15,7 @@ import requests
 
 bot_token = "5243412284:AAElbwcCDmKXOe4XTvG1F3EFdbDleAHH3ew"
 
-bot = telebot.TeleBot(bot_token , parse_mode=None)
+bot = telebot.TeleBot(bot_token)
 
 chat_id = "174958495"
 
