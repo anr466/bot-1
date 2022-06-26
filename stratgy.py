@@ -78,12 +78,12 @@ for i in tk.rules:
 
 
 def TA(tikers):
-    # now = datetime.now()
-    # dt = now.strftime("%d-%m-%y  %H:%M:%S")
+    now = datetime.now()
+    dt = now.strftime("%d-%m-%y  %H:%M:%S")
     for x in tikers:
         try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'26 hours ago UTC+3')
+            data1 = gd.get_klines(x ,'15m' ,'200 hours ago UTC+3')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -91,6 +91,14 @@ def TA(tikers):
             coins.set_screener_as_crypto()
             coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
             summary = (coins.get_analysis().summary)
+
+            coins1 = TA_Handler()
+            coins1.set_symbol_as(x)
+            coins1.set_exchange_as_crypto_or_stock('Binance')
+            coins1.set_screener_as_crypto()
+            coins1.set_interval_as(Interval.INTERVAL_30_MINUTES)
+            summary1 = (coins1.get_analysis().summary)
+
 
             if not data1.empty:
                 # vwap calculator
@@ -109,7 +117,8 @@ def TA(tikers):
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
-                if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy == True and rsi_sell == False:
+                #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY"  and rsi_buy == True and rsi_sell == False:
 
                     # if usdt use usdt balance
                     # if BUSD use BUSD balance
@@ -121,31 +130,24 @@ def TA(tikers):
                     for c in data1['Close'].index:
                         timestap = []
                         timestap.append(c)
-                    target = fo.price_calculator(x , price_now , tp1 = 5)
+                    target = fo.price_calculator(x , price_now , tp1 = 2.5)
                     profit = list(target.values())[0]
                     send_msg(f'ticker buy: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n target price : {profit}')
-                    
+                    signals.add('buy' , dt , x , price_now=price_cal,tp=profit) 
 
-                elif crosss_sell == True and crosss_buy == False and summary['RECOMMENDATION'] == "STRONG_SELL" or summary['RECOMMENDATION'] == "STRONG_SELL" and rsi_sell == True and rsi_buy == False:
+                #elif crosss_sell == True and crosss_buy == False and summary['RECOMMENDATION'] == "STRONG_SELL" or
+                elif summary['RECOMMENDATION'] == "STRONG_SELL" and summary1['RECOMMENDATION'] == "STRONG_BUY" and rsi_sell == True and rsi_buy == False:
                     price_now = fo.get_ticker_price(x)
                     price_cal = fo.format_price(x , price_now)
                     oldprice = price_cal
-                    stoploss = fo.price_calculator(x , price_now , tp1 = -5)
+                    stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
                     profit = list(stoploss.values())[0]
                     send_msg(f'ticker sell: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n stoploss: {profit}')
-                    #signals.add('sell' , dt , x , price_now=price_cal,tp=target)         
+                    signals.add('sell' , dt , x , price_now=price_cal,tp=profit)         
         except:
             pass
-    send_msg("انتهى دورة البحث ربع ساعة")
-    for x in tikers:
-        try:
-            if profit >= price_now:
-                send_msg(f"profit price done: {profit} , {x} ")
-            elif profit <= price_now:
-                send_msg(f"stoploss price done: {profit} , {x} ")
-        except:
-            pass
-        
+    
+     
 
 
 def lunch():
@@ -186,9 +188,11 @@ def t_mer(message):
         send_msg("تشغيل البوت")
         while True:
             hd()
+            if hd():
+                send_msg("انتهى دورة البحث ربع ساعة")
+                break
     elif text == "/off":
         bot.send_message(chid," ايقاف البوت")
-        
     else:
         bot.send_message(chid,"اشتغل")
 
