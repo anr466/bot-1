@@ -2,7 +2,7 @@ import get_rules
 from ticker_rules import rules
 import format_orders as fo
 import os
-import telegram as tel
+
 tickers = []
 minPrice = []
 tickSize = []
@@ -197,5 +197,7 @@ profit = list(target.values())[0]
 
 
 target = list(target.values())[0]
+
+
 
 #tel.send_msg(f'Strong buy for: {x} \nprice now is : {price_cal}\n target {target}')

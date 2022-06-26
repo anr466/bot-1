@@ -10,7 +10,7 @@ from DB import signals
 import threading
 import telebot
 import requests
-
+import time
 
 
 bot_token = "5243412284:AAElbwcCDmKXOe4XTvG1F3EFdbDleAHH3ew"
@@ -83,7 +83,7 @@ def TA(tikers):
     for x in tikers:
         try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC+3')
+            data1 = gd.get_klines(x ,'15m' ,'26 hours ago UTC+3')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -109,13 +109,7 @@ def TA(tikers):
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
-
-
-
-
-
-
-                if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or rsi_buy == True and rsi_sell == False:
+                if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy == True and rsi_sell == False:
 
                     # if usdt use usdt balance
                     # if BUSD use BUSD balance
@@ -127,30 +121,31 @@ def TA(tikers):
                     for c in data1['Close'].index:
                         timestap = []
                         timestap.append(c)
-
-
-
-                    target = fo.price_calculator(x , price_now , tp1 = 3)
+                    target = fo.price_calculator(x , price_now , tp1 = 5)
                     profit = list(target.values())[0]
-                    send_msg(f'ticker buy: {x} \nprice now: {price_cal}\n time:{timestap} \n target price : {profit}')
-                    if profit >= oldprice :
-                        send_msg(f'ticker {x} \n target is profit : {profit}')
+                    send_msg(f'ticker buy: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n target price : {profit}')
+                    
 
-                elif crosss_sell == True and crosss_buy == False and summary['RECOMMENDATION'] == "STRONG_SELL" or rsi_sell == True and rsi_buy == False:
+                elif crosss_sell == True and crosss_buy == False and summary['RECOMMENDATION'] == "STRONG_SELL" or summary['RECOMMENDATION'] == "STRONG_SELL" and rsi_sell == True and rsi_buy == False:
                     price_now = fo.get_ticker_price(x)
                     price_cal = fo.format_price(x , price_now)
                     oldprice = price_cal
-                    stoploss = fo.price_calculator(x , price_now , tp1 = -3)
+                    stoploss = fo.price_calculator(x , price_now , tp1 = -5)
                     profit = list(stoploss.values())[0]
-                    send_msg(f'ticker sell: {x} \nprice now: {price_cal}\n time:{timestap} \n stoploss: {profit}')
-                    if profit <= oldprice :
-                        send_msg(f'ticker {x} \n target is profit sell : {profit}')
-
-                    #signals.add('sell' , dt , x , price_now=price_cal,tp=target)
-                # else:
-                #     print(x)
+                    send_msg(f'ticker sell: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n stoploss: {profit}')
+                    #signals.add('sell' , dt , x , price_now=price_cal,tp=target)         
         except:
             pass
+    send_msg("انتهى دورة البحث ربع ساعة")
+    for x in tikers:
+        try:
+            if profit >= price_now:
+                send_msg(f"profit price done: {profit} , {x} ")
+            elif profit <= price_now:
+                send_msg(f"stoploss price done: {profit} , {x} ")
+        except:
+            pass
+        
 
 
 def lunch():
@@ -164,6 +159,8 @@ def lunch():
 
 
 def hd():
+    
+
     interval = [0,15,30,45]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
@@ -177,22 +174,25 @@ def hd():
 
 
 
-def start():
-    while True:
-        hd()
 
 
 
-@bot.message_handler(func=lambda message: True)
+
+@bot.message_handler(func=lambda message: True)  
 def t_mer(message):
     text = message.text
     chid = message.chat.id
     if text == "/start":
-        bot.send_message(chid,f"{start()} \n جاري تشغيل البوت")
+        send_msg("تشغيل البوت")
+        while True:
+            hd()
     elif text == "/off":
-        bot.send_message(chid,f"\n ايقاف البوت")
+        bot.send_message(chid," ايقاف البوت")
+        
     else:
         bot.send_message(chid,"اشتغل")
 
-while True:
-    bot.polling()
+bot.infinity_polling()
+    
+
+

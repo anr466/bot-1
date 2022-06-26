@@ -32,10 +32,9 @@ def get_klines(pair,interval,depth):
 
 
 
-# df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
-# for c in df['Close'].index:
-#         timestap = []
+df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
+for c in df['Close'].index:
+        timestap = []
 
-#         timestap.append(c)
+        timestap.append(c)
 
-# print(timestap)
