@@ -22,6 +22,7 @@ def get_klines(pair,interval,depth):
         df['RSI'] = round(ta.rsi(df['Close'], timeperiod=14),1)
         df['rsi_buy'] = df.iloc[-1]['RSI']< 30
         df['rsi_sell'] = df.iloc[-1]['RSI']> 70
+        df['cci'] = ta.cci(df['High'],df['Low'], df['Close'])
         df.dropna(inplace=True)
         for i in range(6 , len(columns)):
              del df[columns[i]]
@@ -32,9 +33,7 @@ def get_klines(pair,interval,depth):
 
 
 
-df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
-for c in df['Close'].index:
-        timestap = []
+# df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
 
-        timestap.append(c)
+# print(df['cci'])
 

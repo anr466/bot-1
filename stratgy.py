@@ -11,7 +11,7 @@ import threading
 import telebot
 import requests
 import time
-
+from datetime import datetime
 
 bot_token = "5243412284:AAElbwcCDmKXOe4XTvG1F3EFdbDleAHH3ew"
 
@@ -118,32 +118,36 @@ def TA(tikers):
                 data1['rsi_sell'] = rsi_sell
 
                 #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY"  and rsi_buy == True and rsi_sell == False:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY"  or rsi_buy == True and rsi_sell == False:
+                    if x.endswith("USDT"):
 
-                    # if usdt use usdt balance
-                    # if BUSD use BUSD balance
-                    # if ETH use ETH balance
-                    # if BTC use BTC balance
-                    price_now = fo.get_ticker_price(x)
-                    price_cal = fo.format_price(x , price_now)
-                    oldprice = price_cal
-                    for c in data1['Close'].index:
-                        timestap = []
-                        timestap.append(c)
-                    target = fo.price_calculator(x , price_now , tp1 = 2.5)
-                    profit = list(target.values())[0]
-                    send_msg(f'ticker buy: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n target price : {profit}')
-                    signals.add('buy' , dt , x , price_now=price_cal,tp=profit) 
+                        # if usdt use usdt balance
+                        # if BUSD use BUSD balance
+                        # if ETH use ETH balance
+                        # if BTC use BTC balance
+                        price_now = fo.get_ticker_price(x)
+                        price_cal = fo.format_price(x , price_now)
+                        oldprice = price_cal
+                        for c in data1['Close'].index:
+                            timestap = []
+                            timestap.append(c)
+                        target = fo.price_calculator(x , price_now , tp1 = 2.5)
+                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                        profit = list(target.values())[0]
+                        send_msg(f'ticker buy: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n target price : {profit}\n stoploss:{stoploss}')
+                        signals.add('buy' , dt , x , price_now=price_cal,tp=profit) 
 
                 #elif crosss_sell == True and crosss_buy == False and summary['RECOMMENDATION'] == "STRONG_SELL" or
-                elif summary['RECOMMENDATION'] == "STRONG_SELL" and summary1['RECOMMENDATION'] == "STRONG_BUY" and rsi_sell == True and rsi_buy == False:
-                    price_now = fo.get_ticker_price(x)
-                    price_cal = fo.format_price(x , price_now)
-                    oldprice = price_cal
-                    stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
-                    profit = list(stoploss.values())[0]
-                    send_msg(f'ticker sell: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n stoploss: {profit}')
-                    signals.add('sell' , dt , x , price_now=price_cal,tp=profit)         
+                elif summary['RECOMMENDATION'] == "STRONG_SELL" and summary1['RECOMMENDATION'] == "STRONG_BUY" or rsi_sell == True and rsi_buy == False:
+                    if x.endswith("USDT"):
+
+                        price_now = fo.get_ticker_price(x)
+                        price_cal = fo.format_price(x , price_now)
+                        oldprice = price_cal
+                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                        profit = list(stoploss.values())[0]
+                        send_msg(f'ticker sell: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n stoploss: {profit}')
+                        signals.add('sell' , dt , x , price_now=price_cal,tp=profit)         
         except:
             pass
     
@@ -163,7 +167,7 @@ def lunch():
 def hd():
     
 
-    interval = [0,15,30,45]
+    interval = [0,15,30,45,8]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
     min_ = time.strftime("%M")
