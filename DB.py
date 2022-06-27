@@ -24,13 +24,13 @@ class signals:
     def find(col):
        
         col = db[col]
-        find = col.find()
-        ticker = []
+        find = col.find_one().keys()
+        ticker = find['Tickers']
         
-        for i in find:
+        # for i in find:
             
-            ticker.append(i['Tickers'])
-            ticker.append(i['price'])
+        #     ticker.append(i['Tickers'])
+        #     ticker.append(i['price'])
                   
         return ticker
     def if_tickers_in(col ,tickers):
@@ -42,5 +42,9 @@ class signals:
             print("not found")
 
 
-# coll = signals.find('buy')
-# print(coll)
+# x = signals.find('buy')
+# # tiker_name = coll[0]
+# # price_db_tiker = coll[1]
+
+
+# print(x)

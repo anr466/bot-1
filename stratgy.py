@@ -7,6 +7,8 @@ import pandas_ta as ta
 import pandas as pd
 import format_orders as fo
 from DB import signals
+from DB import tiker_name
+from DB import price_db_tiker
 import threading
 import telebot
 import requests
@@ -82,6 +84,7 @@ def TA(tikers):
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
     for x in tikers:
         try:
+            time.sleep(2)
             #data frame
             data1 = gd.get_klines(x ,'15m' ,'200 hours ago UTC+3')
             # trading view
@@ -120,11 +123,6 @@ def TA(tikers):
                 #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY"  or rsi_buy == True and rsi_sell == False:
                     if x.endswith("USDT"):
-
-                        # if usdt use usdt balance
-                        # if BUSD use BUSD balance
-                        # if ETH use ETH balance
-                        # if BTC use BTC balance
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)
                         oldprice = price_cal
@@ -134,20 +132,27 @@ def TA(tikers):
                         target = fo.price_calculator(x , price_now , tp1 = 2.5)
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
                         profit = list(target.values())[0]
-                        send_msg(f'ticker buy: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n target price : {profit}\n stoploss:{stoploss}')
-                        signals.add('buy' , dt , x , price_now=price_cal,tp=profit) 
+                        stopprice = list(stoploss.values())[0]
+                        send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \ntarget==> {profit}\nstoploss==> {stopprice}')
+                        if x in tiker_name:
+                            if price_db_tiker >= profit:
+                                send_msg(f"profit target Done==>{x}\nprice==>{profit}")
+                            elif price_db_tiker <= stopprice:
+                                send_msg(f"sell done on stoploss==>{x}\nprice==>{stopprice}")
+                            else:
+                                signals.add('buy' , dt , x , price_now=price_cal,tp=profit) 
 
                 #elif crosss_sell == True and crosss_buy == False and summary['RECOMMENDATION'] == "STRONG_SELL" or
-                elif summary['RECOMMENDATION'] == "STRONG_SELL" and summary1['RECOMMENDATION'] == "STRONG_BUY" or rsi_sell == True and rsi_buy == False:
-                    if x.endswith("USDT"):
+                # elif summary['RECOMMENDATION'] == "STRONG_SELL" and summary1['RECOMMENDATION'] == "STRONG_BUY" or rsi_sell == True and rsi_buy == False:
+                #     if x.endswith("USDT"):
 
-                        price_now = fo.get_ticker_price(x)
-                        price_cal = fo.format_price(x , price_now)
-                        oldprice = price_cal
-                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
-                        profit = list(stoploss.values())[0]
-                        send_msg(f'ticker sell: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n stoploss: {profit}')
-                        signals.add('sell' , dt , x , price_now=price_cal,tp=profit)         
+                #         price_now = fo.get_ticker_price(x)
+                #         price_cal = fo.format_price(x , price_now)
+                #         oldprice = price_cal
+                #         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                #         profit = list(stoploss.values())[0]
+                #         send_msg(f'ticker sell: {x} \nprice now: {price_cal}\n time:{timestap[0]} \n stoploss: {profit}')
+                #         signals.add('sell' , dt , x , price_now=price_cal,tp=profit)         
         except:
             pass
     
