@@ -167,7 +167,7 @@ def lunch():
 def hd():
     
 
-    interval = [0,15,30,45,8]
+    interval = [0,15,30,45]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
     min_ = time.strftime("%M")
