@@ -21,30 +21,19 @@ class signals:
         collection = db[collection]
         collection.delete_many({})
 
-    def find(col):
-       
+    def find(col,ticker):
         col = db[col]
-        find = col.find_one().keys()
-        ticker = find['Tickers']
-        
-        # for i in find:
-            
-        #     ticker.append(i['Tickers'])
-        #     ticker.append(i['price'])
-                  
-        return ticker
-    def if_tickers_in(col ,tickers):
-        col = signals.find(col=col)
-        
-        if tickers in col:
-            print("found")
-        else:
-            print("not found")
+        find = col.find({})
+        tickers= {}
+        db_ticker = []
+        db_price = []    
+        for x in find:
+            tickers[x["Tickers"]] = [x["Tickers"],x["price"]]
+        if ticker in tickers:
+            db_ticker.append(tickers[ticker])
+        for x in db_ticker:
+            for y in x:
+                db_price.append(y)
+        return db_price
 
 
-# x = signals.find('buy')
-# # tiker_name = coll[0]
-# # price_db_tiker = coll[1]
-
-
-# print(x)
