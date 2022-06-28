@@ -180,6 +180,7 @@ def hd():
 
 while True:
     hd()
+    time.sleep(5)
     
 
 
