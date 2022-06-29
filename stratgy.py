@@ -174,8 +174,8 @@ def hd():
     sec_ = int(sec_)
     for i in interval:
             if min_ == i and sec_ == 3:
-                send_msg(f"البحث عن عملات ربع ساعة \n {lunch()}")
-                time.sleep(5)
+                lunch()
+                time.sleep(10)
     
             
 
@@ -201,7 +201,7 @@ while True:
 #         bot.send_message(chid,"اشتغل")
 
 
-    
+
 
 # bot.infinity_polling()
     
