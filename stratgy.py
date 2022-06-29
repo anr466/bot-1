@@ -157,6 +157,7 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
+    time.sleep(10)
     return x
 
 
