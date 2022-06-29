@@ -118,6 +118,7 @@ def TA(tikers):
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
+
                 #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
                 # if rsi_buy == True and rsi_sell == False:
@@ -174,13 +175,16 @@ def hd():
     for i in interval:
             if min_ == i and sec_ == 3:
                 send_msg(f"البحث عن عملات ربع ساعة \n {lunch()}")
+                time.sleep(5)
+    
+            
 
 
 
 
 while True:
     hd()
-    time.sleep(5)
+    
     
 
 
