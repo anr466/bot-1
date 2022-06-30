@@ -102,6 +102,7 @@ def TA(tikers):
 
 
             if not data1.empty:
+
                 # vwap calculator
                 vwap_48 = vwap(data1 , 48)
                 vwap_84 = vwap(data1 , 84)
@@ -113,19 +114,28 @@ def TA(tikers):
                 crosss_sell =data1.iloc[-1]["sell"]>0
                 data1['crosss_buy'] = crosss_buy
                 data1['crosss_sell'] = crosss_sell
+
+                #CCI
+                cci_buy = data1.iloc[-1]['cci'] < -100
+                cci_sell = data1.iloc[-1]['cci']> 100
+                data1['cci_buy'] = cci_buy
+                data1['cci_sell'] = cci_sell
+
+                #RSI
                 rsi_buy = data1.iloc[-1]['RSI']< 30
                 rsi_sell = data1.iloc[-1]['RSI']> 70
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
-                vol_buy = data1.iloc[-1]['Volume']< 30
-                vol_sell = data1.iloc[-1]['Volume']> 70
-                data1['vol_buy'] = vol_buy
-                data1['vol_sell'] = vol_sell
+                #volume
+                # vol_buy = data1.iloc[-1]['Volume']< 30
+                # vol_sell = data1.iloc[-1]['Volume']> 70
+                # data1['vol_buy'] = vol_buy
+                # data1['vol_sell'] = vol_sell
 
 
                 #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
-                if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY" and  rsi_buy == True and rsi_sell == False:
+                if crosss_buy == True and crosss_sell == False and summary1['RECOMMENDATION'] == "STRONG_BUY" and  rsi_buy == True and rsi_sell == False and cci_buy == True and cci_sell == False:
                    
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
