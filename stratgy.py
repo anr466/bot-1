@@ -125,7 +125,7 @@ def TA(tikers):
 
 
                 #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY" and  rsi_buy == True and rsi_sell == False and vol_buy == False and vol_sell == True:
+                if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY" and  rsi_buy == True and rsi_sell == False:
                    
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
@@ -197,15 +197,11 @@ while True:
 #     text = message.text
 #     chid = message.chat.id
 #     if text == "/start":
-#         send_msg("تشغيل البوت")
-#         hd()
+#         bot.send_message(chid," ايقاف البوت")
 #     elif text == "/off":
 #         bot.send_message(chid," ايقاف البوت")
 #     else:
 #         bot.send_message(chid,"اشتغل")
-
-
-
 
 # bot.infinity_polling()
     
