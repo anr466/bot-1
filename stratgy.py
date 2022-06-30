@@ -84,7 +84,7 @@ def TA(tikers):
         try:
             # time.sleep(1)
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'26 hours ago UTC+3')
+            data1 = gd.get_klines(x ,'1h' ,'48 hours ago UTC+3')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -118,11 +118,16 @@ def TA(tikers):
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
+                vol_buy = data1.iloc[-1]['Volume']< 30
+                vol_sell = data1.iloc[-1]['Volume']> 70
+                data1['vol_buy'] = vol_buy
+                data1['vol_sell'] = vol_sell
+
 
                 #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
-                # if rsi_buy == True and rsi_sell == False:
-                    if x.endswith("USDT"):
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY" and  rsi_buy == True and rsi_sell == False and vol_buy == False and vol_sell == True:
+                   
+                    if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)
                         
@@ -142,8 +147,8 @@ def TA(tikers):
                                 send_msg(f"profit target Done==>{x}")
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"sell done on stoploss==>{x}")
-                            else:
-                                signals.add('buy' , dt , x , price_now=price_cal,tp=profit)         
+                            
+                        signals.add('buy' , dt , x , price_now=price_cal,tp=profit,sl=stopprice)         
         except:
             pass
     
@@ -151,21 +156,19 @@ def TA(tikers):
 
 
 def lunch():
-    x = threading.Thread(target=TA , args=([usdt])).start()
+    threading.Thread(target=TA , args=([usdt])).start()
     # threading.Thread(target=TA , args=([btc])).start()
-    # threading.Thread(target=TA , args=([busd])).start()
+    threading.Thread(target=TA , args=([busd])).start()
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
     time.sleep(10)
-    return x
+    
 
 
 
 
 def hd():
-    
-
     interval = [0,15,30,45]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
