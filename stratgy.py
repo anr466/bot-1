@@ -84,7 +84,7 @@ def TA(tikers):
         try:
             # time.sleep(1)
             #data frame
-            data1 = gd.get_klines(x ,'1h' ,'48 hours ago UTC+3')
+            data1 = gd.get_klines(x ,'1h' ,'26 hours ago UTC+3')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -135,29 +135,29 @@ def TA(tikers):
 
 
                 #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
-                if crosss_buy == True and crosss_sell == False and summary1['RECOMMENDATION'] == "STRONG_BUY" and  rsi_buy == True and rsi_sell == False and cci_buy == True and cci_sell == False:
-                   
-                    if x.endswith("USDT") or x.endswith("BUSD"):
-                        price_now = fo.get_ticker_price(x)
-                        price_cal = fo.format_price(x , price_now)
-                        
-                        for c in data1['Close'].index:
-                            timestap = []
-                            timestap.append(c)
-                        target = fo.price_calculator(x , price_now , tp1 = 2.5)
-                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
-                        profit = list(target.values())[0]
-                        stopprice = list(stoploss.values())[0]
-                        send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${profit}\nstoploss==> ${stopprice}')
-                        db_ticker = signals.find('buy', x)
-                        db_ticker_name = db_ticker[0]
-                        db_ticker_price = db_ticker[1]
-                        if x == db_ticker_name:
-                            if db_ticker_price >= profit:
-                                send_msg(f"profit target Done==>{x}")
-                            elif db_ticker_price <= stopprice:
-                                send_msg(f"sell done on stoploss==>{x}")
+                if crosss_buy == True and crosss_sell == False :
+                    if summary1['RECOMMENDATION'] == "STRONG_BUY" or  rsi_buy == True and rsi_sell == False or cci_buy == True and cci_sell == False:
+                    
+                        if x.endswith("USDT") or x.endswith("BUSD"):
+                            price_now = fo.get_ticker_price(x)
+                            price_cal = fo.format_price(x , price_now)
                             
+                            for c in data1['Close'].index:
+                                timestap = []
+                                timestap.append(c)
+                            target = fo.price_calculator(x , price_now , tp1 = 2.5)
+                            stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                            profit = list(target.values())[0]
+                            stopprice = list(stoploss.values())[0]
+                            send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${profit}\nstoploss==> ${stopprice}')
+                            db_ticker = signals.find('buy', x)
+                            db_ticker_name = db_ticker[0]
+                            db_ticker_price = db_ticker[1]
+                            if x == db_ticker_name:
+                                if db_ticker_price >= profit:
+                                    send_msg(f"profit target Done==>{x}")
+                                elif db_ticker_price <= stopprice:
+                                    send_msg(f"sell done on stoploss==>{x}")     
                         signals.add('buy' , dt , x , price_now=price_cal,tp=profit,sl=stopprice)         
         except:
             pass
