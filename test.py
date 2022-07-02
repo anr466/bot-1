@@ -188,7 +188,7 @@ x = "ADAUSDT"
 price_now = fo.get_ticker_price(x)
 price_cal = fo.format_price(x , price_now)
 
-target = fo.price_calculator(x , price_now , tp =3)
+target = fo.price_calculator(x , price_now , tp1 =2.5 ,tp2 =5)
 profit = list(target.values())[0]
 #buy order
 
@@ -199,3 +199,5 @@ profit = list(target.values())[0]
 target = list(target.values())[0]
 
 #tel.send_msg(f'Strong buy for: {x} \nprice now is : {price_cal}\n target {target}')
+
+

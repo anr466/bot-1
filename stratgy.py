@@ -84,7 +84,7 @@ def TA(tikers):
         try:
             # time.sleep(1)
             #data frame
-            data1 = gd.get_klines(x ,'1h' ,'26 hours ago UTC+3')
+            data1 = gd.get_klines(x ,'30m' ,'26 hours ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -127,42 +127,68 @@ def TA(tikers):
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
-                #volume
-                # vol_buy = data1.iloc[-1]['Volume']< 30
-                # vol_sell = data1.iloc[-1]['Volume']> 70
-                # data1['vol_buy'] = vol_buy
-                # data1['vol_sell'] = vol_sell
+                if cci_buy ==True and cci_sell == False or rsi_buy ==True and rsi_sell == False:
+     
+                    #strargy1
+                    if x.endswith("USDT") or x.endswith("BUSD"):
+                        price_now = fo.get_ticker_price(x)
+                        price_cal = fo.format_price(x , price_now)
+                        
+                        for c in data1['Close'].index:
+                            timestap = []
+                            timestap.append(c)
+                        target = fo.price_calculator(x , price_now , tp1 = 2.5 ,tp2=5)
+                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                        tp1 = list(target.values())[0]
+                        tp2 = list(target.values())[1]
+                        stopprice = list(stoploss.values())[0]
+                        send_msg("stratgy1")
+                        send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\n{tp2}\nstoploss==> ${stopprice}')
+                        db_ticker = signals.find('buy', x)
+                        db_ticker_name = db_ticker[0]
+                        db_ticker_price = db_ticker[1]
+                        if x == db_ticker_name:
+                            if db_ticker_price >= tp1:
+                                send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp1}")
+                            elif db_ticker_price <= stopprice:
+                                send_msg(f"sell done on stoploss stratgy1 ==>{x}")
+                            elif db_ticker_price > tp2:
+                                send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
 
-
-                #if crosss_buy == True and crosss_sell == False and summary['RECOMMENDATION'] == "STRONG_BUY" or 
-                if crosss_buy == True and crosss_sell == False :
-                    if summary1['RECOMMENDATION'] == "STRONG_BUY" or  rsi_buy == True and rsi_sell == False or cci_buy == True and cci_sell == False:
-                    
-                        if x.endswith("USDT") or x.endswith("BUSD"):
-                            price_now = fo.get_ticker_price(x)
-                            price_cal = fo.format_price(x , price_now)
-                            
-                            for c in data1['Close'].index:
-                                timestap = []
-                                timestap.append(c)
-                            target = fo.price_calculator(x , price_now , tp1 = 2.5)
-                            stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
-                            profit = list(target.values())[0]
-                            stopprice = list(stoploss.values())[0]
-                            send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${profit}\nstoploss==> ${stopprice}')
-                            db_ticker = signals.find('buy', x)
-                            db_ticker_name = db_ticker[0]
-                            db_ticker_price = db_ticker[1]
-                            if x == db_ticker_name:
-                                if db_ticker_price >= profit:
-                                    send_msg(f"profit target Done==>{x}")
-                                elif db_ticker_price <= stopprice:
-                                    send_msg(f"sell done on stoploss==>{x}")     
-                        signals.add('buy' , dt , x , price_now=price_cal,tp=profit,sl=stopprice)         
+                        signals.add('buy' , dt , x , price_now=price_cal,tp=profit,sl=stopprice)
+                elif summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
+                     #strargy2
+                    if x.endswith("USDT") or x.endswith("BUSD"):
+                        price_now = fo.get_ticker_price(x)
+                        price_cal = fo.format_price(x , price_now)
+                        
+                        for c in data1['Close'].index:
+                            timestap = []
+                            timestap.append(c)
+                        target = fo.price_calculator(x , price_now , tp1 = 2.5, tp2=5)
+                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                        tp1 = list(target.values())[0]
+                        tp2 = list(target.values())[1]
+                        stopprice = list(stoploss.values())[0]
+                        send_msg("stratgy2")
+                        send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\n{tp2}\nstoploss==> ${stopprice}')
+                        db_ticker = signals.find('buy', x)
+                        db_ticker_name = db_ticker[0]
+                        db_ticker_price = db_ticker[1]
+                        if x == db_ticker_name:
+                            if db_ticker_price >= tp1:
+                                send_msg(f"profit target Done stratgy2 ==>{x}\n{tp1}")
+                            elif db_ticker_price <= stopprice:
+                                send_msg(f"sell done on stoploss stratgy2==>{x}")
+                            elif db_ticker_price > tp2:
+                                send_msg(f"profit target Done on stratgy2 ==>{x}\n{tp2}") 
+                                
+                    signals.add('buy' , dt , x , price_now=price_cal,tp=profit,sl=stopprice)                            
         except:
             pass
     
      
+
 
 
 def lunch():
@@ -172,7 +198,7 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
-    time.sleep(10)
+    
     
 
 
@@ -188,8 +214,9 @@ def hd():
     sec_ = int(sec_)
     for i in interval:
             if min_ == i and sec_ == 3:
+                send_msg("work")
                 lunch()
-                time.sleep(10)
+                
     
             
 

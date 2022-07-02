@@ -5,6 +5,22 @@ import pandas_ta as ta
 columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'IGNORE', 'Quote_Volume', 'Number of trades', 'Taker buy base asset volume', 'Taker buy quote asset volume', 'Can be ignored']
 
 
+def heikin_ashi(df):
+    heikin_ashi_df = pd.DataFrame(index=df.index.values, columns=['open', 'high', 'low', 'close'])
+    
+    heikin_ashi_df['close'] = (df['open'] + df['high'] + df['low'] + df['close']) / 4
+    
+    for i in range(len(df)):
+        if i == 0:
+            heikin_ashi_df.iat[0, 0] = df['open'].iloc[0]
+        else:
+            heikin_ashi_df.iat[i, 0] = (heikin_ashi_df.iat[i-1, 0] + heikin_ashi_df.iat[i-1, 3]) / 2
+        
+    heikin_ashi_df['high'] = heikin_ashi_df.loc[:, ['open', 'close']].join(df['high']).max(axis=1)
+    
+    heikin_ashi_df['low'] = heikin_ashi_df.loc[:, ['open', 'close']].join(df['low']).min(axis=1)
+    
+    return heikin_ashi_df
 
 def get_klines(pair,interval,depth):
     data = Clnt.get_historical_klines(pair,interval,depth)
@@ -20,7 +36,12 @@ def get_klines(pair,interval,depth):
         df['Volume'] = pd.to_numeric(df['Volume'])
         # df['pct'] = (df['Close'] - df['Open'])/(df['Open'])
         df['RSI'] = round(ta.rsi(df['Close'], timeperiod=14),1)
-        df['cci'] = ta.cci(df['High'],df['Low'], df['Close'])
+        df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
+        #df['adx = ta.adx(df['High'],df['Low'],df['Close'])
+        cci_buy = (df.iloc[-1]['cci']) < -100
+        cci_sell = (df.iloc[-1]['cci']) > 150
+        df['cci_buy'] = cci_buy
+        df['cci_sell'] = cci_sell
 
         # df['Vol'] = ta.rsi(df['Volume'], timeperiod=14)
         # df['vol_max']  = df['Vol']
@@ -36,8 +57,8 @@ def get_klines(pair,interval,depth):
 
 
 
-df=get_klines("BTCUSDT",'15m','12 hours ago UTC+3')      
+# df=get_klines("BTCUSDT",'15m','12 hours ago UTC+3')      
 
-# for i in df.index:
+# # for i in df.index:
 
-print(df)
+# print(df)
