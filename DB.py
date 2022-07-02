@@ -12,9 +12,9 @@ db = client["DB_Bot"]
 
 class signals:
 
-    def add(col ,dt, tickers,price_now ,tp,sl):
+    def add(col ,dt, tickers,price_now ,tp1,tp2,sl):
         col = db[col]
-        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP":tp,"SL":sl})
+        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP":tp1,"TP":tp2,"SL":sl})
         return data
 
     def clear_all(collection):
@@ -41,7 +41,7 @@ class signals:
         data = []
 
         for x in find:
-            data.append(x.values())
+            data.append(x)
 
         return data
 

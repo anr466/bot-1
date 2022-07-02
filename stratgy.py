@@ -10,7 +10,7 @@ from DB import signals
 import threading
 import telebot
 import requests
-import time
+import time as ti
 from datetime import datetime
 
 bot_token = "5243412284:AAElbwcCDmKXOe4XTvG1F3EFdbDleAHH3ew"
@@ -82,7 +82,6 @@ def TA(tikers):
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
     for x in tikers:
         try:
-            # time.sleep(1)
             #data frame
             data1 = gd.get_klines(x ,'30m' ,'26 hours ago UTC')
             # trading view
@@ -116,12 +115,14 @@ def TA(tikers):
                 data1['crosss_sell'] = crosss_sell
 
                 #CCI
-                cci_buy = data1.iloc[-1]['cci'] < -100
+                data1['cci'] = ta.cci(data1['High'], data1['Low'], data1['Close'])
+                cci_buy = data1.iloc[-1]['cci']< -100
                 cci_sell = data1.iloc[-1]['cci']> 100
                 data1['cci_buy'] = cci_buy
                 data1['cci_sell'] = cci_sell
 
                 #RSI
+                data1['RSI'] = round(ta.rsi(data1['Close'], timeperiod=14),1)
                 rsi_buy = data1.iloc[-1]['RSI']< 30
                 rsi_sell = data1.iloc[-1]['RSI']> 70
                 data1['rsi_buy'] = rsi_buy
@@ -142,8 +143,7 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         tp2 = list(target.values())[1]
                         stopprice = list(stoploss.values())[0]
-                        send_msg("stratgy1")
-                        send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\n{tp2}\nstoploss==> ${stopprice}')
+                        send_msg(f'stratgy1\nbuy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \ntp1==> ${tp1}\ntp2==>{tp2}\nstoploss==> ${stopprice}')
                         db_ticker = signals.find('buy', x)
                         db_ticker_name = db_ticker[0]
                         db_ticker_price = db_ticker[1]
@@ -154,8 +154,11 @@ def TA(tikers):
                                 send_msg(f"sell done on stoploss stratgy1 ==>{x}")
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
+                        else:
+                            pass
+                            
+                        signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
 
-                        signals.add('buy' , dt , x , price_now=price_cal,tp=profit,sl=stopprice)
                 elif summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
                      #strargy2
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -170,8 +173,7 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         tp2 = list(target.values())[1]
                         stopprice = list(stoploss.values())[0]
-                        send_msg("stratgy2")
-                        send_msg(f'buy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\n{tp2}\nstoploss==> ${stopprice}')
+                        send_msg(f'stratgy2\nbuy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\ntp2==>{tp2}\nstoploss==> ${stopprice}')
                         db_ticker = signals.find('buy', x)
                         db_ticker_name = db_ticker[0]
                         db_ticker_price = db_ticker[1]
@@ -181,9 +183,12 @@ def TA(tikers):
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"sell done on stoploss stratgy2==>{x}")
                             elif db_ticker_price > tp2:
-                                send_msg(f"profit target Done on stratgy2 ==>{x}\n{tp2}") 
-                                
-                    signals.add('buy' , dt , x , price_now=price_cal,tp=profit,sl=stopprice)                            
+                                send_msg(f"profit target Done on stratgy2 ==>{x}\n{tp2}")
+                        else:
+                            pass 
+                    signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+                else:
+                    pass                      
         except:
             pass
     
@@ -214,17 +219,15 @@ def hd():
     sec_ = int(sec_)
     for i in interval:
             if min_ == i and sec_ == 3:
-                send_msg("work")
+                ti.sleep(10)
                 lunch()
                 
-    
             
-
-
-
+            
 
 while True:
     hd()
+    
     
     
 
@@ -234,7 +237,7 @@ while True:
 #     text = message.text
 #     chid = message.chat.id
 #     if text == "/start":
-#         bot.send_message(chid," ايقاف البوت")
+#         bot.send_message(chid," تشغيل البوت")
 #     elif text == "/off":
 #         bot.send_message(chid," ايقاف البوت")
 #     else:
