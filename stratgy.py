@@ -155,9 +155,9 @@ def TA(tikers):
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
                         else:
-                            pass
+                            signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
                             
-                        signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+                        
 
                 elif summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
                      #strargy2
@@ -185,8 +185,8 @@ def TA(tikers):
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy2 ==>{x}\n{tp2}")
                         else:
-                            pass 
-                    signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+                            signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+                    
                 else:
                     pass                      
         except:
