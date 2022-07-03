@@ -128,7 +128,7 @@ def TA(tikers):
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
-                if cci_buy ==True and rsi_buy ==True and summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
+                if cci_buy ==True or rsi_buy ==True and summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
