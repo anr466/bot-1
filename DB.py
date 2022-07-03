@@ -37,19 +37,18 @@ class signals:
         return db_price
     def find_all(coll):
         col = db[coll]
-        find = col.find({})
-        data = []
-
+        find = col.find()
+    
         for x in find:
-            data.append(x)
+            print(x)
 
-        return data
+        
 
 
 
-# x = signals.find_all('buy')
+x = signals.find("buy","sfdfsdfsdf")
 
-# print(x)
+print(x)
 
 
 

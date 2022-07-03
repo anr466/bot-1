@@ -128,7 +128,7 @@ def TA(tikers):
                 data1['rsi_buy'] = rsi_buy
                 data1['rsi_sell'] = rsi_sell
 
-                if cci_buy ==True and cci_sell == False or rsi_buy ==True and rsi_sell == False:
+                if cci_buy ==True and rsi_buy ==True and summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -154,38 +154,35 @@ def TA(tikers):
                                 send_msg(f"sell done on stoploss stratgy1 ==>{x}")
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
-                        else:
-                            signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
                             
+                        signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+                # elif summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
+                #      #strargy2
+                #     if x.endswith("USDT") or x.endswith("BUSD"):
+                #         price_now = fo.get_ticker_price(x)
+                #         price_cal = fo.format_price(x , price_now)
                         
-
-                elif summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
-                     #strargy2
-                    if x.endswith("USDT") or x.endswith("BUSD"):
-                        price_now = fo.get_ticker_price(x)
-                        price_cal = fo.format_price(x , price_now)
-                        
-                        for c in data1['Close'].index:
-                            timestap = []
-                            timestap.append(c)
-                        target = fo.price_calculator(x , price_now , tp1 = 2.5, tp2=5)
-                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
-                        tp1 = list(target.values())[0]
-                        tp2 = list(target.values())[1]
-                        stopprice = list(stoploss.values())[0]
-                        send_msg(f'stratgy2\nbuy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\ntp2==>{tp2}\nstoploss==> ${stopprice}')
-                        db_ticker = signals.find('buy', x)
-                        db_ticker_name = db_ticker[0]
-                        db_ticker_price = db_ticker[1]
-                        if x == db_ticker_name:
-                            if db_ticker_price >= tp1:
-                                send_msg(f"profit target Done stratgy2 ==>{x}\n{tp1}")
-                            elif db_ticker_price <= stopprice:
-                                send_msg(f"sell done on stoploss stratgy2==>{x}")
-                            elif db_ticker_price > tp2:
-                                send_msg(f"profit target Done on stratgy2 ==>{x}\n{tp2}")
-                        else:
-                            signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+                #         for c in data1['Close'].index:
+                #             timestap = []
+                #             timestap.append(c)
+                #         target = fo.price_calculator(x , price_now , tp1 = 2.5, tp2=5)
+                #         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                #         tp1 = list(target.values())[0]
+                #         tp2 = list(target.values())[1]
+                #         stopprice = list(stoploss.values())[0]
+                #         send_msg(f'stratgy2\nbuy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\ntp2==>{tp2}\nstoploss==> ${stopprice}')
+                #         db_ticker = signals.find('buy', x)
+                #         db_ticker_name = db_ticker[0]
+                #         db_ticker_price = db_ticker[1]
+                #         if x == db_ticker_name:
+                #             if db_ticker_price >= tp1:
+                #                 send_msg(f"profit target Done stratgy2 ==>{x}\n{tp1}")
+                #             elif db_ticker_price <= stopprice:
+                #                 send_msg(f"sell done on stoploss stratgy2==>{x}")
+                #             elif db_ticker_price > tp2:
+                #                 send_msg(f"profit target Done on stratgy2 ==>{x}\n{tp2}")
+                #         else:
+                #             signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
                     
                 else:
                     pass                      
