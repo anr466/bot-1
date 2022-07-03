@@ -83,7 +83,7 @@ def TA(tikers):
     for x in tikers:
         try:
             #data frame
-            data1 = gd.get_klines(x ,'30m' ,'26 hours ago UTC')
+            data1 = gd.get_klines(x ,'15m' ,'26 hours ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -91,14 +91,6 @@ def TA(tikers):
             coins.set_screener_as_crypto()
             coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
             summary = (coins.get_analysis().summary)
-
-            coins1 = TA_Handler()
-            coins1.set_symbol_as(x)
-            coins1.set_exchange_as_crypto_or_stock('Binance')
-            coins1.set_screener_as_crypto()
-            coins1.set_interval_as(Interval.INTERVAL_30_MINUTES)
-            summary1 = (coins1.get_analysis().summary)
-
 
             if not data1.empty:
 
@@ -117,18 +109,18 @@ def TA(tikers):
                 #CCI
                 data1['cci'] = ta.cci(data1['High'], data1['Low'], data1['Close'])
                 cci_buy = data1.iloc[-1]['cci']< -100
-                cci_sell = data1.iloc[-1]['cci']> 100
-                data1['cci_buy'] = cci_buy
-                data1['cci_sell'] = cci_sell
-
+               
+                #adx
+                adx = ta.adx(data1['High'], data1['Low'], data1['Close'],length=7)
+                data1['ADX'] = adx['ADX_7']
+                adx_buy = data1.iloc[-1]['ADX']< 50
+                
                 #RSI
-                data1['RSI'] = round(ta.rsi(data1['Close'], timeperiod=14),1)
-                rsi_buy = data1.iloc[-1]['RSI']< 30
-                rsi_sell = data1.iloc[-1]['RSI']> 70
-                data1['rsi_buy'] = rsi_buy
-                data1['rsi_sell'] = rsi_sell
+                data1['RSI'] = ta.rsi(data1['Close'], length=3)
+                rsi_buy = data1.iloc[-1]['RSI']< 20
+                
 
-                if cci_buy ==True and rsi_buy ==True and summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
+                if cci_buy ==True and rsi_buy ==True and summary['RECOMMENDATION'] == "STRONG_BUY" and adx_buy == True:
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -155,35 +147,7 @@ def TA(tikers):
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
                             
-                        signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
-                # elif summary['RECOMMENDATION'] == "STRONG_BUY" and summary1['RECOMMENDATION'] == "STRONG_BUY":
-                #      #strargy2
-                #     if x.endswith("USDT") or x.endswith("BUSD"):
-                #         price_now = fo.get_ticker_price(x)
-                #         price_cal = fo.format_price(x , price_now)
-                        
-                #         for c in data1['Close'].index:
-                #             timestap = []
-                #             timestap.append(c)
-                #         target = fo.price_calculator(x , price_now , tp1 = 2.5, tp2=5)
-                #         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
-                #         tp1 = list(target.values())[0]
-                #         tp2 = list(target.values())[1]
-                #         stopprice = list(stoploss.values())[0]
-                #         send_msg(f'stratgy2\nbuy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \nbuy_limit==> ${tp1}\ntp2==>{tp2}\nstoploss==> ${stopprice}')
-                #         db_ticker = signals.find('buy', x)
-                #         db_ticker_name = db_ticker[0]
-                #         db_ticker_price = db_ticker[1]
-                #         if x == db_ticker_name:
-                #             if db_ticker_price >= tp1:
-                #                 send_msg(f"profit target Done stratgy2 ==>{x}\n{tp1}")
-                #             elif db_ticker_price <= stopprice:
-                #                 send_msg(f"sell done on stoploss stratgy2==>{x}")
-                #             elif db_ticker_price > tp2:
-                #                 send_msg(f"profit target Done on stratgy2 ==>{x}\n{tp2}")
-                #         else:
-                #             signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
-                    
+                        signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)                    
                 else:
                     pass                      
         except:
@@ -207,7 +171,7 @@ def lunch():
 
 
 def hd():
-    interval = [0,15,30,45]
+    interval = [1,15,30,45]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
     min_ = time.strftime("%M")

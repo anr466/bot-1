@@ -35,18 +35,14 @@ def get_klines(pair,interval,depth):
         df['Low'] = pd.to_numeric(df['Low'])
         df['Volume'] = pd.to_numeric(df['Volume'])
         # df['pct'] = (df['Close'] - df['Open'])/(df['Open'])
-        df['RSI'] = round(ta.rsi(df['Close'], timeperiod=14),1)
+        df['RSI'] = ta.rsi(df['Close'],length=3)
         df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
-        #df['adx = ta.adx(df['High'],df['Low'],df['Close'])
-        cci_buy = (df.iloc[-1]['cci']) < -100
-        cci_sell = (df.iloc[-1]['cci']) > 150
-        df['cci_buy'] = cci_buy
-        df['cci_sell'] = cci_sell
+        df['EMA'] = ta.ema(df['Close'],length=50)
+        adx = ta.adx(df['High'], df['Low'], df['Close'],length=7)
+        df['ADX'] = adx['ADX_7']
+        # df['ATR'] = ta.atr(df['High'], df['Low'], df['Close'])
 
-        # df['Vol'] = ta.rsi(df['Volume'], timeperiod=14)
-        # df['vol_max']  = df['Vol']
-        # df['vol_buy'] = df.iloc[-1]['Vol']< 30
-        # df['vol_sell'] = df.iloc[-1]['Vol']> 70
+
         df.dropna(inplace=True)
         for i in range(6 , len(columns)):
              del df[columns[i]]
@@ -57,8 +53,13 @@ def get_klines(pair,interval,depth):
 
 
 
-df=get_klines("BTCUSDT",'15m','12 hours ago UTC+3')      
+# df=get_klines("BTCUSDT",'15m','27 hours ago UTC+3')      
 
-# for i in df.index:
 
-print(df)
+# print(df)
+
+
+
+# شراء 
+# Cci < -100
+# Rsi < 20

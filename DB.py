@@ -46,9 +46,9 @@ class signals:
 
 
 
-x = signals.find("buy","sfdfsdfsdf")
+# x = signals.find("buy","sfdfsdfsdf")
 
-print(x)
+# print(x)
 
 
 
