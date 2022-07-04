@@ -1,7 +1,7 @@
 from binance_client import Clnt
 import pandas as pd
 import pandas_ta as ta
-
+import numpy as np
 columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'IGNORE', 'Quote_Volume', 'Number of trades', 'Taker buy base asset volume', 'Taker buy quote asset volume', 'Can be ignored']
 
 
@@ -35,12 +35,22 @@ def get_klines(pair,interval,depth):
         df['Low'] = pd.to_numeric(df['Low'])
         df['Volume'] = pd.to_numeric(df['Volume'])
         # df['pct'] = (df['Close'] - df['Open'])/(df['Open'])
-        df['RSI'] = ta.rsi(df['Close'],length=3)
-        df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
-        df['EMA'] = ta.ema(df['Close'],length=50)
+        # df['RSI'] = ta.rsi(df['Close'],length=3)
+        # df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
+          
+        #df['EMA'] = ta.ema(df['Close'],length=50)
         adx = ta.adx(df['High'], df['Low'], df['Close'],length=7)
-        df['ADX'] = adx['ADX_7']
+        # df['ADX'] = adx['ADX_7']
         # df['ATR'] = ta.atr(df['High'], df['Low'], df['Close'])
+        # signal_buy = [df['cci']> 100,df['RSI']<20,df['ADX']>60]
+        # df['signal_buy'] = signal_buy
+        df['20_EMA'] = df['Close'].ewm(span = 20, adjust = False).mean()
+        df['50_EMA'] = df['Close'].ewm(span = 50, adjust = False).mean()
+        df['Signal'] = 0.0  
+        df['Signal'] = np.where(df['20_EMA'] > df['50_EMA'], 1.0, 0.0)
+        
+        ema_buy = df['Signal']==1.0
+        df['buy'] = ema_buy
 
 
         df.dropna(inplace=True)
@@ -53,7 +63,7 @@ def get_klines(pair,interval,depth):
 
 
 
-# df=get_klines("BTCUSDT",'15m','27 hours ago UTC+3')      
+# df=get_klines("BNBUSDT",'15m','12 hours ago UTC+3')      
 
 
 # print(df)

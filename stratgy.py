@@ -77,6 +77,7 @@ for i in tk.rules:
         others.append(i)
 
 
+
 def TA(tikers):
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
@@ -91,6 +92,9 @@ def TA(tikers):
             coins.set_screener_as_crypto()
             coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
             summary = (coins.get_analysis().summary)
+
+
+            data1.dropna(inplace=True)
 
             if not data1.empty:
 
@@ -109,18 +113,32 @@ def TA(tikers):
                 #CCI
                 data1['cci'] = ta.cci(data1['High'], data1['Low'], data1['Close'])
                 cci_buy = data1.iloc[-1]['cci']< -100
+                data1['cci_buy'] = cci_buy
                
                 #adx
                 adx = ta.adx(data1['High'], data1['Low'], data1['Close'],length=7)
                 data1['ADX'] = adx['ADX_7']
                 adx_buy = data1.iloc[-1]['ADX']< 50
+                data1['adx_buy'] = adx_buy
                 
                 #RSI
                 data1['RSI'] = ta.rsi(data1['Close'], length=3)
                 rsi_buy = data1.iloc[-1]['RSI']< 20
+                data1['rsi_buy'] = rsi_buy
+
+
+                #Ema
+                df['20_EMA'] = df['Close'].ewm(span = 20, adjust = False).mean()
+                df['50_EMA'] = df['Close'].ewm(span = 50, adjust = False).mean()
+                df['Signal'] = 0.0  
+                df['Signal'] = np.where(df['20_EMA'] > df['50_EMA'], 1.0, 0.0)
+                ema_buy = data1.iloc[-1]['Signal']==1.0
+                data1['ema_buy'] = ema_buy
+                
+                
                 
 
-                if cci_buy ==True and rsi_buy ==True and summary['RECOMMENDATION'] == "STRONG_BUY" and adx_buy == True:
+                if data1['ema_buy'] ==True and data1['rsi_buy'] ==True and summary['RECOMMENDATION'] == "STRONG_BUY":
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -171,7 +189,7 @@ def lunch():
 
 
 def hd():
-    interval = [1,15,30,45]
+    interval = [0,15,30,45]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
     min_ = time.strftime("%M")
