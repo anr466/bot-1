@@ -12,6 +12,7 @@ import telebot
 import requests
 import time as ti
 from datetime import datetime
+import numpy as np 
 
 bot_token = "5243412284:AAElbwcCDmKXOe4XTvG1F3EFdbDleAHH3ew"
 
@@ -84,7 +85,7 @@ def TA(tikers):
     for x in tikers:
         try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'26 hours ago UTC')
+            data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC+3')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -94,7 +95,7 @@ def TA(tikers):
             summary = (coins.get_analysis().summary)
 
 
-            data1.dropna(inplace=True)
+            
 
             if not data1.empty:
 
@@ -126,19 +127,19 @@ def TA(tikers):
                 rsi_buy = data1.iloc[-1]['RSI']< 20
                 data1['rsi_buy'] = rsi_buy
 
-
+            
                 #Ema
-                df['20_EMA'] = df['Close'].ewm(span = 20, adjust = False).mean()
-                df['50_EMA'] = df['Close'].ewm(span = 50, adjust = False).mean()
-                df['Signal'] = 0.0  
-                df['Signal'] = np.where(df['20_EMA'] > df['50_EMA'], 1.0, 0.0)
+                data1['20_EMA'] = data1['Close'].ewm(span = 20, adjust = False).mean()
+                data1['50_EMA'] = data1['Close'].ewm(span = 50, adjust = False).mean()
+                data1['Signal'] = 0.0  
+                data1['Signal'] = np.where(data1['20_EMA'] > data1['50_EMA'], 1.0, 0.0)
                 ema_buy = data1.iloc[-1]['Signal']==1.0
                 data1['ema_buy'] = ema_buy
                 
                 
                 
 
-                if data1['ema_buy'] ==True and summary['RECOMMENDATION'] == "STRONG_BUY":
+                if ema_buy==True and  summary['RECOMMENDATION'] == "STRONG_BUY":
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -157,6 +158,7 @@ def TA(tikers):
                         db_ticker = signals.find('buy', x)
                         db_ticker_name = db_ticker[0]
                         db_ticker_price = db_ticker[1]
+                        
                         if x == db_ticker_name:
                             if db_ticker_price >= tp1:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp1}")
@@ -164,10 +166,9 @@ def TA(tikers):
                                 send_msg(f"sell done on stoploss stratgy1 ==>{x}")
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
-                            
                         signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)                    
                 else:
-                    pass                      
+                    pass                    
         except:
             pass
     
@@ -178,13 +179,11 @@ def TA(tikers):
 def lunch():
     threading.Thread(target=TA , args=([usdt])).start()
     # threading.Thread(target=TA , args=([btc])).start()
-    threading.Thread(target=TA , args=([busd])).start()
+    # threading.Thread(target=TA , args=([busd])).start()
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
     
-    
-
 
 
 
@@ -201,12 +200,12 @@ def hd():
                 ti.sleep(10)
                 lunch()
                 
-            
+
             
 
 while True:
     hd()
-    
+  
     
     
 
