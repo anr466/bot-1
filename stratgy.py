@@ -94,9 +94,6 @@ def TA(tikers):
             coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
             summary = (coins.get_analysis().summary)
 
-
-            
-
             if not data1.empty:
 
                 # vwap calculator
@@ -136,9 +133,6 @@ def TA(tikers):
                 ema_buy = data1.iloc[-1]['Signal']==1.0
                 data1['ema_buy'] = ema_buy
                 
-                
-                
-
                 if ema_buy==True and  summary['RECOMMENDATION'] == "STRONG_BUY":
      
                     #strargy1
