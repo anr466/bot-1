@@ -14,7 +14,7 @@ class signals:
 
     def add(col ,dt, tickers,price_now ,tp1,tp2,sl):
         col = db[col]
-        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP":tp1,"TP":tp2,"SL":sl})
+        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP1":tp1,"TP2":tp2,"SL":sl})
         return data
 
     def clear_all(collection):
@@ -46,7 +46,7 @@ class signals:
 
 
 
-# x = signals.find("buy","sfdfsdfsdf")
+# x = signals.find("ALPACAUSDT", ticker)
 
 # print(x)
 

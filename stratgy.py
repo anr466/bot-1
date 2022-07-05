@@ -85,7 +85,7 @@ def TA(tikers):
     for x in tikers:
         try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC+3')
+            data1 = gd.get_klines(x ,'1h' ,'15 days ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -121,19 +121,25 @@ def TA(tikers):
                 
                 #RSI
                 data1['RSI'] = ta.rsi(data1['Close'], length=3)
-                rsi_buy = data1.iloc[-1]['RSI']< 20
+                rsi_buy = data1.iloc[-1]['RSI']< 30
                 data1['rsi_buy'] = rsi_buy
+
+                # print("cross buy" , crosss_buy)
+                # print("rsi buy" , rsi_buy)
+                
 
             
                 #Ema
                 data1['20_EMA'] = data1['Close'].ewm(span = 20, adjust = False).mean()
-                data1['50_EMA'] = data1['Close'].ewm(span = 50, adjust = False).mean()
+                data1['200_EMA'] = data1['Close'].ewm(span = 200, adjust = False).mean()
                 data1['Signal'] = 0.0  
-                data1['Signal'] = np.where(data1['20_EMA'] > data1['50_EMA'], 1.0, 0.0)
+                data1['Signal'] = np.where(data1['20_EMA'] > data1['200_EMA'], 1.0, 0.0)
                 ema_buy = data1.iloc[-1]['Signal']==1.0
                 data1['ema_buy'] = ema_buy
+
+                # print("ema buy" , ema_buy)
                 
-                if ema_buy==True and  summary['RECOMMENDATION'] == "STRONG_BUY":
+                if ema_buy==True and  summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy == True:
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -160,9 +166,9 @@ def TA(tikers):
                                 send_msg(f"sell done on stoploss stratgy1 ==>{x}")
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
-                        signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)                    
-                else:
-                    pass                    
+                    signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)                             
+                
+                                                                  
         except:
             pass
     
@@ -173,7 +179,7 @@ def TA(tikers):
 def lunch():
     threading.Thread(target=TA , args=([usdt])).start()
     # threading.Thread(target=TA , args=([btc])).start()
-    # threading.Thread(target=TA , args=([busd])).start()
+    threading.Thread(target=TA , args=([busd])).start()
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
@@ -196,9 +202,9 @@ def hd():
                 
 
             
-
-while True:
-    hd()
+lunch()
+# while True:
+#     hd()
   
     
     
