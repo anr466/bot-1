@@ -41,12 +41,31 @@ class signals:
     
         for x in find:
             print(x)
+    
+    def delete_one(col , ticker):
+        col = db[col]
+        find = col.find({})
+        tickers= {}
+        db_ticker = []
+        db_price = []    
+        for x in find:
+            tickers[x["Tickers"]] = [x["Tickers"],x["price"]]
+        if ticker in tickers:
+            db_ticker.append(tickers[ticker])
+        for x in db_ticker:
+            for y in x:
+                db_price.append(y)
+        delete = db.movies.delete_one( { Tickers: db_ticker,price:db_price } )
+        return delete
+
+
+
 
         
 
 
 
-# x = signals.find("ALPACAUSDT", ticker)
+# x = signals.delete_one('buy', 'BTCUSDT')
 
 # print(x)
 

@@ -144,7 +144,8 @@ def TA(tikers):
 
                 # print("ema buy" , ema_buy)
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY":
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI < -100 and RSI < 20:
+
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -207,9 +208,9 @@ def hd():
                 
 
             
-# lunch()
-while True:
-    hd()
+lunch()
+# while True:
+#     hd()
   
     
     
