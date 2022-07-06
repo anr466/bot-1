@@ -84,8 +84,9 @@ def TA(tikers):
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
     for x in tikers:
         try:
+        
             #data frame
-            data1 = gd.get_klines(x ,'1h' ,'15 days ago UTC')
+            data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -93,7 +94,11 @@ def TA(tikers):
             coins.set_screener_as_crypto()
             coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
             summary = (coins.get_analysis().summary)
-
+            indicators = coins.get_analysis().indicators 
+            RSI = indicators["RSI"]
+            CCI = indicators["CCI20"]
+            ADX_POSITIVE = indicators["ADX+DI"]
+            
             if not data1.empty:
 
                 # vwap calculator
@@ -139,7 +144,7 @@ def TA(tikers):
 
                 # print("ema buy" , ema_buy)
                 
-                if ema_buy==True and  summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy == True:
+                if summary['RECOMMENDATION'] == "STRONG_BUY":
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -166,9 +171,9 @@ def TA(tikers):
                                 send_msg(f"sell done on stoploss stratgy1 ==>{x}")
                             elif db_ticker_price > tp2:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
-                    signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)                             
-                
-                                                                  
+                            else:
+                                signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+
         except:
             pass
     
@@ -202,7 +207,7 @@ def hd():
                 
 
             
-
+# lunch()
 while True:
     hd()
   
