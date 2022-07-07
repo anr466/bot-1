@@ -155,12 +155,11 @@ def TA(tikers):
                         for c in data1['Close'].index:
                             timestap = []
                             timestap.append(c)
-                        target = fo.price_calculator(x , price_now , tp1 = 2.5 ,tp2=5)
+                        target = fo.price_calculator(x , price_now , tp1 = 2.5)
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
                         tp1 = list(target.values())[0]
-                        tp2 = list(target.values())[1]
                         stopprice = list(stoploss.values())[0]
-                        send_msg(f'stratgy1\nbuy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \ntp1==> ${tp1}\ntp2==>{tp2}\nstoploss==> ${stopprice}')
+                        send_msg(f'stratgy1\nbuy==> ${x} \nprice now==> ${price_cal} \nTime==> {timestap[0]} \ntp1==> ${tp1}\nstoploss==> ${stopprice}')
                         db_ticker = signals.find('buy', x)
                         db_ticker_name = db_ticker[0]
                         db_ticker_price = db_ticker[1]
@@ -168,12 +167,12 @@ def TA(tikers):
                         if x == db_ticker_name:
                             if db_ticker_price >= tp1:
                                 send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp1}")
+                                signals.delete_one('buy', x)
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"sell done on stoploss stratgy1 ==>{x}")
-                            elif db_ticker_price > tp2:
-                                send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp2}")
-                            else:
-                                signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,tp2=tp2,sl=stopprice)
+                                signals.delete_one('buy', x)
+                        elif x != db_ticker_name:
+                            signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,sl=stopprice)
 
         except:
             pass

@@ -12,9 +12,9 @@ db = client["DB_Bot"]
 
 class signals:
 
-    def add(col ,dt, tickers,price_now ,tp1,tp2,sl):
+    def add(col ,dt, tickers,price_now ,tp1,sl):
         col = db[col]
-        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP1":tp1,"TP2":tp2,"SL":sl})
+        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP1":tp1,"SL":sl})
         return data
 
     def clear_all(collection):
@@ -38,37 +38,24 @@ class signals:
     def find_all(coll):
         col = db[coll]
         find = col.find()
-    
         for x in find:
             print(x)
     
     def delete_one(col , ticker):
         col = db[col]
-        find = col.find({})
-        tickers= {}
-        db_ticker = []
-        db_price = []    
-        for x in find:
-            tickers[x["Tickers"]] = [x["Tickers"],x["price"]]
-        if ticker in tickers:
-            db_ticker.append(tickers[ticker])
-        for x in db_ticker:
-            for y in x:
-                db_price.append(y)
-        delete = db.movies.delete_one( { Tickers: db_ticker,price:db_price } )
+        delete = col.delete_many( { "Tickers": f'{ticker}'} )
         return delete
 
 
 
 
         
+# y = signals.delete_one('buy', 'BONDUSDT')
 
 
-
-# x = signals.delete_one('buy', 'BTCUSDT')
-
+# x = signals.find_all('buy')
 # print(x)
 
-
+# print(y)
 
 
