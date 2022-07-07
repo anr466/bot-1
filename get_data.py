@@ -36,24 +36,24 @@ def get_klines(pair,interval,depth):
         df['Volume'] = pd.to_numeric(df['Volume'])
         # df['pct'] = (df['Close'] - df['Open'])/(df['Open'])
         df['RSI'] = ta.rsi(df['Close'],length=3)
-        # df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
-        # df.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
+        df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
+        # df['signal-rsi'] = np.where(df['RSI']< 30,1.0, 0.0)
+        # # df.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
 
-     
         #df['EMA'] = ta.ema(df['Close'],length=50)
         # adx = ta.adx(df['High'], df['Low'], df['Close'],length=7)
         # df['ADX'] = adx['ADX_7']
         # df['ATR'] = ta.atr(df['High'], df['Low'], df['Close'])
         # signal_buy = [df['cci']> 100,df['RSI']<20,df['ADX']>60]
         # df['signal_buy'] = signal_buy
-        df['20_EMA'] = df['Close'].ewm(span = 20, adjust = False).mean()
-        df['200_EMA'] = df['Close'].ewm(span = 200, adjust = False).mean()
-        df['Signal'] = 0.0  
-        df['Signal'] = np.where(df['20_EMA'] > df['200_EMA'], 1.0, 0.0)
-        
-        # ema_buy = df['Signal']==1.0
-        # df['buy'] = ema_buy
-
+        ma20 = df['Close'].ewm(span = 20, adjust = False).mean()
+        ma200 = df['Close'].ewm(span = 50, adjust = False).mean()
+        # df['Signal'] = 0.0  
+        # df['Signal-MA'] = np.where(ma20 > ma200, 1.0, 0.0)
+        df['MACD'] = ma20 - ma200
+        df['signal'] = df.MACD.ewm(span=9).mean()
+        df['buy_MS'] = np.where(df.MACD < df.signal , 1.0,0.0)
+     
 
         df.dropna(inplace=True)
         for i in range(6 , len(columns)):
@@ -65,7 +65,7 @@ def get_klines(pair,interval,depth):
 
 
 
-# df=get_klines("BTCUSDT",'1h','12 days ago UTC')      
+# df=get_klines("BNBUSDT",'15m','12 hours ago UTC')      
 
 
 # print(df)
@@ -74,4 +74,4 @@ def get_klines(pair,interval,depth):
 
 # شراء 
 # Cci < -100
-# Rsi < 20
+# Rsi < 30

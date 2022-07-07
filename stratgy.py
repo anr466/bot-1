@@ -88,22 +88,24 @@ def TA(tikers):
             #data frame
             data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC')
             # trading view
-            coins = TA_Handler()
-            coins.set_symbol_as(x)
-            coins.set_exchange_as_crypto_or_stock('Binance')
-            coins.set_screener_as_crypto()
-            coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
-            summary = (coins.get_analysis().summary)
-            indicators = coins.get_analysis().indicators 
-            RSI = indicators["RSI"]
-            CCI = indicators["CCI20"]
-            ADX_POSITIVE = indicators["ADX+DI"]
+            # coins = TA_Handler()
+            # coins.set_symbol_as(x)
+            # coins.set_exchange_as_crypto_or_stock('Binance')
+            # coins.set_screener_as_crypto()
+            # coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
+            # summary = (coins.get_analysis().summary)
+            # indicators = coins.get_analysis().indicators 
+            # RSI = indicators["RSI"]
+            # CCI = indicators["CCI20"]
+            # ADX_POSITIVE = indicators["ADX+DI"]
+            # MACD = indicators["MACD.macd"]
+            
             
             if not data1.empty:
 
                 # vwap calculator
-                vwap_48 = vwap(data1 , 48)
-                vwap_84 = vwap(data1 , 84)
+                vwap_48 = vwap(data1 , 30)
+                vwap_84 = vwap(data1 , 10)
                 data1['vwap48'] = vwap_48
                 data1['vwap84'] = vwap_84
                 data1['buy'] =ta.cross(data1['vwap48'] , data1['vwap84'])
@@ -115,36 +117,45 @@ def TA(tikers):
 
                 #CCI
                 data1['cci'] = ta.cci(data1['High'], data1['Low'], data1['Close'])
-                cci_buy = data1.iloc[-1]['cci']< -100
+                cci_buy = data1.iloc[-1]['cci']
                 data1['cci_buy'] = cci_buy
                
                 #adx
                 adx = ta.adx(data1['High'], data1['Low'], data1['Close'],length=7)
                 data1['ADX'] = adx['ADX_7']
-                adx_buy = data1.iloc[-1]['ADX']< 50
+                adx_buy = data1.iloc[-1]['ADX']
                 data1['adx_buy'] = adx_buy
                 
                 #RSI
                 data1['RSI'] = ta.rsi(data1['Close'], length=3)
-                rsi_buy = data1.iloc[-1]['RSI']< 30
+                rsi_buy = data1.iloc[-1]['RSI']
                 data1['rsi_buy'] = rsi_buy
 
-                # print("cross buy" , crosss_buy)
-                # print("rsi buy" , rsi_buy)
                 
-
-            
                 #Ema
                 data1['20_EMA'] = data1['Close'].ewm(span = 20, adjust = False).mean()
-                data1['200_EMA'] = data1['Close'].ewm(span = 200, adjust = False).mean()
-                data1['Signal'] = 0.0  
-                data1['Signal'] = np.where(data1['20_EMA'] > data1['200_EMA'], 1.0, 0.0)
-                ema_buy = data1.iloc[-1]['Signal']==1.0
-                data1['ema_buy'] = ema_buy
+                data1['50_EMA'] = data1['Close'].ewm(span = 200, adjust = False).mean()
+                # data1['Signal'] = 0.0  
+                # data1['Signal'] = np.where(data1['20_EMA'] > data1['50_EMA'], 1.0, 0.0)
+                # ema_buy = data1.iloc[-1]['Signal']
+                # data1['ema_buy'] = ema_buy
 
                 # print("ema buy" , ema_buy)
+
+                #MACD
+                data1['MACD'] = data1['20_EMA'] - data1['50_EMA']
+                data1['signal'] = data1.MACD.ewm(span=9).mean()
+                buy_macd = np.where(data1.MACD[-1] < data1.signal[-1] , 1.0,0.0)
+
+                # print('macd',buy_macd)
+                # print('rsi',rsi_buy)
+                # print('cci',cci_buy)
+
+
+
+            
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 200 and RSI > 70 and ADX_POSITIVE > 60:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy<30 and cci_buy < -100 and buy_macd > 0:
 
      
                     #strargy1
@@ -171,7 +182,7 @@ def TA(tikers):
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"sell done on stoploss stratgy1 ==>{x}")
                                 signals.delete_one('buy', x)
-                        elif x != db_ticker_name:
+                        elif x not in db_ticker_name:
                             signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,sl=stopprice)
 
         except:
@@ -210,9 +221,9 @@ def hd():
 # lunch()
 while True:
     hd()
+
+    
   
-    
-    
 
 
 # @bot.message_handler(func=lambda message: True)  
