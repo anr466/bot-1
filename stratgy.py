@@ -88,17 +88,17 @@ def TA(tikers):
             #data frame
             data1 = gd.get_klines(x ,'15m' ,'27 hours ago UTC')
             # trading view
-            # coins = TA_Handler()
-            # coins.set_symbol_as(x)
-            # coins.set_exchange_as_crypto_or_stock('Binance')
-            # coins.set_screener_as_crypto()
-            # coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
-            # summary = (coins.get_analysis().summary)
-            # indicators = coins.get_analysis().indicators 
-            # RSI = indicators["RSI"]
-            # CCI = indicators["CCI20"]
-            # ADX_POSITIVE = indicators["ADX+DI"]
-            # MACD = indicators["MACD.macd"]
+            coins = TA_Handler()
+            coins.set_symbol_as(x)
+            coins.set_exchange_as_crypto_or_stock('Binance')
+            coins.set_screener_as_crypto()
+            coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
+            summary = (coins.get_analysis().summary)
+            indicators = coins.get_analysis().indicators 
+            RSI = indicators["RSI"][-1]
+            CCI = indicators["CCI20"][-1]
+            ADX_POSITIVE = indicators["ADX+DI"][-1]
+            MACD = indicators["MACD.macd"][-1]
             
             
             if not data1.empty:
@@ -155,7 +155,7 @@ def TA(tikers):
 
             
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy<30 and cci_buy < -100 and buy_macd > 0:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 150 and RSI>60 and ADX_POSITIVE > 55 and buy_macd > 0:
 
      
                     #strargy1

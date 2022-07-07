@@ -65,7 +65,7 @@ def get_klines(pair,interval,depth):
 
 
 
-# df=get_klines("BNBUSDT",'15m','12 hours ago UTC')      
+# df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
 
 
 # print(df)
