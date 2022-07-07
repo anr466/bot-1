@@ -144,7 +144,7 @@ def TA(tikers):
 
                 # print("ema buy" , ema_buy)
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > -100 and RSI < 30:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 200 and RSI > 70 and ADX_POSITIVE > 60:
 
      
                     #strargy1
