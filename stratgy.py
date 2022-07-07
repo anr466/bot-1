@@ -177,10 +177,10 @@ def TA(tikers):
                         
                         if x == db_ticker_name:
                             if db_ticker_price >= tp1:
-                                send_msg(f"profit target Done on stratgy1 ==>{x}\n{tp1}")
+                                send_msg(f"take profit Done  ==>{x}\n{tp1}")
                                 signals.delete_one('buy', x)
                             elif db_ticker_price <= stopprice:
-                                send_msg(f"sell done on stoploss stratgy1 ==>{x}")
+                                send_msg(f"sell done on stoploss ==>{x}")
                                 signals.delete_one('buy', x)
                         elif x not in db_ticker_name:
                             signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,sl=stopprice)
