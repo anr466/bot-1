@@ -86,7 +86,7 @@ def TA(tikers):
         try:
         
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC')
+            data1 = gd.get_klines(x ,'15m' ,'27 hours ago UTC')
             # trading view
             # coins = TA_Handler()
             # coins.set_symbol_as(x)
@@ -155,7 +155,7 @@ def TA(tikers):
 
             
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy<30 and cci_buy < -100 and buy_macd > 0:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and crosss_buy ==True and rsi_buy<30 and cci_buy < -100 and buy_macd > 0:
 
      
                     #strargy1
