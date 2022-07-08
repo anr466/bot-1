@@ -53,8 +53,8 @@ class signals:
 # y = signals.delete_one('buy', 'BONDUSDT')
 
 
-# x = signals.find_all('buy')
-# print(x)
+x = signals.find_all('buy')
+print(x)
 
 # print(y)
 

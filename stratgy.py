@@ -155,7 +155,7 @@ def TA(tikers):
 
             
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 150 and RSI>60 and ADX_POSITIVE > 55:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 170 and RSI>60 and ADX_POSITIVE > 55:
 
      
                     #strargy1
@@ -182,8 +182,9 @@ def TA(tikers):
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"sell done on stoploss ==>{x}")
                                 signals.delete_one('buy', x)
-                        elif x not in db_ticker_name:
+                        else:
                             signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,sl=stopprice)
+                            
 
         except:
             pass
