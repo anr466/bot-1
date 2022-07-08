@@ -95,10 +95,10 @@ def TA(tikers):
             coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
-            RSI = indicators["RSI"][-1]
-            CCI = indicators["CCI20"][-1]
-            ADX_POSITIVE = indicators["ADX+DI"][-1]
-            MACD = indicators["MACD.macd"][-1]
+            RSI = indicators["RSI"]
+            CCI = indicators["CCI20"]
+            ADX_POSITIVE = indicators["ADX+DI"]
+            MACD = indicators["MACD.macd"]
             
             
             if not data1.empty:
@@ -155,7 +155,7 @@ def TA(tikers):
 
             
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 150 and RSI>60 and ADX_POSITIVE > 55 and buy_macd > 0:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 150 and RSI>60 and ADX_POSITIVE > 55:
 
      
                     #strargy1
