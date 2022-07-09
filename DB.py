@@ -56,6 +56,4 @@ class signals:
 x = signals.find_all('buy')
 print(x)
 
-# print(y)
-
 
