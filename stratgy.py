@@ -152,7 +152,7 @@ def TA(tikers):
                 # print('cci',cci_buy)
 
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 170 and RSI>60 and ADX_POSITIVE > 55:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 200 and RSI>70 and ADX_POSITIVE > 60:
 
      
                     #strargy1
@@ -175,22 +175,24 @@ def TA(tikers):
                               
                         if x == db_ticker_name:
                             if db_ticker_price >= tp1:
-                                send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
+                                send_msg(f"تحقق بيع الهدف  ==>{x}==> {tp1} \n ")
+                                signals.add('profit', dt, x, price_cal, tp1, stopprice)
                                 signals.delete_one('buy', x)
                             elif db_ticker_price <= stopprice:
-                                send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
-                                signals.delete_one('buy', x)       
+                                send_msg(f"تم البيع على وقف الخسارة \n{x}==> {stopprice} \n ")
+                                signals.add('loss', dt, x, price_cal, tp1, stopprice)
+                                signals.delete_one('buy', x)
+                        
                 else:
-                        db_ticker = signals.find('buy', x)
-                        db_ticker_name = db_ticker[0]
-                        db_ticker_price = db_ticker[1]
-                        if x == db_ticker_name:
-                            if db_ticker_price >= tp1:
-                                send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
-                                signals.delete_one('buy', x)
-                            elif db_ticker_price <= stopprice:
-                                send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
-                                signals.delete_one('buy', x)       
+                    if x == db_ticker_name:
+                        if db_ticker_price >= tp1:
+                            send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
+                            signals.add('profit', dt, x, price_cal, tp1, stopprice)
+                            signals.delete_one('buy', x)
+                        elif db_ticker_price <= stopprice:
+                            send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
+                            signals.add('loss', dt, x, price_cal, tp1, stopprice)
+                            signals.delete_one('buy', x)       
                             
 
         except:

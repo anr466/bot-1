@@ -53,8 +53,8 @@ class signals:
 # y = signals.delete_one('buy', 'XMRBUSD')
 
 # # signals.add('buy', '345435', 'ff', '23423', '23423', '234234')
-# x = signals.clear_all('buy')
-# print(x)
-# # print(y)
+x = signals.find_all('buy')
+print(x)
+# # # print(y)
 
 
