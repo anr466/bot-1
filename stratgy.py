@@ -151,9 +151,6 @@ def TA(tikers):
                 # print('rsi',rsi_buy)
                 # print('cci',cci_buy)
 
-
-
-            
                 
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 170 and RSI>60 and ADX_POSITIVE > 55:
 

@@ -13,7 +13,7 @@ for i in range(len(df)):
         buy.append(i)
 
 
-print(buy)
+
 # plt.plot(df.) 
 # # plt.plot(df.RSI)
 # # plt.plot(df.signal) 
