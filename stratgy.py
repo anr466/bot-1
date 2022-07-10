@@ -170,20 +170,20 @@ def TA(tikers):
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\n')
+                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)
                         db_ticker = signals.find('buy', x)
                         db_ticker_name = db_ticker[0]
                         db_ticker_price = db_ticker[1]
-                        
+                              
                         if x == db_ticker_name:
                             if db_ticker_price >= tp1:
                                 send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
                                 signals.delete_one('buy', x)
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
-                                signals.delete_one('buy', x)
+                                signals.delete_one('buy', x)       
                         
-                        signals.add('buy' , dt , x , price_now=price_cal,tp1=tp1,sl=stopprice)
                             
 
         except:
@@ -219,9 +219,9 @@ def hd():
                 
 
             
-# lunch()
-while True:
-    hd()
+lunch()
+# while True:
+#     hd()
 
     
   

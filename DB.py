@@ -37,23 +37,24 @@ class signals:
         return db_price
     def find_all(coll):
         col = db[coll]
-        find = col.find()
+        find = col.find({})
         for x in find:
             print(x)
     
     def delete_one(col , ticker):
         col = db[col]
-        delete = col.delete_many( { "Tickers": f'{ticker}'} )
+        delete = col.delete_one( { "Tickers": f'{ticker}'} )
         return delete
 
 
 
 
         
-# y = signals.delete_one('buy', 'BONDUSDT')
+# y = signals.delete_one('buy', 'XMRBUSD')
 
-
-x = signals.find_all('buy')
-print(x)
+# # signals.add('buy', '345435', 'ff', '23423', '23423', '234234')
+# x = signals.clear_all('buy')
+# print(x)
+# # print(y)
 
 
