@@ -183,7 +183,17 @@ def TA(tikers):
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
                                 signals.delete_one('buy', x)       
-                        
+                else:
+                        db_ticker = signals.find('buy', x)
+                        db_ticker_name = db_ticker[0]
+                        db_ticker_price = db_ticker[1]
+                        if x == db_ticker_name:
+                            if db_ticker_price >= tp1:
+                                send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
+                                signals.delete_one('buy', x)
+                            elif db_ticker_price <= stopprice:
+                                send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
+                                signals.delete_one('buy', x)       
                             
 
         except:
