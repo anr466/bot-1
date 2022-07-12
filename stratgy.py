@@ -110,8 +110,8 @@ def TA(tikers):
                 data1['vwap84'] = vwap_84
                 data1['buy'] =ta.cross(data1['vwap48'] , data1['vwap84'])
                 data1['sell']=ta.cross(data1['vwap84'] , data1['vwap48'])
-                crosss_buy= data1.iloc[-1]["buy"]>0
-                crosss_sell =data1.iloc[-1]["sell"]>0
+                crosss_buy= data1.iloc[-1]["buy"]
+                crosss_sell =data1.iloc[-1]["sell"]
                 data1['crosss_buy'] = crosss_buy
                 data1['crosss_sell'] = crosss_sell
 
@@ -152,7 +152,7 @@ def TA(tikers):
                 # print('cci',cci_buy)
 
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and CCI > 180 and RSI> 70 and ADX_POSITIVE > 60 and crosss_buy == True:
+                if summary['RECOMMENDATION'] == "STRONG_BUY":
 
      
                     #strargy1
@@ -168,6 +168,7 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
                         send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\n')
+                        send_msg(f' rsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd}')
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)
                         db_ticker = signals.find('buy', x)
                         db_ticker_name = db_ticker[0]
@@ -175,7 +176,7 @@ def TA(tikers):
                               
                         if x == db_ticker_name:
                             if db_ticker_price >= tp1:
-                                send_msg(f"تحقق بيع الهدف  ==>{x}==> {tp1} \n ")
+                                send_msg(f"تحقق بيع الهدف  ==>{x}==> {tp1}")
                                 signals.add('profit', dt, x, price_cal, tp1, stopprice)
                                 signals.delete_one('buy', x)
                             elif db_ticker_price <= stopprice:
@@ -186,7 +187,7 @@ def TA(tikers):
                 else:
                     if x == db_ticker_name:
                         if db_ticker_price >= tp1:
-                            send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
+                            send_msg(f"تحقق الهدف  ==>{x}\n{tp1} \n rsi = {RSI} \n ")
                             signals.add('profit', dt, x, price_cal, tp1, stopprice)
                             signals.delete_one('buy', x)
                         elif db_ticker_price <= stopprice:
