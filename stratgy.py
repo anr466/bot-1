@@ -187,7 +187,7 @@ def TA(tikers):
                 else:
                     if x == db_ticker_name:
                         if db_ticker_price >= tp1:
-                            send_msg(f"تحقق الهدف  ==>{x}\n{tp1} \n rsi = {RSI} \n ")
+                            send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
                             signals.add('profit', dt, x, price_cal, tp1, stopprice)
                             signals.delete_one('buy', x)
                         elif db_ticker_price <= stopprice:
