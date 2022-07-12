@@ -96,9 +96,13 @@ def TA(tikers):
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
             RSI = indicators["RSI"]
+            RSI = RSI[-1]
             CCI = indicators["CCI20"]
+            CCI = CCI[-1]
             ADX_POSITIVE = indicators["ADX+DI"]
+            ADX_POSITIVE = ADX_POSITIVE[-1]
             MACD = indicators["MACD.macd"]
+            MACD = MACD[-1]
             #STOCH = indicators["Stoch.RSI"]
             # WILIM_R = indicators["W%R"]
 
@@ -154,8 +158,10 @@ def TA(tikers):
                 # print('macd',buy_macd)
 
                 rsi_fun = gd.RSI(data1)
+                rsi_fun = rsi_fun[-1]
+
                 stoch = gd.Stochastic_RSI(data1)
-                
+                stoch = stoch[-1]
                 
                 if summary['RECOMMENDATION'] == "STRONG_BUY":
 
@@ -172,7 +178,7 @@ def TA(tikers):
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI[-1]} \ncci = {CCI[-1]} \nADX = {ADX_POSITIVE[-1]} \nmacd = {MACD[-1]} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch[-1]} \n rsi_fun = {rsi_fun[-1]}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun}')
                         
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)
                         db_ticker = signals.find('buy', x)
