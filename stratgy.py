@@ -83,10 +83,10 @@ def TA(tikers):
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
     for x in tikers:
-        try:
         
+        try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'27 hours ago UTC')
+            data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -99,7 +99,11 @@ def TA(tikers):
             CCI = indicators["CCI20"]
             ADX_POSITIVE = indicators["ADX+DI"]
             MACD = indicators["MACD.macd"]
-            
+            #STOCH = indicators["Stoch.RSI"]
+            # WILIM_R = indicators["W%R"]
+
+
+
             
             if not data1.empty:
 
@@ -148,9 +152,10 @@ def TA(tikers):
                 buy_macd = np.where(data1.MACD[-1] < data1.signal[-1] , 1.0,0.0)
 
                 # print('macd',buy_macd)
-                # print('rsi',rsi_buy)
-                # print('cci',cci_buy)
 
+                rsi_fun = gd.RSI(data1)
+                stoch = gd.Stochastic_RSI(data1)
+                
                 
                 if summary['RECOMMENDATION'] == "STRONG_BUY":
 
@@ -167,7 +172,7 @@ def TA(tikers):
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI[-1]} \ncci = {CCI[-1]} \nADX = {ADX_POSITIVE[-1]} \nmacd = {MACD[-1]} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch[-1]} \n rsi_fun = {rsi_fun[-1]}')
                         
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)
                         db_ticker = signals.find('buy', x)
@@ -193,10 +198,10 @@ def TA(tikers):
                             send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
                             signals.add('loss', dt, x, price_cal, tp1, stopprice)
                             signals.delete_one('buy', x)       
-                            
-
         except:
-            pass
+            pass                   
+
+        
     
      
 
@@ -228,9 +233,9 @@ def hd():
                 
 
             
-# lunch()
-while True:
-    hd()
+lunch()
+# while True:
+#     hd()
 
     
   

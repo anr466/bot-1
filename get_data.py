@@ -35,10 +35,10 @@ def get_klines(pair,interval,depth):
         df['Low'] = pd.to_numeric(df['Low'])
         df['Volume'] = pd.to_numeric(df['Volume'])
         # df['pct'] = (df['Close'] - df['Open'])/(df['Open'])
-        df['RSI'] = ta.rsi(df['Close'],length=3)
-        df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
-        # df['signal-rsi'] = np.where(df['RSI']< 30,1.0, 0.0)
-        # # df.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
+        # df['RSI'] = ta.rsi(df['Close'],length=3)
+        # df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
+        # # df['signal-rsi'] = np.where(df['RSI']< 30,1.0, 0.0)
+        # # # df.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
 
         #df['EMA'] = ta.ema(df['Close'],length=50)
         # adx = ta.adx(df['High'], df['Low'], df['Close'],length=7)
@@ -46,13 +46,13 @@ def get_klines(pair,interval,depth):
         # df['ATR'] = ta.atr(df['High'], df['Low'], df['Close'])
         # signal_buy = [df['cci']> 100,df['RSI']<20,df['ADX']>60]
         # df['signal_buy'] = signal_buy
-        ma20 = df['Close'].ewm(span = 20, adjust = False).mean()
-        ma200 = df['Close'].ewm(span = 50, adjust = False).mean()
-        # df['Signal'] = 0.0  
-        # df['Signal-MA'] = np.where(ma20 > ma200, 1.0, 0.0)
-        df['MACD'] = ma20 - ma200
-        df['signal'] = df.MACD.ewm(span=9).mean()
-        df['buy_MS'] = np.where(df.MACD < df.signal , 1.0,0.0)
+        # ma20 = df['Close'].ewm(span = 20, adjust = False).mean()
+        # ma200 = df['Close'].ewm(span = 50, adjust = False).mean()
+        # # df['Signal'] = 0.0  
+        # # df['Signal-MA'] = np.where(ma20 > ma200, 1.0, 0.0)
+        # df['MACD'] = ma20 - ma200
+        # df['signal'] = df.MACD.ewm(span=9).mean()
+        # df['buy_MS'] = np.where(df.MACD < df.signal , 1.0,0.0)
      
 
         df.dropna(inplace=True)
@@ -65,10 +65,38 @@ def get_klines(pair,interval,depth):
 
 
 
-# df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
+df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
 
 
-# print(df)
+
+def RSI(data: pd.DataFrame, window_length=14) -> pd.Series:
+    """
+    Calcula el indicador RSI sobre una ventana móvil.
+    https://www.investopedia.com/terms/r/rsi.asp
+    """
+    df_ = data.copy()
+    close = df_['Close']
+    delta = close.diff()
+    up = delta.clip(lower=0)  # transforma en ceros las perdidas
+    down = -1 * delta.clip(upper=0)  # transforma en ceros las ganancias
+    # WMA
+    roll_up = up.ewm(com=window_length - 1, adjust=True, min_periods=window_length).mean()
+    roll_down = down.ewm(com=window_length - 1, adjust=True, min_periods=window_length).mean()
+    # Calculate the RSI
+    RS = roll_up / roll_down
+    return 100.0 - (100.0 / (1.0 + RS))
+
+
+def Stochastic_RSI(data: pd.DataFrame, window_length=14) -> pd.Series:
+    """
+    The Stochastic RSI (StochRSI) is an indicator used in technical analysis that ranges between zero and one (or zero and 100 on
+    some charting platforms) and is created by applying the Stochastic oscillator formula to a set of relative strength index (RSI)
+    values rather than to standard price data.
+    https://www.investopedia.com/terms/s/stochrsi.asp#:~:text=The%20Stochastic%20RSI%20(StochRSI)%20is,than%20to%20standard%20price%20data.
+    """
+    df_ = data.copy()
+    rsi = RSI(data=df_, window_length=window_length)
+    return (rsi - rsi.rolling(window_length).min()) / (rsi.rolling(window_length).max() - rsi.rolling(window_length).min())
 
 
 
