@@ -96,19 +96,13 @@ def TA(tikers):
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
             RSI = indicators["RSI"]
-            RSI = RSI[-1]
             CCI = indicators["CCI20"]
-            CCI = CCI[-1]
             ADX_POSITIVE = indicators["ADX+DI"]
-            ADX_POSITIVE = ADX_POSITIVE[-1]
             MACD = indicators["MACD.macd"]
-            MACD = MACD[-1]
+         
             #STOCH = indicators["Stoch.RSI"]
             # WILIM_R = indicators["W%R"]
 
-
-
-            
             if not data1.empty:
 
                 # vwap calculator
@@ -159,10 +153,9 @@ def TA(tikers):
 
                 rsi_fun = gd.RSI(data1)
                 rsi_fun = rsi_fun[-1]
-
                 stoch = gd.Stochastic_RSI(data1)
                 stoch = stoch[-1]
-                
+               
                 if summary['RECOMMENDATION'] == "STRONG_BUY":
 
      
@@ -239,9 +232,9 @@ def hd():
                 
 
             
-# lunch()
-while True:
-    hd()
+lunch()
+# while True:
+#     hd()
 
     
   

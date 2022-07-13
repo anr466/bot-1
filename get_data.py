@@ -34,7 +34,7 @@ def get_klines(pair,interval,depth):
         df['High'] = pd.to_numeric(df['High'])
         df['Low'] = pd.to_numeric(df['Low'])
         df['Volume'] = pd.to_numeric(df['Volume'])
-        df['sdfsd'] = ta.bbands(df.Close)
+        # df['sdfsd'] = ta.bbands(df.Close)
         # show all columns
         # df['pct'] = (df['Close'] - df['Open'])/(df['Open'])
         # df['RSI'] = ta.rsi(df['Close'],length=3)
@@ -102,4 +102,4 @@ def Stochastic_RSI(data: pd.DataFrame, window_length=14) -> pd.Series:
 
 
 
-print(df)
+# print(df)
