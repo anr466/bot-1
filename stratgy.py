@@ -261,13 +261,17 @@ def hd():
             if min_ == i and sec_ == 3:
                 ti.sleep(10)
                 lunch()
+                if lunch():
+                    pass
             else:
                 track_price()
+                if track_price():
+                    pass
 
             
            
                 
-         
+      
                 
      
 while True:
