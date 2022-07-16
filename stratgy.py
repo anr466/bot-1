@@ -188,12 +188,11 @@ def TA(tikers):
                                 signals.delete_one('buy', x)
                       
                         send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun}')
-                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)
-                             
+                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)                
                 else:
                     if x == db_ticker_name:
                         if db_ticker_price >= tp1:
-                            send_msg(f"تحقق الهدف  ==>{x}\n{tp1}")
+                            send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n ربح على نسبة 2.5% الحمد لله واللهم صل وسلم على نبينا محمد")
                             signals.add('profit', dt, x, price_cal, tp1, stopprice)
                             signals.delete_one('buy', x)
                         elif db_ticker_price <= stopprice:
