@@ -161,6 +161,11 @@ def TA(tikers):
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
+
+                        db_ticker = signals.find('buy', x)
+                        db_ticker_name = db_ticker[0]
+                        db_ticker_price = db_ticker[1]
+
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)
                         
@@ -171,12 +176,6 @@ def TA(tikers):
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun}')
-                        
-                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)
-                        db_ticker = signals.find('buy', x)
-                        db_ticker_name = db_ticker[0]
-                        db_ticker_price = db_ticker[1]
                             
                         if x == db_ticker_name:
                             if db_ticker_price >= tp1:
@@ -186,7 +185,11 @@ def TA(tikers):
                             elif db_ticker_price <= stopprice:
                                 send_msg(f"تم البيع على وقف الخسارة \n{x}==> {stopprice} \n ")
                                 signals.add('loss', dt, x, price_cal, tp1, stopprice)
-                                signals.delete_one('buy', x)     
+                                signals.delete_one('buy', x)
+                      
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun}')
+                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)
+                             
                 else:
                     if x == db_ticker_name:
                         if db_ticker_price >= tp1:
