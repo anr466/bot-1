@@ -183,7 +183,7 @@ def TA(tikers):
 def track_price():
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
-    for x in busd:
+    for x in busd,usdt:
         try:
             db_ticker = signals.find('buy', x)
         
@@ -257,12 +257,13 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    if track_price():
-        pass
     for i in interval:
             if min_ == i and sec_ == 3:
                 ti.sleep(10)
                 lunch()
+    if track_price():
+        pass
+                
             
                 
      
