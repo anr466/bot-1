@@ -94,8 +94,6 @@ def usdt_quantity_calculator(amount, **kwargs):
 
 	return result
 
-
-
 #convert the balance to the allowed purchase quantity < for market buy orders >.
 def buy_market_quantity(symbol, usdt_amount):
 	avg_price = Clnt.get_avg_price(symbol = symbol)

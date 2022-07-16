@@ -257,20 +257,20 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
+    if track_price():
+        pass
     for i in interval:
             if min_ == i and sec_ == 3:
                 ti.sleep(10)
                 lunch()
-            else:
-                track_price()
+            
                 
      
-# lunch()
 while True:
     hd()
 
     
-  
+
 
 
 # @bot.message_handler(func=lambda message: True)  
