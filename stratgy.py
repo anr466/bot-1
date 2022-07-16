@@ -183,7 +183,7 @@ def TA(tikers):
 def track_price():
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
-    for x in busd,usdt:
+    for x in busd:
         try:
             db_ticker = signals.find('buy', x)
         
