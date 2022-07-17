@@ -245,6 +245,9 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
+    ti.sleep(90)
+    track_price()
+    ti.sleep(60)
     
 
 
@@ -261,8 +264,7 @@ def hd():
             if min_ == i and sec_ == 3:
                 ti.sleep(10)
                 lunch()
-            else:
-                track_price()
+            
               
 
             
