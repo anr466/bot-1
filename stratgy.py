@@ -171,8 +171,8 @@ def TA(tikers):
                         for c in data1['Close'].index:
                             timestap = []
                             timestap.append(c)
-                        target = fo.price_calculator(x , price_now , tp1 = 2.5)
-                        stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+                        target = fo.price_calculator(x , price_now , tp1 = 2)
+                        stoploss = fo.price_calculator(x , price_now , tp1 = -2)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
@@ -194,7 +194,7 @@ def track_price():
             price_now = fo.get_ticker_price(x)
             price_cal = fo.format_price(x , price_now)
             
-            target = fo.price_calculator(x , price_now , tp1 = 5)
+            target = fo.price_calculator(x , price_now , tp1 = 2)
             stoploss = fo.price_calculator(x , price_now , tp1 = -2)
             tp1 = list(target.values())[0]
             stopprice = list(stoploss.values())[0]
@@ -249,32 +249,38 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
-    ti.sleep(90)
-    track_price()
-    ti.sleep(60)
+    # ti.sleep(90)
+    # track_price()
+    # ti.sleep(60)
     
 
 
 
 def hd():
-    interval = [0,5,10,15,20,25,30,35,40,45,50,55]
+    interval1 = [0,5,10,15,20,25,30,35,40,45,50,55]
+    interval2 = [0,15,30,45]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
     min_ = time.strftime("%M")
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in interval:
+    for i in interval2:
             if min_ == i and sec_ == 3:
                 ti.sleep(10)
                 lunch()
+    for i in interval1:
+            if min_ == i and sec_ == 3:
+                ti.sleep(10)
+                track_price()
             
-              
 
+                       
             
 # lunch()    
 while True:
     hd()
+
 
     
 
