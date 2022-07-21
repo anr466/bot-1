@@ -219,8 +219,8 @@ def track_price():
             price_now = fo.get_ticker_price(x)
             price_cal = fo.format_price(x , price_now)
             
-            target = fo.price_calculator(x , price_now , tp1 = 2.5)
-            stoploss = fo.price_calculator(x , price_now , tp1 = -2.5)
+            target = fo.price_calculator(x , price_now , tp1 = 2)
+            stoploss = fo.price_calculator(x , price_now , tp1 = -2)
             tp1 = list(target.values())[0]
             stopprice = list(stoploss.values())[0]
             db_ticker_name = db_ticker[0]
@@ -249,9 +249,9 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
-    # ti.sleep(90)
-    # track_price()
-    # ti.sleep(60)
+    ti.sleep(90)
+    track_price()
+    ti.sleep(60)
     
 
 
@@ -265,17 +265,12 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in interval2:
-            if min_ == i and sec_ == 3:
-                ti.sleep(10)
-                lunch()
     for i in interval1:
             if min_ == i and sec_ == 3:
                 ti.sleep(10)
-                track_price()
-            
+                lunch()      
 
-                       
+                   
             
 # lunch()    
 while True:
