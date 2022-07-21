@@ -194,8 +194,8 @@ def track_price():
             price_now = fo.get_ticker_price(x)
             price_cal = fo.format_price(x , price_now)
             
-            target = fo.price_calculator(x , price_now , tp1 = 2)
-            stoploss = fo.price_calculator(x , price_now , tp1 = -3)
+            target = fo.price_calculator(x , price_now , tp1 = 5)
+            stoploss = fo.price_calculator(x , price_now , tp1 = -2)
             tp1 = list(target.values())[0]
             stopprice = list(stoploss.values())[0]
             db_ticker_name = db_ticker[0]
