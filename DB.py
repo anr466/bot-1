@@ -46,6 +46,19 @@ class signals:
         delete = col.delete_one( { "Tickers": f'{ticker}'} )
         return delete
 
+    def num_table(col):
+        col = db[col]
+        find = col.find({})
+        tickers= {}
+        db_ticker = []  
+        for x in find:
+            tickers[x["Tickers"]] = [x["Tickers"]]
+        for x in tickers:
+            db_ticker.append(x)
+      
+        return db_ticker
+
+
 
 
 
@@ -53,7 +66,7 @@ class signals:
 # y = signals.delete_one('buy', 'XMRBUSD')
 
 # # signals.add('buy', '345435', 'ff', '23423', '23423', '234234')
-# x = signals.find_all('profit')
+# x = signals.clear_all('profit')
 # print(x)
 # # # print(y)
 

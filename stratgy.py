@@ -92,13 +92,15 @@ def TA(tikers):
             coins.set_symbol_as(x)
             coins.set_exchange_as_crypto_or_stock('Binance')
             coins.set_screener_as_crypto()
-            coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
+            coins.set_interval_as(Interval.INTERVAL_5_MINUTES)
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
             RSI = indicators["RSI"]
             CCI = indicators["CCI20"]
             ADX_POSITIVE = indicators["ADX+DI"]
             MACD = indicators["MACD.macd"]
+            
+            
          
             #STOCH = indicators["Stoch.RSI"]
             # WILIM_R = indicators["W%R"]
@@ -106,8 +108,8 @@ def TA(tikers):
             if not data1.empty:
 
                 # vwap calculator
-                vwap_48 = vwap(data1 , 30)
-                vwap_84 = vwap(data1 , 10)
+                vwap_48 = vwap(data1 , 10)
+                vwap_84 = vwap(data1 , 50)
                 data1['vwap48'] = vwap_48
                 data1['vwap84'] = vwap_84
                 data1['buy'] =ta.cross(data1['vwap48'] , data1['vwap84'])
@@ -148,15 +150,17 @@ def TA(tikers):
                 data1['MACD'] = data1['20_EMA'] - data1['50_EMA']
                 data1['signal'] = data1.MACD.ewm(span=9).mean()
                 buy_macd = np.where(data1.MACD[-1] < data1.signal[-1] , 1.0,0.0)
+                # MACD = MACD[-1]
 
-                # print('macd',buy_macd)
+                print(buy_macd)
+                
 
                 rsi_fun = gd.RSI(data1)
                 rsi_fun = rsi_fun[-1]
                 stoch = gd.Stochastic_RSI(data1)
                 stoch = stoch[-1]
                
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and RSI>70 and CCI>100 and ADX_POSITIVE>60:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and CCI>200 and ADX_POSITIVE>60 and stoch>0:
 
      
                     #strargy1
@@ -253,7 +257,7 @@ def lunch():
 
 
 def hd():
-    interval = [0,15,30,45]
+    interval = [0,5,10,15,20,25,30,35,40,45,50,55]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
     min_ = time.strftime("%M")
@@ -268,11 +272,7 @@ def hd():
               
 
             
-           
-                
-      
-                
-     
+# lunch()    
 while True:
     hd()
 
