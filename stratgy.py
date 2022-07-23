@@ -153,14 +153,15 @@ def TA(tikers):
                 # MACD = MACD[-1]
 
                 
-                
+
 
                 rsi_fun = gd.RSI(data1)
                 rsi_fun = rsi_fun[-1]
                 stoch = gd.Stochastic_RSI(data1)
                 stoch = stoch[-1]
+                print(crosss_buy)
                
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and CCI>200 and ADX_POSITIVE>60 and stoch>0 and crosss_buy ==True:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and CCI>200 and ADX_POSITIVE>60 and stoch>0 and crosss_buy>0:
 
      
                     #strargy1
@@ -201,13 +202,17 @@ def track_price():
             db_ticker_name = db_ticker[0]
             db_ticker_price = db_ticker[1]
 
+            balance= (2*20)/100
+
             if x == db_ticker_name:
                 if db_ticker_price >= tp1:
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n ربح على نسبة 2.5% الحمد لله واللهم صل وسلم على نبينا محمد")
+                    balance = balance+balance
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n ربح على نسبة 2.5% الحمد لله واللهم صل وسلم على نبينا محمد \n balance:{balance}")
                     signals.add('profit', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
                 elif db_ticker_price <= stopprice:
-                    send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
+                    balance = balance-balance
+                    send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} \n balance:{balance} ")
                     signals.add('loss', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
         except:
@@ -273,9 +278,9 @@ def hd():
 
                    
             
-# lunch()    
-while True:
-    hd()
+lunch()    
+# while True:
+#     hd()
 
 
     
