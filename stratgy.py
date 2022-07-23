@@ -207,7 +207,7 @@ def track_price():
             if x == db_ticker_name:
                 if db_ticker_price >= tp1:
                     balance = balance+balance
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n ربح على نسبة 2.5% الحمد لله واللهم صل وسلم على نبينا محمد \n balance:{balance}")
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n balance:{balance}")
                     signals.add('profit', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
                 elif db_ticker_price <= stopprice:
