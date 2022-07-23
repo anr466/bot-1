@@ -86,13 +86,13 @@ def TA(tikers):
         
         try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'12 hours ago UTC')
+            data1 = gd.get_klines(x ,'15m' ,'10 days ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
             coins.set_exchange_as_crypto_or_stock('Binance')
             coins.set_screener_as_crypto()
-            coins.set_interval_as(Interval.INTERVAL_5_MINUTES)
+            coins.set_interval_as(Interval.INTERVAL_1_HOUR)
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
             RSI = indicators["RSI"]
@@ -108,8 +108,8 @@ def TA(tikers):
             if not data1.empty:
 
                 # vwap calculator
-                vwap_48 = vwap(data1 , 10)
-                vwap_84 = vwap(data1 , 50)
+                vwap_48 = vwap(data1 , 30)
+                vwap_84 = vwap(data1 , 60)
                 data1['vwap48'] = vwap_48
                 data1['vwap84'] = vwap_84
                 data1['buy'] =ta.cross(data1['vwap48'] , data1['vwap84'])
@@ -160,7 +160,7 @@ def TA(tikers):
                 stoch = gd.Stochastic_RSI(data1)
                 stoch = stoch[-1]
                
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and CCI>200 and ADX_POSITIVE>60 and stoch>0:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and CCI>200 and ADX_POSITIVE>60 and stoch>0 and crosss_buy ==True:
 
      
                     #strargy1
@@ -268,7 +268,8 @@ def hd():
     for i in interval1:
             if min_ == i and sec_ == 3:
                 ti.sleep(10)
-                lunch()      
+                lunch()  
+        
 
                    
             

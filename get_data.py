@@ -34,29 +34,7 @@ def get_klines(pair,interval,depth):
         df['High'] = pd.to_numeric(df['High'])
         df['Low'] = pd.to_numeric(df['Low'])
         df['Volume'] = pd.to_numeric(df['Volume'])
-        # df['sdfsd'] = ta.bbands(df.Close)
-        # show all columns
-        # df['pct'] = (df['Close'] - df['Open'])/(df['Open'])
-        # df['RSI'] = ta.rsi(df['Close'],length=3)
-        # df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
-        # # df['signal-rsi'] = np.where(df['RSI']< 30,1.0, 0.0)
-        # # # df.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
-
-        #df['EMA'] = ta.ema(df['Close'],length=50)
-        # adx = ta.adx(df['High'], df['Low'], df['Close'],length=7)
-        # df['ADX'] = adx['ADX_7']
-        # df['ATR'] = ta.atr(df['High'], df['Low'], df['Close'])
-        # signal_buy = [df['cci']> 100,df['RSI']<20,df['ADX']>60]
-        # df['signal_buy'] = signal_buy
-        # ma20 = df['Close'].ewm(span = 20, adjust = False).mean()
-        # ma200 = df['Close'].ewm(span = 50, adjust = False).mean()
-        # # df['Signal'] = 0.0  
-        # # df['Signal-MA'] = np.where(ma20 > ma200, 1.0, 0.0)
-        # df['MACD'] = ma20 - ma200
-        # df['signal'] = df.MACD.ewm(span=9).mean()
-        # df['buy_MS'] = np.where(df.MACD < df.signal , 1.0,0.0)
-     
-
+   
         df.dropna(inplace=True)
         for i in range(6 , len(columns)):
              del df[columns[i]]
