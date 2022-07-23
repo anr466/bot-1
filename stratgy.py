@@ -152,7 +152,6 @@ def TA(tikers):
                 buy_macd = np.where(data1.MACD[-1] < data1.signal[-1] , 1.0,0.0)
                 # MACD = MACD[-1]
 
-                print(buy_macd)
                 
 
                 rsi_fun = gd.RSI(data1)
