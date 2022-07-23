@@ -153,6 +153,7 @@ def TA(tikers):
                 # MACD = MACD[-1]
 
                 
+                
 
                 rsi_fun = gd.RSI(data1)
                 rsi_fun = rsi_fun[-1]
