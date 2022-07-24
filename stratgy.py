@@ -99,12 +99,7 @@ def TA(tikers):
             CCI = indicators["CCI20"]
             ADX_POSITIVE = indicators["ADX+DI"]
             MACD = indicators["MACD.macd"]
-            
-            
-         
-            #STOCH = indicators["Stoch.RSI"]
-            # WILIM_R = indicators["W%R"]
-
+      
             if not data1.empty:
 
                 # vwap calculator
@@ -114,8 +109,8 @@ def TA(tikers):
                 data1['vwap84'] = vwap_84
                 data1['buy'] =ta.cross(data1['vwap48'] , data1['vwap84'])
                 data1['sell']=ta.cross(data1['vwap84'] , data1['vwap48'])
-                crosss_buy= data1.iloc[-1]["buy"]
-                crosss_sell =data1.iloc[-1]["sell"]
+                crosss_buy= data1.iloc[-1]["buy"]>0.0
+                crosss_sell =data1.iloc[-1]["sell"]>0.0
                 data1['crosss_buy'] = crosss_buy
                 data1['crosss_sell'] = crosss_sell
 
@@ -186,7 +181,7 @@ def TA(tikers):
 amount = 20
 balance= (2*20)/100
  
-      
+
     
 def track_price():
     now = datetime.now()
@@ -281,9 +276,9 @@ def hd():
 
                    
             
-lunch()    
-# while True:
-#     hd()
+# lunch()    
+while True:
+    hd()
 
 
     
