@@ -161,7 +161,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 print(crosss_buy)
                
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and CCI>200 and ADX_POSITIVE>60 and stoch>0 and crosss_buy>0:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>90 and CCI>250 and ADX_POSITIVE>80 and stoch>0:
 
      
                     #strargy1
@@ -183,11 +183,15 @@ def TA(tikers):
         except:
             pass                   
 
-        
+amount = 20
+balance= (2*20)/100
+ 
+      
     
 def track_price():
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
+
     for x in busd:
         try:
             db_ticker = signals.find('buy', x)
@@ -202,9 +206,7 @@ def track_price():
             db_ticker_name = db_ticker[0]
             db_ticker_price = db_ticker[1]
 
-            amount = 20
-            balance= (2*20)/100
-
+            
             if x == db_ticker_name:
                 if db_ticker_price >= tp1:
                     newbalance = balance+amount
