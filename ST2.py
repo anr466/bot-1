@@ -93,8 +93,8 @@ def intersection(lst_1,lst_2):
 
 intersections,insights = intersection(df["macd_signal"],df["macd"])
 
-print(intersections)
 
 
-# addplot = [mpf.make_addplot(df['vwap48'],type='checkers', markersize=5,marker='^', color='g'),mpf.make_addplot(df['vwap84'],type='checkers', markersize=5,marker='V', color='r')]
-# mpf.plot(df,type='candle',style='yahoo',volume=True,show_nontrading=True)
+
+# addplot = [mpf.make_addplot(intersections,type='scatter', markersize=5,marker='^', color='g'),mpf.make_addplot(intersections,type='scatter', markersize=5,marker='V', color='r')]
+# mpf.plot(df,type='candle',style='yahoo',volume=True,addplot=addplot)

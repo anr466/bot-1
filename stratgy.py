@@ -161,7 +161,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 print(crosss_buy)
                
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>90 and CCI>250 and ADX_POSITIVE>80 and stoch>0:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>90 and CCI>250 and ADX_POSITIVE>60 and stoch>0:
 
      
                     #strargy1
