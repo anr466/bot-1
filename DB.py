@@ -40,10 +40,11 @@ class signals:
         find = col.find({})
         for x in find:
             print(x)
+        
     
     def delete_one(col , ticker):
         col = db[col]
-        delete = col.delete_one( { "Tickers": f'{ticker}'} )
+        delete = col.delete_many( { "Tickers": f'{ticker}'} )
         return delete
 
     def num_table(col):
@@ -57,17 +58,23 @@ class signals:
             db_ticker.append(x)
       
         return db_ticker
+    # def balance(col,amount):
+    #     col = db[col]
+    #     data = col.insert_one({"balance":amount})
+    #     find = col.find({})
+    #     tickers = {}
+    #     db_balance = []
+    #     for x in find:
+    #         tickers[x["balance"]] = [x["balance"]]
+    #     if ticker in tickers:
+    #         db_balance.append(tickers[ticker])
 
-
-
+    #     return db_balance
 
 
         
-# y = signals.delete_one('buy', 'XMRBUSD')
+# x = signals.balance('balance','20')
+# print(x)
 
-# # signals.add('buy', '345435', 'ff', '23423', '23423', '234234')
-# x = signals.num_table('loss')
-# print(len(x))
-# # # print(y)
-
+# y = signals.find(col, ticker)
 

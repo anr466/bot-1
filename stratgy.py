@@ -92,7 +92,7 @@ def TA(tikers):
             coins.set_symbol_as(x)
             coins.set_exchange_as_crypto_or_stock('Binance')
             coins.set_screener_as_crypto()
-            coins.set_interval_as(Interval.INTERVAL_1_HOUR)
+            coins.set_interval_as(Interval.INTERVAL_30_MINUTES)
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
             RSI = indicators["RSI"]
@@ -154,10 +154,9 @@ def TA(tikers):
                 rsi_fun = rsi_fun[-1]
                 stoch = gd.Stochastic_RSI(data1)
                 stoch = stoch[-1]
-                print(crosss_buy)
-               
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>90 and CCI>250 and ADX_POSITIVE>60 and stoch>0:
-
+                
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and CCI>200 and ADX_POSITIVE>60 and stoch>0 :
+                
      
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -186,7 +185,7 @@ balance= (2*20)/100
 def track_price():
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
-
+   
     for x in busd:
         try:
             db_ticker = signals.find('buy', x)
@@ -194,21 +193,17 @@ def track_price():
             price_now = fo.get_ticker_price(x)
             price_cal = fo.format_price(x , price_now)
             
-            target = fo.price_calculator(x , price_now , tp1 = 2)
-            stoploss = fo.price_calculator(x , price_now , tp1 = -2)
-            tp1 = list(target.values())[0]
-            stopprice = list(stoploss.values())[0]
             db_ticker_name = db_ticker[0]
             db_ticker_price = db_ticker[1]
 
             
             if x == db_ticker_name:
-                if db_ticker_price >= tp1:
+                if db_ticker_price >= price_cal:
                     newbalance = balance+amount
                     send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n balance:{newbalance}")
                     signals.add('profit', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
-                elif db_ticker_price <= stopprice:
+                elif db_ticker_price <= price_cal:
                     lossbalance = balance-amount
                     send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} \n balance:{lossbalance} ")
                     signals.add('loss', dt, x, price_cal, tp1, stopprice)
@@ -222,22 +217,20 @@ def track_price():
             price_now = fo.get_ticker_price(x)
             price_cal = fo.format_price(x , price_now)
             
-            target = fo.price_calculator(x , price_now , tp1 = 2)
-            stoploss = fo.price_calculator(x , price_now , tp1 = -2)
-            tp1 = list(target.values())[0]
-            stopprice = list(stoploss.values())[0]
             db_ticker_name = db_ticker[0]
             db_ticker_price = db_ticker[1]
 
             if x == db_ticker_name:
-                if db_ticker_price >= tp1:
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n ربح على نسبة 2.5% الحمد لله واللهم صل وسلم على نبينا محمد")
+                if db_ticker_price >= price_cal:
+                    newbalance = balance+amount
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1}  \n balance:{newbalance}")
                     signals.add('profit', dt, x, price_cal, tp1, stopprice)
-                    signals.delete_one('buy', x)
-                elif db_ticker_price <= stopprice:
-                    send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} ")
+                    signals.delete_many('buy', x)
+                elif db_ticker_price <= price_cal:
+                    lossbalance = balance-amount
+                    send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice} \n balance:{lossbalance} ")
                     signals.add('loss', dt, x, price_cal, tp1, stopprice)
-                    signals.delete_one('buy', x)
+                    signals.delete_many('buy', x)
         except:
             pass
 
@@ -252,9 +245,9 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
-    ti.sleep(90)
-    track_price()
-    ti.sleep(60)
+    # ti.sleep(90)
+    # track_price()
+    # ti.sleep(60)
     
 
 
@@ -268,10 +261,14 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
+    for i in interval2:
+        if min_ == i and sec_ == 3:
+            ti.sleep(10)
+            lunch()
     for i in interval1:
-            if min_ == i and sec_ == 3:
-                ti.sleep(10)
-                lunch()  
+        if min_ == i and sec_ == 3:
+            ti.sleep(10)
+            track_price()
         
 
                    
