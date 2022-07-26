@@ -198,7 +198,7 @@ def track_price():
 
             
             if x == db_ticker_name:
-                print(x)
+               
                 if db_ticker_price >= price_cal:
                     newbalance = balance+amount
                     send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n balance:{newbalance}")
@@ -222,7 +222,7 @@ def track_price():
             db_ticker_price = db_ticker[1]
 
             if x == db_ticker_name:
-                print(x)
+                
                 if db_ticker_price >= price_cal:
                     newbalance = balance+amount
                     send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1}  \n balance:{newbalance}")
