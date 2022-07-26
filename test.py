@@ -198,6 +198,7 @@ profit = list(target.values())[0]
 
 target = list(target.values())[0]
 
+
 #tel.send_msg(f'Strong buy for: {x} \nprice now is : {price_cal}\n target {target}')
 
 

@@ -71,26 +71,26 @@ def heikin_ashi(df):
     return heikin_ashi_df
 
 
-for x in usdt:
-    try:
-        df = get_klines(x, "15m", '1 days ago UTC')
-        # df = heikin_ashi(df)
+# for x in usdt:
+#     try:
+#         df = get_klines(x, "15m", '1 days ago UTC')
+#         # df = heikin_ashi(df)
 
-        vwap_48 = vwap(df , 30)
-        vwap_84 = vwap(df , 60)
-        df['vwap48'] = vwap_48
-        df['vwap84'] = vwap_84
-        df['buy'] =ta.cross(df['vwap48'] , df['vwap84'])
-        df['sell']=ta.cross(df['vwap84'] , df['vwap48'])
-        crosss_buy= df.iloc[-3]["buy"]>0.0
-        crosss_sell =df.iloc[-3]["sell"]>0.0
-        df['crosss_buy'] = crosss_buy
-        df['crosss_sell'] = crosss_sell
-        if crosss_buy == True:
-           print(x)
+#         vwap_48 = vwap(df , 30)
+#         vwap_84 = vwap(df , 60)
+#         df['vwap48'] = vwap_48
+#         df['vwap84'] = vwap_84
+#         df['buy'] =ta.cross(df['vwap48'] , df['vwap84'])
+#         df['sell']=ta.cross(df['vwap84'] , df['vwap48'])
+#         crosss_buy= df.iloc[-3]["buy"]>0.0
+#         crosss_sell =df.iloc[-3]["sell"]>0.0
+#         df['crosss_buy'] = crosss_buy
+#         df['crosss_sell'] = crosss_sell
+#         if crosss_buy == True:
+#            print(x)
         
-    except:
-        pass
+#     except:
+#         pass
 
 
 # df["macd"], df["macd_signal"], df["macd_hist"] = ta.MACD(df['Close'])
@@ -127,3 +127,10 @@ for x in usdt:
 
 
 
+df = get_klines('BTCUSDT', "15m", '1 days ago UTC')
+
+
+for c in df['Volume']:
+        
+        print(c)
+        
