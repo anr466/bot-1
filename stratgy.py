@@ -86,13 +86,13 @@ def TA(tikers):
         
         try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'10 days ago UTC')
+            data1 = gd.get_klines(x ,'15m' ,'26 hours ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
             coins.set_exchange_as_crypto_or_stock('Binance')
             coins.set_screener_as_crypto()
-            coins.set_interval_as(Interval.INTERVAL_30_MINUTES)
+            coins.set_interval_as(Interval.INTERVAL_5_MINUTES)
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
             RSI = indicators["RSI"]
