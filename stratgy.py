@@ -185,7 +185,7 @@ balance= (2*20)/100
 def track_price():
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
-   
+
     for x in busd:
         try:
             db_ticker = signals.find('buy', x)
@@ -198,6 +198,7 @@ def track_price():
 
             
             if x == db_ticker_name:
+                print(x)
                 if db_ticker_price >= price_cal:
                     newbalance = balance+amount
                     send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1} \n balance:{newbalance}")
@@ -221,6 +222,7 @@ def track_price():
             db_ticker_price = db_ticker[1]
 
             if x == db_ticker_name:
+                print(x)
                 if db_ticker_price >= price_cal:
                     newbalance = balance+amount
                     send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1}  \n balance:{newbalance}")
@@ -245,9 +247,9 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
-    # ti.sleep(90)
-    # track_price()
-    # ti.sleep(60)
+    ti.sleep(90)
+    track_price()
+    ti.sleep(60)
     
 
 
@@ -261,18 +263,15 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in interval2:
-        if min_ == i and sec_ == 3:
-            ti.sleep(10)
-            lunch()
     for i in interval1:
         if min_ == i and sec_ == 3:
             ti.sleep(10)
-            track_price()
+            lunch()
+    
         
 
-                   
-            
+
+# track_price()      
 # lunch()    
 while True:
     hd()
