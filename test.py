@@ -203,11 +203,11 @@ target = list(target.values())[0]
 # ss = [1,2,3,4]
 # cc = []
 # for x in ss:
-#      ff = (20+0.4)
-#      dd = ff[x] + ff[x]
+#      ff = (0.4)
 #      cc.append(ff)
+#      dfd = sum(cc)
 
 
 
-# print(cc)
+# print(dfd+20)
 
