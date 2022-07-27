@@ -165,16 +165,16 @@ def TA(tikers):
                         for c in data1['Close'].index:
                             timestap = []
                             timestap.append(c)
-                        for c in df['Volume']:
-                            volume = []
-                            volume.append(c)
+                        # for c in df['Volume']:
+                        #     volume = []
+                        #     volume.append(c)
                         
                         target = fo.price_calculator(x , price_now , tp1 = 2)
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \n volume==> {volume[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun} \n cci = {cci_buy}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun} \n cci = {cci_buy}')
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)                
         except:
             pass                   
@@ -218,7 +218,6 @@ def track_price(t_tracking):
 
 
 def lunch():
-    send_msg('searching')
     threading.Thread(target=TA , args=([usdt])).start()
     # threading.Thread(target=TA , args=([btc])).start()
     threading.Thread(target=TA , args=([busd])).start()
@@ -256,9 +255,9 @@ def hd():
 
 
 # track_price()      
-
-while True:
-    hd()
+lunch()
+# while True:
+#     hd()
 
 
     
