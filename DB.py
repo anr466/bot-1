@@ -73,7 +73,7 @@ class signals:
 
 
         
-# x = signals.find_all('profit')
+# x = signals.find_all('loss')
 # print(x)
 
 # y = signals.find(col, ticker)

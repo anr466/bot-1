@@ -155,7 +155,7 @@ def TA(tikers):
                 stoch = gd.Stochastic_RSI(data1)
                 stoch = stoch[-1]
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy>200 and adx_buy>50:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy>200:
                 
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
@@ -179,6 +179,9 @@ def TA(tikers):
         except:
             pass                   
 
+
+amount = 20
+fee = 0.4
 
 
 
@@ -206,13 +209,13 @@ def track_price(t_tracking):
             if x == db_ticker_name:
                 
                 if db_ticker_price >= price_cal:
-                   
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n ")
+                    balance =fee+amount
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n balance = {balance} ")
                     signals.add('profit', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
                 elif db_ticker_price <= price_cal:
-                    
-                    send_msg(f"تم البيع على وقف الخسارة \n{x}")
+                    balance = fee-amount
+                    send_msg(f"تم البيع على وقف الخسارة \n{x} \n balance = {balance}")
                     signals.add('loss', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
         except:

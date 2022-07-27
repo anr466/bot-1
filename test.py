@@ -200,6 +200,14 @@ target = list(target.values())[0]
 
 
 #tel.send_msg(f'Strong buy for: {x} \nprice now is : {price_cal}\n target {target}')
+# ss = [1,2,3,4]
+# cc = []
+# for x in ss:
+#      ff = (20+0.4)
+#      dd = ff[x] + ff[x]
+#      cc.append(ff)
 
 
+
+# print(cc)
 
