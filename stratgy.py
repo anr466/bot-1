@@ -207,12 +207,12 @@ def track_price(t_tracking):
                 
                 if db_ticker_price >= price_cal:
                    
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{db_ticker_price}")
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n ")
                     signals.add('profit', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
                 elif db_ticker_price <= price_cal:
                     
-                    send_msg(f"تم البيع على وقف الخسارة \n{x}\n{db_ticker_price}")
+                    send_msg(f"تم البيع على وقف الخسارة \n{x}")
                     signals.add('loss', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
         except:
@@ -260,9 +260,9 @@ def hd():
 
 
 # track_price()      
-lunch()
-# while True:
-#     hd()
+
+while True:
+    hd()
 
 
     
