@@ -195,19 +195,24 @@ def track_price(t_tracking):
             
             db_ticker_name = db_ticker[0]
             db_ticker_price = db_ticker[1]
-            print(f'{db_ticker_name} vs {x} \n compare price in db {db_ticker_price} vs real price {price_cal}  ')
+
+            target = fo.price_calculator(x , price_now , tp1 = 2)
+            stoploss = fo.price_calculator(x , price_now , tp1 = -2)
+            tp1 = list(target.values())[0]
+            stopprice = list(stoploss.values())[0]
+            # print(f'{db_ticker_name} vs {x} \n compare price in db {db_ticker_price} vs real price {price_cal}  ')
             
 
             if x == db_ticker_name:
                 
                 if db_ticker_price >= price_cal:
                    
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{tp1}")
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n سعر البيع ==>{db_ticker_price}")
                     signals.add('profit', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
                 elif db_ticker_price <= price_cal:
                     
-                    send_msg(f"تم البيع على وقف الخسارة \n{x}\n{stopprice}")
+                    send_msg(f"تم البيع على وقف الخسارة \n{x}\n{db_ticker_price}")
                     signals.add('loss', dt, x, price_cal, tp1, stopprice)
                     signals.delete_one('buy', x)
         except:
