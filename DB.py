@@ -61,8 +61,8 @@ class signals:
 
 
         
-# x = signals.find('buy', 'btc')
-# print(x[2])
+# x = signals.find_all('buy')
+# print(x)
 
 # y = signals.find(col, ticker)
 
