@@ -99,6 +99,7 @@ def TA(tikers):
             CCI = indicators["CCI20"]
             ADX_POSITIVE = indicators["ADX+DI"]
             MACD = indicators["MACD.macd"]
+            
       
             if not df.empty:
 
@@ -141,23 +142,22 @@ def TA(tikers):
 
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
-                histogram = df['Histogram']
+                histogram = df.iloc[-1]['Histogram']
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
                
-                
-
-
                 rsi_fun = gd.RSI(df)
                 rsi_fun = rsi_fun[-1]
                 stoch = gd.Stochastic_RSI(df)
                 stoch = stoch[-1]
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy>200 and adx_buy> 45:
-                
+
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun > 70 and cci_buy> 200 and adx_buy> 50:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)
+
+                       
                         
                         for c in df['Close'].index:
                             timestap = []
@@ -171,14 +171,11 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun} \n cci = {cci_buy}\n histogram = {histogram}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun} \n cci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)                
         except:
             pass                   
 
-
-
-# balancee = []
 
 
 def track_price(t_tracking):
