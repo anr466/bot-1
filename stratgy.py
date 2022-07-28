@@ -193,32 +193,29 @@ def track_price(t_tracking):
             price_cal = fo.format_price(x , price_now)
             
             db_ticker_name = db_ticker[0]
-            db_ticker_price = db_ticker[1]
+            db_ticker_tp1 = db_ticker[2]
+            db_ticker_SL = db_ticker[3]
 
-            target = fo.price_calculator(x , price_now , tp1 = 2)
-            stoploss = fo.price_calculator(x , price_now , tp1 = -2)
-            tp1 = list(target.values())[0]
-            stopprice = list(stoploss.values())[0]
             # print(f'{db_ticker_name} vs {x} \n compare price in db {db_ticker_price} vs real price {price_cal}  ')
             
 
             if x == db_ticker_name:
                 
-                if db_ticker_price >= price_cal:
+                if db_ticker_tp1 >= price_cal:
                     # fee = 0.4
                     # balance = balancee.append(fee)
                     # balance = sum(balance)
                     # balance = balance+20
                     send_msg(f"تحقق هدف البيع للعملة   ==>{x} ")
-                    signals.add('profit', dt, x, price_cal, tp1, stopprice)
+                    signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
-                elif db_ticker_price <= price_cal:
+                elif db_ticker_SL <= price_cal:
                     # fee = 0.4
                     # balance = balancee.append(fee)
                     # balance = sum(balance)
                     # balance = balance-20
                     send_msg(f"تم البيع على وقف الخسارة \n{x}")
-                    signals.add('loss', dt, x, price_cal, tp1, stopprice)
+                    signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
         except:
             pass

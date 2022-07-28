@@ -28,7 +28,7 @@ class signals:
         db_ticker = []
         db_price = []    
         for x in find:
-            tickers[x["Tickers"]] = [x["Tickers"],x["price"]]
+            tickers[x["Tickers"]] = [x["Tickers"],x["price"],x["TP1"],x["SL"]]
         if ticker in tickers:
             db_ticker.append(tickers[ticker])
         for x in db_ticker:
@@ -73,8 +73,8 @@ class signals:
 
 
         
-# x = signals.find_all('loss')
-# print(x)
+x = signals.find_all('buy')
+print(x)
 
 # y = signals.find(col, ticker)
 
