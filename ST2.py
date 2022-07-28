@@ -4,7 +4,7 @@ import mplfinance as mpf
 import pandas as pd
 import pandas_ta as ta
 import ticker_rules as tk
-
+import numpy as np
 
 def vwap(df , period):
     kline = df
@@ -129,8 +129,30 @@ def heikin_ashi(df):
 
 df = get_klines('BTCUSDT', "15m", '1 days ago UTC')
 
+def trading_view(df):
+    
+    # trading view
+    coins = TA_Handler()
+    coins.set_symbol_as("BTCUSDT")
+    coins.set_exchange_as_crypto_or_stock('Binance')
+    coins.set_screener_as_crypto()
+    coins.set_interval_as(Interval.INTERVAL_15_MINUTES)
+    summary = (coins.get_analysis().summary)
+    indicators = coins.get_analysis().indicators
 
-for c in df['Volume']:
-        
-        print(c)
-        
+    return indicators
+#Ema
+df['20_EMA'] = df['Close'].ewm(span = 12, adjust = False).mean()
+df['50_EMA'] = df['Close'].ewm(span = 26, adjust = False).mean()
+
+#MACD
+
+df['MACD'] = df['20_EMA'] - df['50_EMA']
+
+df['signal'] = df.MACD.ewm(span=9).mean()
+df['Histogram'] = df['MACD'] - df['signal']
+df['buy'] = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
+
+
+
+print(df)

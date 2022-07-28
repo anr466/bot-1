@@ -11,7 +11,7 @@ plt.rcParams['figure.figsize'] = (10,9)
 plt.style.use('fivethirtyeight')
 
 
-data = get_klines('BTCUSDT', '1h', '12 days ago UTC')
+data = get_klines('BTCUSDT', '15m', '1 days ago UTC')
 
 
 def get_macd(price, slow, fast, smooth):
@@ -85,8 +85,8 @@ ax1 = plt.subplot2grid((8,1), (0,0), rowspan = 5, colspan = 1)
 ax2 = plt.subplot2grid((8,1), (5,0), rowspan = 3, colspan = 1)
 
 ax1.plot(data['Close'], color = 'skyblue', linewidth = 2, label = 'GOOGL')
-ax1.plot(data.index, buy_price, marker = '^', color = 'green', markersize = 10, label = 'BUY SIGNAL', linewidth = 0)
-ax1.plot(data.index, sell_price, marker = 'v', color = 'r', markersize = 10, label = 'SELL SIGNAL', linewidth = 0)
+ax1.plot(data.index, buy_price, marker = '^', color = 'r', markersize = 10, label = 'BUY SIGNAL', linewidth = 0)
+ax1.plot(data.index, sell_price, marker = 'v', color = 'g', markersize = 10, label = 'SELL SIGNAL', linewidth = 0)
 ax1.legend()
 ax1.set_title('GOOGL MACD SIGNALS')
 ax2.plot(googl_macd['macd'], color = 'grey', linewidth = 1.5, label = 'MACD')

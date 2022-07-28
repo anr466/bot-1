@@ -86,7 +86,7 @@ def TA(tikers):
         
         try:
             #data frame
-            data1 = gd.get_klines(x ,'15m' ,'26 hours ago UTC')
+            df = gd.get_klines(x ,'15m' ,'26 hours ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -100,69 +100,66 @@ def TA(tikers):
             ADX_POSITIVE = indicators["ADX+DI"]
             MACD = indicators["MACD.macd"]
       
-            if not data1.empty:
+            if not df.empty:
 
                 # vwap calculator
-                vwap_48 = vwap(data1 , 30)
-                vwap_84 = vwap(data1 , 60)
-                data1['vwap48'] = vwap_48
-                data1['vwap84'] = vwap_84
-                data1['buy'] =ta.cross(data1['vwap48'] , data1['vwap84'])
-                data1['sell']=ta.cross(data1['vwap84'] , data1['vwap48'])
-                crosss_buy= data1.iloc[-1]["buy"]>0.0
-                crosss_sell =data1.iloc[-1]["sell"]>0.0
-                data1['crosss_buy'] = crosss_buy
-                data1['crosss_sell'] = crosss_sell
+                vwap_48 = vwap(df , 30)
+                vwap_84 = vwap(df , 60)
+                df['vwap48'] = vwap_48
+                df['vwap84'] = vwap_84
+                df['buy'] =ta.cross(df['vwap48'] , df['vwap84'])
+                df['sell']=ta.cross(df['vwap84'] , df['vwap48'])
+                crosss_buy= df.iloc[-1]["buy"]>0.0
+                crosss_sell =df.iloc[-1]["sell"]>0.0
+                df['crosss_buy'] = crosss_buy
+                df['crosss_sell'] = crosss_sell
 
                 #CCI
-                data1['cci'] = ta.cci(data1['High'], data1['Low'], data1['Close'])
-                cci_buy = data1.iloc[-1]['cci']
-                data1['cci_buy'] = cci_buy
+                df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
+                cci_buy = df.iloc[-1]['cci']
+                df['cci_buy'] = cci_buy
                
                 #adx
-                adx = ta.adx(data1['High'], data1['Low'], data1['Close'],length=7)
-                data1['ADX'] = adx['ADX_7']
-                adx_buy = data1.iloc[-1]['ADX']
-                data1['adx_buy'] = adx_buy
+                adx = ta.adx(df['High'], df['Low'], df['Close'],length=7)
+                df['ADX'] = adx['ADX_7']
+                adx_buy = df.iloc[-1]['ADX']
+                df['adx_buy'] = adx_buy
                 
                 #RSI
-                data1['RSI'] = ta.rsi(data1['Close'], length=3)
-                rsi_buy = data1.iloc[-1]['RSI']
-                data1['rsi_buy'] = rsi_buy
+                df['RSI'] = ta.rsi(df['Close'], length=3)
+                rsi_buy = df.iloc[-1]['RSI']
+                df['rsi_buy'] = rsi_buy
 
                 
                 #Ema
-                data1['20_EMA'] = data1['Close'].ewm(span = 20, adjust = False).mean()
-                data1['50_EMA'] = data1['Close'].ewm(span = 200, adjust = False).mean()
-                # data1['Signal'] = 0.0  
-                # data1['Signal'] = np.where(data1['20_EMA'] > data1['50_EMA'], 1.0, 0.0)
-                # ema_buy = data1.iloc[-1]['Signal']
-                # data1['ema_buy'] = ema_buy
-
-                # print("ema buy" , ema_buy)
-
+                df['20_EMA'] = df['Close'].ewm(span = 12, adjust = False).mean()
+                df['50_EMA'] = df['Close'].ewm(span = 26, adjust = False).mean()
+               
                 #MACD
-                data1['MACD'] = data1['20_EMA'] - data1['50_EMA']
-                data1['signal'] = data1.MACD.ewm(span=9).mean()
-                buy_macd = np.where(data1.MACD[-1] < data1.signal[-1] , 1.0,0.0)
-                # MACD = MACD[-1]
 
+                df['MACD'] = df['20_EMA'] - df['50_EMA']
+
+                df['signal'] = df.MACD.ewm(span=9).mean()
+                df['Histogram'] = df['MACD'] - df['signal']
+                histogram = df['Histogram']
+                buy_macd = np.where(df.MACD[-1] < df.signal[-1] , 1.0,0.0)
+               
                 
 
 
-                rsi_fun = gd.RSI(data1)
+                rsi_fun = gd.RSI(df)
                 rsi_fun = rsi_fun[-1]
-                stoch = gd.Stochastic_RSI(data1)
+                stoch = gd.Stochastic_RSI(df)
                 stoch = stoch[-1]
                 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy>200:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy>200 and adx_buy> 45:
                 
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)
                         
-                        for c in data1['Close'].index:
+                        for c in df['Close'].index:
                             timestap = []
                             timestap.append(c)
                         # for c in df['Volume']:
@@ -174,7 +171,7 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun} \n cci = {cci_buy}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun} \n cci = {cci_buy}\n histogram = {histogram}')
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)                
         except:
             pass                   
