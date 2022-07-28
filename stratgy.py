@@ -142,7 +142,7 @@ def TA(tikers):
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
                 histogram = df['Histogram']
-                buy_macd = np.where(df.MACD[-1] < df.signal[-1] , 1.0,0.0)
+                buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
                
                 
 
@@ -197,7 +197,6 @@ def track_price(t_tracking):
             db_ticker_SL = db_ticker[3]
 
             # print(f'{db_ticker_name} vs {x} \n compare price in db {db_ticker_price} vs real price {price_cal}  ')
-            
 
             if x == db_ticker_name:
                 
@@ -206,7 +205,7 @@ def track_price(t_tracking):
                     # balance = balancee.append(fee)
                     # balance = sum(balance)
                     # balance = balance+20
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x} ")
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x} \n tp1 = {db_ticker_tp1}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
                 elif db_ticker_SL <= price_cal:
@@ -214,7 +213,7 @@ def track_price(t_tracking):
                     # balance = balancee.append(fee)
                     # balance = sum(balance)
                     # balance = balance-20
-                    send_msg(f"تم البيع على وقف الخسارة \n{x}")
+                    send_msg(f"تم البيع على وقف الخسارة ==> {x} \n sl = {db_ticker_SL}")
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
         except:
@@ -252,12 +251,11 @@ def hd():
             ti.sleep(10)
             lunch()
     for i in one_minute:
-        if min_ == i and sec_ == 3:
-            ti.sleep(10)
+        if min_ == i and sec_ == 0:
             threading.Thread(target=track_price , args=([busd])).start()
             threading.Thread(target=track_price , args=([usdt])).start()
     
-    
+
         
 
 

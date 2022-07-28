@@ -58,23 +58,11 @@ class signals:
             db_ticker.append(x)
       
         return db_ticker
-    # def balance(col,amount):
-    #     col = db[col]
-    #     data = col.insert_one({"balance":amount})
-    #     find = col.find({})
-    #     tickers = {}
-    #     db_balance = []
-    #     for x in find:
-    #         tickers[x["balance"]] = [x["balance"]]
-    #     if ticker in tickers:
-    #         db_balance.append(tickers[ticker])
-
-    #     return db_balance
 
 
         
-x = signals.find_all('buy')
-print(x)
+# x = signals.find('buy', 'btc')
+# print(x[2])
 
 # y = signals.find(col, ticker)
 
