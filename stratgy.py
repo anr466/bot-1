@@ -142,16 +142,16 @@ def TA(tikers):
 
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
-                histogram = df.iloc[-1]['Histogram']
+                histogram = round(df.iloc[-1]['Histogram'],1)
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
-               
+                
                 rsi_fun = gd.RSI(df)
                 rsi_fun = rsi_fun[-1]
                 stoch = gd.Stochastic_RSI(df)
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and histogram>0 and rsi_fun>70 and cci_buy>200 and adx_buy>50:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and histogram>0.0 and rsi_fun>70 and cci_buy>200 and adx_buy>50:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
