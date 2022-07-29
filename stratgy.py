@@ -151,7 +151,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and histogram>0.0 and rsi_fun>70 and cci_buy>200 and adx_buy>50:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and histogram>0.0:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
