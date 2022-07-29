@@ -143,9 +143,7 @@ def TA(tikers):
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
                 histogram = round(df.iloc[-1]['Histogram'],1)
-                histogram = histogram>0.0
-
-                
+                histogram = histogram
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
 
                 
@@ -155,7 +153,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and histogram == True:
+                if summary['RECOMMENDATION'] == "STRONG_BUY":
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
