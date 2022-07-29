@@ -143,7 +143,11 @@ def TA(tikers):
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
                 histogram = round(df.iloc[-1]['Histogram'],1)
+                histogram = histogram>0.0
+
+                
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
+                
                 
                 rsi_fun = gd.RSI(df)
                 rsi_fun = rsi_fun[-1]
@@ -151,7 +155,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and histogram>0.0:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and histogram == True:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
@@ -231,7 +235,7 @@ def lunch():
     # ti.sleep(60)
     
 
-
+lunch()
 
 def hd():
     one_minute = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
