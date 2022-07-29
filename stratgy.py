@@ -137,13 +137,11 @@ def TA(tikers):
                 df['50_EMA'] = df['Close'].ewm(span = 26, adjust = False).mean()
                
                 #MACD
-
                 df['MACD'] = df['20_EMA'] - df['50_EMA']
-
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
                 histogram = round(df.iloc[-1]['Histogram'],1)
-                histogram = histogram
+                # histogram = histogram
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
 
                 
@@ -157,26 +155,28 @@ def TA(tikers):
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
-                        price_cal = fo.format_price(x , price_now)
-
-                       
+                        price_cal = fo.format_price(x , price_now)    
                         
                         for c in df['Close'].index:
                             timestap = []
                             timestap.append(c)
-                        # for c in df['Volume']:
-                        #     volume = []
-                        #     volume.append(c)
-                        
+                       
                         target = fo.price_calculator(x , price_now , tp1 = 2)
                         stoploss = fo.price_calculator(x , price_now , tp1 = -2)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \n rsi_buy = {rsi_buy} \n adx_buy = {adx_buy} \n macd_buy = {buy_macd} \n stoch = {stoch} \n rsi_fun = {rsi_fun} \n cci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> ${price_cal} \nالوقت==> {timestap[0]} \nالهدف==> ${tp1}\nوقف الخسارة==> ${stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)                
         except:
             pass                   
+
+def balance(amount,fee):
+    b = []
+    bb = amount+fee
+    b.append(bb)
+    return sum(b)
+     
 
 
 
@@ -192,6 +192,7 @@ def track_price(t_tracking):
             price_cal = fo.format_price(x , price_now)
             
             db_ticker_name = db_ticker[0]
+            db_ticker_price = db_ticker[1]
             db_ticker_tp1 = db_ticker[2]
             db_ticker_SL = db_ticker[3]
 
@@ -199,19 +200,12 @@ def track_price(t_tracking):
 
             if x == db_ticker_name:
                 
-                if db_ticker_tp1 >= price_cal:
-                    # fee = 0.4
-                    # balance = balancee.append(fee)
-                    # balance = sum(balance)
-                    # balance = balance+20
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x} \n tp1 = {db_ticker_tp1}")
+                if price_cal >= db_ticker_tp1:
+                    balance = balance(20, 0.6)
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x} \n tp1 = {db_ticker_tp1} \n balance = {balance}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
-                elif db_ticker_SL <= price_cal:
-                    # fee = 0.4
-                    # balance = balancee.append(fee)
-                    # balance = sum(balance)
-                    # balance = balance-20
+                elif price_cal <= db_ticker_SL:
                     send_msg(f"تم البيع على وقف الخسارة ==> {x} \n sl = {db_ticker_SL}")
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
@@ -224,6 +218,7 @@ def track_price(t_tracking):
 
 def lunch():
     threading.Thread(target=TA , args=([usdt])).start()
+    ti.sleep(2)
     # threading.Thread(target=TA , args=([btc])).start()
     threading.Thread(target=TA , args=([busd])).start()
     # threading.Thread(target=TA , args=([eth])).start()
@@ -247,11 +242,11 @@ def hd():
     sec_ = int(sec_)
     for i in five_minute:
         if min_ == i and sec_ == 3:
-            ti.sleep(10)
+            ti.sleep(5)
             lunch()
     for i in one_minute:
-        if min_ == i and sec_ == 0:
-            ti.sleep(10)
+        if min_ == i and sec_ == 15:
+            ti.sleep(5)
             threading.Thread(target=track_price , args=([busd])).start()
             threading.Thread(target=track_price , args=([usdt])).start()
     

@@ -200,14 +200,16 @@ target = list(target.values())[0]
 
 
 #tel.send_msg(f'Strong buy for: {x} \nprice now is : {price_cal}\n target {target}')
-# ss = [1,2,3,4]
-# cc = []
-# for x in ss:
-#      ff = (0.4)
-#      cc.append(ff)
-#      dfd = sum(cc)
 
+amount = 20
+fee = 0.4
 
+b = []
 
-# print(dfd+20)
+for i in range(50):
+     bb = amount+fee
+     b.append(bb)
+     
+balance = sum(b)
 
+print(balance)
