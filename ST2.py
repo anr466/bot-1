@@ -151,8 +151,11 @@ df['MACD'] = df['20_EMA'] - df['50_EMA']
 
 df['signal'] = df.MACD.ewm(span=9).mean()
 df['Histogram'] = df['MACD'] - df['signal']
-df['buy'] = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
+df['buy'] = np.where(df.MACD > df.signal , 1.0,0.0)
 
 
 
-print(df)
+
+x = [mpf.make_addplot(df['Histogram'],panel=1 ,color = 'g'),mpf.make_addplot(df['buy'],type='scatter',markersize=200,marker='v')]
+mpf.plot(df,type='candle' ,addplot = x)
+

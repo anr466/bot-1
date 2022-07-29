@@ -251,6 +251,7 @@ def hd():
             lunch()
     for i in one_minute:
         if min_ == i and sec_ == 0:
+            ti.sleep(10)
             threading.Thread(target=track_price , args=([busd])).start()
             threading.Thread(target=track_price , args=([usdt])).start()
     
