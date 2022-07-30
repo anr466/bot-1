@@ -86,7 +86,7 @@ def TA(tikers):
         
         try:
             #data frame
-            df = gd.get_klines(x ,'15m' ,'26 hours ago UTC')
+            df = gd.get_klines(x ,'1m' ,'26 hours ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
@@ -202,8 +202,8 @@ def track_price(t_tracking):
                 
                 if price_cal >= db_ticker_tp1:
 
-                    balance = balance(20, 0.6)
-                    send_msg(f"balance is {balance}")
+                    # balance = balance(20, 0.6)
+                    # send_msg(f"balance is {balance}")
                     send_msg(f"تحقق هدف البيع للعملة   ==>{x} \n tp1 = {db_ticker_tp1}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
@@ -242,7 +242,7 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in five_minute:
+    for i in one_minute:
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
