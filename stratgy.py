@@ -147,11 +147,13 @@ def TA(tikers):
                 
                 rsi_fun = gd.RSI(df)
                 rsi_fun = rsi_fun[-1]
+
+
                 stoch = gd.Stochastic_RSI(df)
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy>70 and cci_buy > 200:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy > 200:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
