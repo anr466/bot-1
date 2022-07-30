@@ -144,6 +144,19 @@ def TA(tikers):
                 # histogram = histogram
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
 
+
+
+                MACDD = ta.trend.MACD(close=df['Close'], window_fast=12, window_slow=26, window_sign=9)
+                df['MACDD'] = MACDD.macd()
+                df['macdd'] = MACDD.macd_diff()  #MACD HISTOGRAM
+                macd_5=df['macd'].iloc[-7]
+                macd_4=df['macd'].iloc[-6]
+                macd_3=df['macd'].iloc[-5]
+                macd_2=df['macd'].iloc[-4]
+                macd_1=df['macd'].iloc[-3]
+                macd_0=df['macd'].iloc[-2]
+                
+
                 
                 rsi_fun = gd.RSI(df)
                 rsi_fun = rsi_fun[-1]
@@ -168,8 +181,25 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
-                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)                
+                        send_msg(f'rsi_cci \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)  
+                elif summary['RECOMMENDATION'] == "STRONG_BUY" and macd_5>macd_4 and macd_4 > macd_3 and macd_3 > macd_2 and macd_2 > macd_1 and macd_1 < macd_0 and macd_4<0:
+                    #stratgy2
+                    if x.endswith("USDT") or x.endswith("BUSD"):
+                        price_now = fo.get_ticker_price(x)
+                        price_cal = fo.format_price(x , price_now)    
+                        
+                        for c in df['Close'].index:
+                            timestap = []
+                            timestap.append(c)
+                       
+                        target = fo.price_calculator(x , price_now , tp1 = 2)
+                        stoploss = fo.price_calculator(x , price_now , tp1 = -2)
+                        tp1 = list(target.values())[0]
+                        stopprice = list(stoploss.values())[0]
+
+                        send_msg(f'macd \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice) 
         except:
             pass                   
 
@@ -255,7 +285,7 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in one_minute:
+    for i in five_minute:
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
