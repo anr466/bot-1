@@ -140,7 +140,7 @@ def TA(tikers):
                 df['MACD'] = df['20_EMA'] - df['50_EMA']
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
-                histogram = round(df.iloc[-1]['Histogram'],1)
+                histogram = df['Histogram']
                 # histogram = histogram
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
 
@@ -151,7 +151,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY":
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy>70 and cci_buy > 200:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
@@ -201,8 +201,10 @@ def track_price(t_tracking):
             if x == db_ticker_name:
                 
                 if price_cal >= db_ticker_tp1:
+
                     balance = balance(20, 0.6)
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x} \n tp1 = {db_ticker_tp1} \n balance = {balance}")
+                    send_msg(f"balance is {balance}")
+                    send_msg(f"تحقق هدف البيع للعملة   ==>{x} \n tp1 = {db_ticker_tp1}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
                 elif price_cal <= db_ticker_SL:

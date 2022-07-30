@@ -201,15 +201,13 @@ target = list(target.values())[0]
 
 #tel.send_msg(f'Strong buy for: {x} \nprice now is : {price_cal}\n target {target}')
 
-amount = 20
-fee = 0.4
 
-b = []
-
-for i in range(50):
-     bb = amount+fee
-     b.append(bb)
+# def balance(amount,fee):
+#     b = []
+#     bb = amount+fee
+#     b.append(bb)
+#     return sum(b)
      
-balance = sum(b)
 
-print(balance)
+# for i in range(10):
+#      x = balance(20, 0.4)
