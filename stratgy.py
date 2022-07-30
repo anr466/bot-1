@@ -127,7 +127,7 @@ def TA(tikers):
                 df['adx_buy'] = adx_buy
                 
                 #RSI
-                df['RSI'] = ta.rsi(df['Close'], length=3)
+                df['RSI'] = ta.rsi(df['Close'], length=7)
                 rsi_buy = df.iloc[-1]['RSI']
                 df['rsi_buy'] = rsi_buy
 
@@ -153,7 +153,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy > 200:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy>70 and cci_buy > 200:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         price_now = fo.get_ticker_price(x)
@@ -176,14 +176,16 @@ def TA(tikers):
 
 
 
-
-balancee = []
-def balance(amount,fee): 
+b =[]
+def balance_profit(amount,fee):
     bb = amount+fee
-    balancee.append(bb)
-    return sum(balancee)
-     
-
+    b.append(bb)
+    return sum(b)
+def balance_loss(amount,fee):
+    bb = amount-fee
+    b.append(bb)
+    return sum(b)
+ 
 
 
 def track_price(t_tracking):
@@ -207,12 +209,18 @@ def track_price(t_tracking):
             if x == db_ticker_name:
                 
                 if price_cal >= db_ticker_tp1:
-                    balance = balance(20, 0.4)
+                   
+                    balance_profit(20, 0.4)
+                    balance = sum(b)
                     send_msg(f"balance is {balance}")
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
                 elif price_cal <= db_ticker_SL:
+                   
+                    balance_loss(20, 0.4)
+                    balance = sum(b)
+                    send_msg(f"balance is {balance}")
                     send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL}")
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
