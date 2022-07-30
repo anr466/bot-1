@@ -166,7 +166,7 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f'شراء==> #{x} \nالسعر الحالي==> #{price_cal} \nالوقت==> #{timestap[0]} \nالهدف==> #{tp1}\nوقف الخسارة==> #{stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                        send_msg(f'شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)                
         except:
             pass                   
@@ -204,11 +204,11 @@ def track_price(t_tracking):
 
                     # balance = balance(20, 0.6)
                     # send_msg(f"balance is {balance}")
-                    send_msg(f"تحقق هدف البيع للعملة   ==>{x}\n tp1 = {db_ticker_tp1}")
+                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
                 elif price_cal <= db_ticker_SL:
-                    send_msg(f"تم البيع على وقف الخسارة ==>{x}\n sl = {db_ticker_SL}")
+                    send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL}")
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
         except:
