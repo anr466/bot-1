@@ -171,11 +171,15 @@ def TA(tikers):
         except:
             pass                   
 
-def balance(amount,fee):
-    b = []
+
+
+
+
+balancee = []
+def balance(amount,fee): 
     bb = amount+fee
-    b.append(bb)
-    return sum(b)
+    balancee.append(bb)
+    return sum(balancee)
      
 
 
@@ -201,9 +205,8 @@ def track_price(t_tracking):
             if x == db_ticker_name:
                 
                 if price_cal >= db_ticker_tp1:
-
-                    # balance = balance(20, 0.6)
-                    # send_msg(f"balance is {balance}")
+                    balance = balance(20, 0.4)
+                    send_msg(f"balance is {balance}")
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
                     signals.delete_one('buy', x)
