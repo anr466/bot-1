@@ -140,7 +140,7 @@ def TA(tikers):
                 df['MACD'] = df['20_EMA'] - df['50_EMA']
                 df['signal'] = df.MACD.ewm(span=9).mean()
                 df['Histogram'] = df['MACD'] - df['signal']
-                histogram = df['Histogram']
+                histogram = df['Histogram'][-1]
                 # histogram = histogram
                 buy_macd = np.where(df.MACD[-1] > df.signal[-1] , 1.0,0.0)
 
