@@ -269,7 +269,9 @@ def lunch():
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
-    # track_price()
+    threading.Thread(target=track_price , args=([busd])).start()
+    threading.Thread(target=track_price , args=([usdt])).start()
+    
     # ti.sleep(60)
     
 
@@ -285,15 +287,15 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in five_minute:
+    for i in one_minute:
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
-    for i in five_minute:
-        if min_ == i and sec_ == 15:
-            ti.sleep(5)
-            threading.Thread(target=track_price , args=([busd])).start()
-            threading.Thread(target=track_price , args=([usdt])).start()
+    # for i in five_minute:
+    #     if min_ == i and sec_ == 15:
+    #         ti.sleep(5)
+    #         threading.Thread(target=track_price , args=([busd])).start()
+    #         threading.Thread(target=track_price , args=([usdt])).start()
     
 
         
