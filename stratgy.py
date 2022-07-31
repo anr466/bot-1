@@ -278,11 +278,11 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in three_minute:
+    for i in _15_mintue:
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
-    for i in three_minute:
+    for i in five_minute:
         if min_ == i and sec_ == 30:
             ti.sleep(5)
             threading.Thread(target=track_price , args=([busd])).start()
