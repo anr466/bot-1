@@ -169,7 +169,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and crosss_buy == True:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and crosss_buy == True or summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy>70 and cci_buy>200:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
         
@@ -185,7 +185,7 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f'rsi_cci \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                        send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                         signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)  
 
         except:
@@ -212,6 +212,7 @@ def track_price(t_tracking):
 
     for x in t_tracking:
         try:
+            send_msg('tracking price')
             db_ticker = signals.find('buy', x)
         
             price_now = fo.get_ticker_price(x)
@@ -252,6 +253,7 @@ def track_price(t_tracking):
 
 
 def lunch():
+    send_msg('3 minute vwap')
     threading.Thread(target=TA , args=([usdt])).start()
     # threading.Thread(target=TA , args=([btc])).start()
     threading.Thread(target=TA , args=([busd])).start()
