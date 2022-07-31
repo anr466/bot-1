@@ -308,9 +308,9 @@ def hd():
 
 
 # track_price()      
-lunch()
-# while True:
-#     hd()
+# lunch()
+while True:
+    hd()
 
 
     
