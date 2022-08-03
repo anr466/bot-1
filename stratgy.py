@@ -300,24 +300,27 @@ def hd():
 
 # track_price()      
 
-while True:
-    hd()
 
 
     
 
 
 
-# @bot.message_handler(func=lambda message: True)  
-# def t_mer(message):
-#     text = message.text
-#     chid = message.chat.id
-#     if text == "/start":
-#         bot.send_message(chid," تشغيل البوت")
-#     elif text == "/off":
-#         bot.send_message(chid," ايقاف البوت")
-#     else:
-#         bot.send_message(chid,"اشتغل")
+@bot.message_handler(func=lambda message: True)  
+def t_mer(message):
+    text = message.text
+    chid = message.chat.id
+    if text == "/start":
+        bot.send_message(chid," تشغيل البوت")
+    elif text == "/off":
+        bot.send_message(chid," ايقاف البوت")
+    else:
+        bot.send_message(chid,"اشتغل")
 
-# bot.infinity_polling()
+
+
+while True:
+    hd()
+
+    bot.infinity_polling()
     
