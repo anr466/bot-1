@@ -213,6 +213,7 @@ def track_price(t_tracking):
     for x in t_tracking:
         try:
             # send_msg('tracking price')
+            ti.sleep(1)
             db_ticker = signals.find('buy', x)
         
             price_now = fo.get_ticker_price(x)
