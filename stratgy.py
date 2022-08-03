@@ -169,7 +169,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and crosss_buy == True or summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_buy>70 and cci_buy>200:
+                if summary['RECOMMENDATION'] == "STRONG_BUY":
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
         
@@ -212,7 +212,6 @@ def track_price(t_tracking):
 
     for x in t_tracking:
         try:
-            # send_msg('tracking price')
             ti.sleep(1)
             db_ticker = signals.find('buy', x)
         
@@ -254,7 +253,7 @@ def track_price(t_tracking):
 
 
 def lunch():
-    
+    send_msg('searching 3 minute')
     threading.Thread(target=TA , args=([usdt])).start()
     ti.sleep(1)
     # threading.Thread(target=TA , args=([btc])).start()
@@ -309,16 +308,16 @@ while True:
 
 
 
-@bot.message_handler(func=lambda message: True)  
-def t_mer(message):
-    text = message.text
-    chid = message.chat.id
-    if text == "/start":
-        bot.send_message(chid," تشغيل البوت")
-    elif text == "/off":
-        bot.send_message(chid," ايقاف البوت")
-    else:
-        bot.send_message(chid,"اشتغل")
+# @bot.message_handler(func=lambda message: True)  
+# def t_mer(message):
+#     text = message.text
+#     chid = message.chat.id
+#     if text == "/start":
+#         bot.send_message(chid," تشغيل البوت")
+#     elif text == "/off":
+#         bot.send_message(chid," ايقاف البوت")
+#     else:
+#         bot.send_message(chid,"اشتغل")
 
-bot.infinity_polling()
+# bot.infinity_polling()
     
