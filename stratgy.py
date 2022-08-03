@@ -169,7 +169,7 @@ def TA(tikers):
                 stoch = stoch[-1]
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY":
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>60 and cci_buy>200:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
         
