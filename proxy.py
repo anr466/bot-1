@@ -1,7 +1,40 @@
-# from binance_client import Clnt
-# from binance.websockets import BinanceSocketManager
-# import time
-# #import telegram_interface
+# import websocket
+# import datetime
+# import ssl
+
+
+# def on_message(ws, message):
+#     print()
+#     print(str(datetime.datetime.now()) + ": ")
+#     print(message)
+
+# def on_error(ws, error):
+#     print(error)
+
+# def on_close(close_msg):
+#     print("### closed ###" + close_msg)
+
+
+
+# kline = {}
+
+
+
+# def streamKline(currency,spd, interval):
+#     websocket.enableTrace(False)
+#     socket = f'wss://stream.binance.com:9443/ws/{currency}@kline_{interval}'
+    
+
+#     kline[spd["s"]] = spd["k"]["c"]
+
+#     ws = websocket.WebSocketApp(socket,
+#                                 on_message=on_message,
+#                                 on_error=on_error,
+#                                 on_close=on_close)
+#     ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+    
+
+
 
 
 # kline = {}
@@ -37,24 +70,10 @@
 # 	kline[msg["s"]] = msg["k"]["c"]
 
 
-# bm = BinanceSocketManager(client)
 # tickers = ["BTCUSDT", "ADAUSDT", "LTCUSDT"]
 # for ticker in tickers:
-# 	conn_key = bm.start_kline_socket(ticker, spd, "1h")
+# 	streamKline(ticker, spd, "1m")
 
-# bm.start()
 
-# time.sleep(6)
+# # streamKline('solusdt', '1m')
 
-# alert = 0
-# prev_volume = 0
-# volume_now = float(kline["BTCUSDT"])
-# prev_volume = volume_now
-
-# while True:
-# 	volume_now = float(kline["BTCUSDT"])
-# 	diff = volume_now - prev_volume
-# 	if diff >= 0:
-# 		print(diff)
-# 	time.sleep(5)
-# 	prev_volume = volume_now

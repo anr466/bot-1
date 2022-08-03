@@ -29,6 +29,5 @@ tzdata==2022.1
 tzlocal==4.2
 ujson==5.3.0
 urllib3==1.26.9
-websockets==10.3
 yarl==1.7.2
 zope.interface==5.4.0
