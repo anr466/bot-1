@@ -203,7 +203,6 @@ def balance_loss(amount,fee):
     bb = amount-fee
     b.append(bb)
     return sum(b)
- 
 
 
 def track_price(t_tracking):
@@ -212,7 +211,7 @@ def track_price(t_tracking):
 
     for x in t_tracking:
         try:
-            ti.sleep(1)
+            
             db_ticker = signals.find('buy', x)
         
             price_now = fo.get_ticker_price(x)
@@ -229,8 +228,8 @@ def track_price(t_tracking):
                 
                 if price_cal >= db_ticker_tp1:
                    
-                    balance_profit(20, 0.2)
-                    balance = sum(b)
+                    
+                    balance = round(balance_profit(20, 0.2),2)
         
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}\nbalance is {balance}")
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
@@ -238,8 +237,8 @@ def track_price(t_tracking):
                     
                 elif price_cal <= db_ticker_SL:
                    
-                    balance_loss(20, 0.2)
-                    balance = sum(b)
+                    loss = balance_loss(20,0.2)
+                    balance = round(balance - loss,2)
                     
                     send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL} \nbalance is {balance}")
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)

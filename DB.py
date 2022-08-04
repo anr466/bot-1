@@ -59,9 +59,14 @@ class signals:
       
         return db_ticker
 
+   
+
+
+
+
 
         
-# x = signals.find_all('buy')
+# x = signals.balance('hghg')
 # print(x)
 
 # y = signals.find(col, ticker)
