@@ -253,19 +253,18 @@ def track_price(t_tracking):
 
 
 def lunch():
-    send_msg('searching 3 minute')
     threading.Thread(target=TA , args=([usdt])).start()
-    ti.sleep(1)
+   
     # threading.Thread(target=TA , args=([btc])).start()
     threading.Thread(target=TA , args=([busd])).start()
-    ti.sleep(1)
+    
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
     threading.Thread(target=track_price , args=([busd])).start()
-    ti.sleep(1)
+    
     threading.Thread(target=track_price , args=([usdt])).start()
-    ti.sleep(1)
+    
 
     
     # ti.sleep(60)
