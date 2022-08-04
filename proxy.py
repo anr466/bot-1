@@ -20,23 +20,6 @@
 
 
 
-# def streamKline(currency,spd, interval):
-#     websocket.enableTrace(False)
-#     socket = f'wss://stream.binance.com:9443/ws/{currency}@kline_{interval}'
-    
-
-#     kline[spd["s"]] = spd["k"]["c"]
-
-#     ws = websocket.WebSocketApp(socket,
-#                                 on_message=on_message,
-#                                 on_error=on_error,
-#                                 on_close=on_close)
-#     ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
-    
-
-
-
-
 # kline = {}
 
 
@@ -70,10 +53,25 @@
 # 	kline[msg["s"]] = msg["k"]["c"]
 
 
+
+# def streamKline(currency,spd, interval):
+#     websocket.enableTrace(False)
+#     socket = f'wss://stream.binance.com:9443/ws/{currency}@kline_{interval}'
+    
+
+    
+
+#     ws = websocket.WebSocketApp(socket,
+#                                 on_message=on_message,
+#                                 on_error=on_error,
+#                                 on_close=on_close)
+#     ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+    
+
 # tickers = ["BTCUSDT", "ADAUSDT", "LTCUSDT"]
 # for ticker in tickers:
 # 	streamKline(ticker, spd, "1m")
 
 
-# # streamKline('solusdt', '1m')
+# streamKline('solusdt', '1m')
 
