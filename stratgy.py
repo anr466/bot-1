@@ -230,15 +230,6 @@ def track_price(t_tracking):
             db_balance = db_ticker[4]
             db_balance = float(db_balance)
 
-            print(db_balance)
-
-            profit_balance = signals.find('profit', x)
-            loss_balance = signals.find('loss', x)
-
-            db_balance_profit = profit_balance[4]
-            db_balance_loss = loss_balance[4]
-
-            finalbalance = db_balance_profit+db_balance_loss
 
             fee = 0.2
 
@@ -262,6 +253,19 @@ def track_price(t_tracking):
                     send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL}\n balance is {freebalance}")
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
                     signals.delete_one('buy', x)
+
+
+            profit_balance = signals.find('profit', x)
+            loss_balance = signals.find('loss', x)
+
+            db_balance_profit = profit_balance[4]
+            db_balance_loss = loss_balance[4]
+
+            finalbalance = db_balance_profit+db_balance_loss
+
+            send_msg(f'balance : {finalbalance}')
+
+            
            
         except:
             pass
