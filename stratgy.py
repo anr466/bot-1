@@ -282,11 +282,7 @@ def lunch():
     threading.Thread(target=track_price , args=([usdt])).start()
 
     ti.sleep(60)
-    
 
-    
-    # ti.sleep(60)
-    
 
 
 
@@ -302,7 +298,7 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in three_minute:
+    for i in two_minute:
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
