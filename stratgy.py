@@ -318,10 +318,9 @@ def hd():
 
 
 
-
-track_price()      
-# while True:
-#     hd()
+    
+while True:
+    hd()
 
 
     
