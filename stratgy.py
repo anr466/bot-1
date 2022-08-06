@@ -242,7 +242,8 @@ def track_price(t_tracking):
                    
                     
                     
-                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}\n balance is {freebalance}")
+                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}")
+                    send_msg(f'balance is {freebalance}')
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
                     signals.delete_one('buy', x)
                     
@@ -250,7 +251,8 @@ def track_price(t_tracking):
 
                     freebalance = db_balance-fee
                    
-                    send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL}\n balance is {freebalance}")
+                    send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL}")
+                    send_msg(f'balance is {freebalance}')
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
                     signals.delete_one('buy', x)
 
@@ -263,7 +265,7 @@ def track_price(t_tracking):
 
             finalbalance = db_balance_profit+db_balance_loss
 
-            send_msg(f'balance : {finalbalance}')
+            send_msg(f'final balance : {finalbalance}')
 
             
            
