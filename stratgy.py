@@ -185,18 +185,13 @@ def TA(tikers):
                         stopprice = list(stoploss.values())[0]
 
                         
-                        db_ticker = signals.find('buy', x)
+                        ammount = signals.free_balance('balance')
 
-                        
-                        balance = signals.free_balance('balance')
-                        balance = float(balance)
+                        balance = float(ammount)
 
                         new_balance = round((balance/6),2)
 
-                       
-                        price_now = fo.get_ticker_price(x)
-                        price_cal = fo.format_price(x , price_now)
-                        
+                
                         if new_balance >= 10.5:
                             
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
@@ -240,8 +235,6 @@ def track_price(t_tracking):
 
                     freebalance = db_balance+fee
                    
-                    
-                    
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}")
                     send_msg(f'balance is {freebalance}')
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
@@ -267,8 +260,6 @@ def track_price(t_tracking):
 
             send_msg(f'final balance : {finalbalance}')
 
-            
-           
         except:
             pass
 
