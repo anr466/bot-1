@@ -212,3 +212,15 @@
 # #     return sum(b)
          
 
+# from DB import signals
+
+
+
+
+# balance = signals.free_balance('balance')
+# balance = float(balance)
+
+# new_balance = round((balance/6),2)
+
+
+# print(new_balance)

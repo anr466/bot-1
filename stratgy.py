@@ -169,7 +169,7 @@ def TA(tikers):
 
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>60 and cci_buy>200 and cci_buy<250 and adx_buy>50 and adx_buy<70:
                     #strargy1
-                    if x.endswith("USDT") or x.endswith("BUSD"):
+                    if x.endswith("USDT"): #or x.endswith("BUSD"):
                         send_msg('buy')
         
                         price_now = fo.get_ticker_price(x)
@@ -186,11 +186,14 @@ def TA(tikers):
 
                         
                         db_ticker = signals.find('buy', x)
-                        balance = signals.free_balance('balance')
-                        balance = balance[1]
 
-                        new_balance = (balance/6)
-        
+                        
+                        balance = signals.free_balance('balance')
+                        balance = float(balance)
+
+                        new_balance = round((balance/6),2)
+
+                       
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)
                         
@@ -225,6 +228,9 @@ def track_price(t_tracking):
             db_ticker_tp1 = db_ticker[2]
             db_ticker_SL = db_ticker[3]
             db_balance = db_ticker[4]
+            db_balance = float(db_balance)
+
+            print(db_balance)
 
             profit_balance = signals.find('profit', x)
             loss_balance = signals.find('loss', x)
@@ -313,9 +319,9 @@ def hd():
 
 
 
-# track_price()      
-while True:
-    hd()
+track_price()      
+# while True:
+#     hd()
 
 
     

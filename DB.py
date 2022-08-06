@@ -82,7 +82,7 @@ class signals:
 
 
 
-# x = signals.clear_all('loss')
+# x = signals.free_balance('balance')
 # print(x)
 
 
