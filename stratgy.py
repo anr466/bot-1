@@ -3,8 +3,7 @@ from tradingview_ta import TA_Handler, Interval, Exchange
 from binance_client import Clnt
 import ticker_rules as tk
 import get_data as gd
-import pandas_ta as p_ta
-import ta
+import pandas_ta as ta
 import pandas as pd
 import format_orders as fo
 from DB import signals
@@ -35,11 +34,11 @@ def send_msg(text):
 def vwap(df , period):
     kline = df
     # calaculate average price for high , low , close
-    kline['tp'] = p_ta.hlc3(high= kline['High'] , low= kline['Low'] ,close=kline['Close'])
+    kline['tp'] = ta.hlc3(high= kline['High'] , low= kline['Low'] ,close=kline['Close'])
     kline['tpV'] = kline['tp'] * kline['Volume']
     #using moving average
-    kline['mtpv'] = p_ta.sma(kline['tpV'] , length = period)
-    kline['mV'] = p_ta.sma(kline['Volume'] , length = period)
+    kline['mtpv'] = ta.sma(kline['tpV'] , length = period)
+    kline['mV'] = ta.sma(kline['Volume'] , length = period)
     # calaulate vwap
     kline['vwap'] = kline['mtpv'] /  kline['mV']
     vwap = kline['vwap']
@@ -80,7 +79,6 @@ for i in tk.rules:
 
 
 
-
 def TA(tikers):
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
@@ -110,26 +108,26 @@ def TA(tikers):
                 vwap_84 = vwap(df , 60)
                 df['vwap48'] = vwap_48
                 df['vwap84'] = vwap_84
-                df['buy'] =p_ta.cross(df['vwap48'] , df['vwap84'])
-                df['sell']=p_ta.cross(df['vwap84'] , df['vwap48'])
+                df['buy'] =ta.cross(df['vwap48'] , df['vwap84'])
+                df['sell']=ta.cross(df['vwap84'] , df['vwap48'])
                 crosss_buy= df.iloc[-1]["buy"]>0.0
                 crosss_sell =df.iloc[-1]["sell"]>0.0
                 df['crosss_buy'] = crosss_buy
                 df['crosss_sell'] = crosss_sell
 
                 #CCI
-                df['cci'] = p_ta.cci(df['High'], df['Low'], df['Close'])
+                df['cci'] = ta.cci(df['High'], df['Low'], df['Close'])
                 cci_buy = df.iloc[-1]['cci']
                 df['cci_buy'] = cci_buy
                
                 #adx
-                adx = p_ta.adx(df['High'], df['Low'], df['Close'],length=7)
+                adx = ta.adx(df['High'], df['Low'], df['Close'],length=7)
                 df['ADX'] = adx['ADX_7']
                 adx_buy = df.iloc[-1]['ADX']
                 df['adx_buy'] = adx_buy
                 
                 #RSI
-                df['RSI'] = p_ta.rsi(df['Close'], length=7)
+                df['RSI'] = ta.rsi(df['Close'], length=7)
                 rsi_buy = df.iloc[-1]['RSI']
                 df['rsi_buy'] = rsi_buy
 
@@ -172,6 +170,7 @@ def TA(tikers):
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>60 and cci_buy>200 and cci_buy<250 and adx_buy>50 and adx_buy<70:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
+                        send_msg('buy')
         
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)    
@@ -185,24 +184,27 @@ def TA(tikers):
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
 
-                        send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
-                        signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice)  
+                        
+                        db_ticker = signals.find('buy', x)
+                        balance = signals.free_balance('balance')
+                        balance = balance[1]
+
+                        new_balance = (balance/6)
+        
+                        price_now = fo.get_ticker_price(x)
+                        price_cal = fo.format_price(x , price_now)
+                        
+                        if new_balance >= 10.5:
+                            
+                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                            signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance)  
+                        else:
+                            send_msg('الرصيد لايسمح بالشراء')
+                        
 
         except:
             pass                   
 
-
-
-
-b =[]
-def balance_profit(amount,fee):
-    bb = amount+fee
-    b.append(bb)
-    return sum(b)
-def balance_loss(amount,fee):
-    bb = amount-fee
-    b.append(bb)
-    return sum(b)
 
 
 def track_price(t_tracking):
@@ -211,7 +213,7 @@ def track_price(t_tracking):
 
     for x in t_tracking:
         try:
-            
+            send_msg('tracking')
             db_ticker = signals.find('buy', x)
         
             price_now = fo.get_ticker_price(x)
@@ -221,29 +223,39 @@ def track_price(t_tracking):
             db_ticker_price = db_ticker[1]
             db_ticker_tp1 = db_ticker[2]
             db_ticker_SL = db_ticker[3]
+            db_balance = db_ticker[4]
 
-            # print(f'{db_ticker_name} vs {x} \n compare price in db {db_ticker_price} vs real price {price_cal}  ')
+            profit_balance = signals.find('profit', x)
+            loss_balance = signals.find('loss', x)
+
+            db_balance_profit = profit_balance[4]
+            db_balance_loss = loss_balance[4]
+
+            finalbalance = db_balance_profit+db_balance_loss
+
+            fee = 0.2
+
 
             if x == db_ticker_name:
                 
                 if price_cal >= db_ticker_tp1:
+
+                    freebalance = db_balance+fee
                    
                     
-                    balance = round((balance_profit(20, 0.2)),2)
-        
-                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}\nbalance is {balance}")
-                    signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
+                    
+                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}\n balance is {freebalance}")
+                    signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
                     signals.delete_one('buy', x)
                     
                 elif price_cal <= db_ticker_SL:
+
+                    freebalance = db_balance-fee
                    
-                    loss = balance_loss(20,0.2)
-                    balance = round((balance - loss),2)
-                    
-                    send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL} \nbalance is {balance}")
-                    signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)
+                    send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL}\n balance is {freebalance}")
+                    signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
                     signals.delete_one('buy', x)
-                    
+           
         except:
             pass
 
@@ -283,7 +295,7 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in two_minute:
+    for i in three_minute:
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()

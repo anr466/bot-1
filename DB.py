@@ -12,10 +12,15 @@ db = client["DB_Bot"]
 
 class signals:
 
-    def add(col ,dt, tickers,price_now ,tp1,sl):
+    def add(col ,dt, tickers,price_now ,tp1,sl,amount):
         col = db[col]
-        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP1":tp1,"SL":sl})
+        data = col.insert_one({"Time":dt , "Tickers":tickers,"price":price_now,"TP1":tp1,"SL":sl,"balance":amount})
         return data
+    def add_balance(col ,amount):
+        col = db[col]
+        data = col.insert_one({"balance":amount})
+        return data
+    
 
     def clear_all(collection):
         collection = db[collection]
@@ -40,13 +45,10 @@ class signals:
         find = col.find({})
         for x in find:
             print(x)
-        
-    
     def delete_one(col , ticker):
         col = db[col]
         delete = col.delete_many( { "Tickers": f'{ticker}'} )
         return delete
-
     def num_table(col):
         col = db[col]
         find = col.find({})
@@ -58,16 +60,31 @@ class signals:
             db_ticker.append(x)
       
         return db_ticker
-
-   
-
-
-
-
+    def free_balance(col):
+        col = db[col]
+        find = col.find({})
+        balance = {}
+        ammount = []
+        for x in find:
+            balance[x["balance"]] = [x["balance"]]
+        
+        
+        for x in balance:
+            ammount.append(balance[x])
+        return x 
 
         
-# x = signals.balance('hghg')
+
+
+
+
+
+
+
+
+# x = signals.clear_all('loss')
 # print(x)
+
 
 # y = signals.find(col, ticker)
 
