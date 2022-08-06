@@ -197,7 +197,8 @@ def TA(tikers):
                         if new_balance >= 10.5:
                             
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
-                            signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance)  
+                            signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance)
+                            
                         else:
                             send_msg('الرصيد لايسمح بالشراء')
                         
@@ -213,7 +214,7 @@ def track_price(t_tracking):
 
     for x in t_tracking:
         try:
-            send_msg('tracking')
+            
             db_ticker = signals.find('buy', x)
         
             price_now = fo.get_ticker_price(x)
@@ -264,17 +265,20 @@ def track_price(t_tracking):
 
 
 def lunch():
+    send_msg('work')
     threading.Thread(target=TA , args=([usdt])).start()
    
     # threading.Thread(target=TA , args=([btc])).start()
-    threading.Thread(target=TA , args=([busd])).start()
+    # threading.Thread(target=TA , args=([busd])).start()
     
     # threading.Thread(target=TA , args=([eth])).start()
     # threading.Thread(target=TA , args=([bnb])).start()
     # threading.Thread(target=TA , args=([others])).start()
-    threading.Thread(target=track_price , args=([busd])).start()
+    # threading.Thread(target=track_price , args=([busd])).start()
     
     threading.Thread(target=track_price , args=([usdt])).start()
+
+    ti.sleep(60)
     
 
     
