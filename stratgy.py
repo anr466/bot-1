@@ -191,12 +191,17 @@ def TA(tikers):
 
                         new_balance = round((balance/6),2)
 
+                        ammount = balance-new_balance
                 
                         if new_balance >= 10.5:
 
-                            # ammount = new_balance-balance
+                            ammount = balance-new_balance
+                            send_msg(f'balance is {ammount}')
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance)
+                            signals.clear_all('balance')
+                            signals.add_balance('balance', ammount)
+
                             
                         else:
                             send_msg('الرصيد لايسمح بالشراء')
