@@ -69,21 +69,15 @@ class signals:
             balance[x["balance"]] = [x["balance"]]
         
         
+        
         for x in balance:
             ammount.append(balance[x])
         return x 
 
-        
 
 
-
-
-
-
-
-
-# x = signals.free_balance('balance')
-# print(x)
+x = signals.find('buy', 'ALPACAUSDT')
+print(x)
 
 
 # y = signals.find(col, ticker)

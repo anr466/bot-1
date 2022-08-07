@@ -170,7 +170,7 @@ def TA(tikers):
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>60 and cci_buy>200 and cci_buy<250 and adx_buy>50 and adx_buy<70:
                     #strargy1
                     if x.endswith("USDT"): #or x.endswith("BUSD"):
-                        send_msg('buy')
+                        
         
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)    
@@ -193,7 +193,8 @@ def TA(tikers):
 
                 
                         if new_balance >= 10.5:
-                            
+
+                            # ammount = new_balance-balance
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance)
                             
@@ -222,8 +223,8 @@ def track_price(t_tracking):
             db_ticker_price = db_ticker[1]
             db_ticker_tp1 = db_ticker[2]
             db_ticker_SL = db_ticker[3]
-            db_balance = db_ticker[4]
-            db_balance = float(db_balance)
+            # db_balance = db_ticker[4]
+            # db_balance = float(db_balance)
 
 
             fee = 0.2
@@ -233,32 +234,32 @@ def track_price(t_tracking):
                 
                 if price_cal >= db_ticker_tp1:
 
-                    freebalance = db_balance+fee
+                    # freebalance = db_balance+fee
                    
-                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}\n tp1 = {db_ticker_tp1}")
-                    send_msg(f'balance is {freebalance}')
-                    signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
-                    signals.delete_one('buy', x)
+                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")
+                    # send_msg(f'balance is {freebalance}')
+                    # signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL)#,amount=freebalance)
+                    # signals.delete_one('buy', x)
                     
                 elif price_cal <= db_ticker_SL:
 
-                    freebalance = db_balance-fee
+                    # freebalance = db_balance-fee
                    
-                    send_msg(f"تم البيع على وقف الخسارة ==>${x}\n sl = {db_ticker_SL}")
-                    send_msg(f'balance is {freebalance}')
-                    signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
-                    signals.delete_one('buy', x)
+                    send_msg(f"تم البيع على وقف الخسارة ==>${x}")
+                    # send_msg(f'balance is {freebalance}')
+                    # signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,amount=freebalance)
+                    # signals.delete_one('buy', x)
 
 
-            profit_balance = signals.find('profit', x)
-            loss_balance = signals.find('loss', x)
+            # profit_balance = signals.find('profit', x)
+            # loss_balance = signals.find('loss', x)
 
-            db_balance_profit = profit_balance[4]
-            db_balance_loss = loss_balance[4]
+            # db_balance_profit = profit_balance[4]
+            # db_balance_loss = loss_balance[4]
 
-            finalbalance = db_balance_profit+db_balance_loss
+            # finalbalance = db_balance_profit+db_balance_loss
 
-            send_msg(f'final balance : {finalbalance}')
+            # send_msg(f'final balance : {finalbalance}')
 
         except:
             pass
@@ -268,7 +269,7 @@ def track_price(t_tracking):
 
 
 def lunch():
-    send_msg('work')
+    # send_msg('work')
     threading.Thread(target=TA , args=([usdt])).start()
    
     # threading.Thread(target=TA , args=([btc])).start()
