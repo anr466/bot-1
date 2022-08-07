@@ -76,8 +76,8 @@ class signals:
 
 
 
-x = signals.find('buy', 'ALPACAUSDT')
-print(x)
+# x = signals.find('buy', 'ALPACAUSDT')
+# print(x)
 
 
 # y = signals.find(col, ticker)
