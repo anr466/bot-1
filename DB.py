@@ -33,7 +33,7 @@ class signals:
         db_ticker = []
         db_price = []    
         for x in find:
-            tickers[x["Tickers"]] = [x["Tickers"],x["price"],x["TP1"],x["SL"],x["balance"]]
+            tickers[x["Tickers"]] = [x["Tickers"],x["price"],x["TP1"],x["SL"]]
         if ticker in tickers:
             db_ticker.append(tickers[ticker])
         for x in db_ticker:
@@ -67,9 +67,7 @@ class signals:
         ammount = []
         for x in find:
             balance[x["balance"]] = [x["balance"]]
-        
-        
-        
+      
         for x in balance:
             ammount.append(balance[x])
         return x 

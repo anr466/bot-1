@@ -200,9 +200,7 @@ def TA(tikers):
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance)
                             signals.clear_all('balance')
-                            signals.add_balance('balance', new_ammount)
-
-                            
+                            signals.add_balance('balance', new_ammount)     
                         else:
                             send_msg('الرصيد لايسمح بالشراء')
                         

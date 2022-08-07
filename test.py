@@ -220,7 +220,7 @@
 # db_ticker_price = db_ticker[1]
 # db_ticker_tp1 = db_ticker[2]
 # db_ticker_SL = db_ticker[3]
-# db_balance = db_ticker[4]
+# # db_balance = db_ticker[4]
 # # db_balance = float(db_balance)
 
 # print(db_ticker_name)
