@@ -218,22 +218,8 @@
 
 # balance = float(ammount)
 
-# new_balance = round((balance/6),2)
-# new_balance2 = round((balance/5),2)
-# new_balance3 = round((balance/4),2)
-# new_balance4 = round((balance/2),2)
-# new_balance5 = round(balance,2)
+# fee = 0.2
 
-# print('balance :',balance)
-# if new_balance >= 10.5:
-#     print('1')
-# elif new_balance2 >= 10.5:
-#     print('2')
-# elif new_balance3 >= 10.5:
-#     print('3')
-# elif new_balance4 >= 10.5:
-#     print('4')
-# elif new_balance5 >= 10.5:
-#     print('5')
+# final = balance+fee
 
-    
+# print(final)

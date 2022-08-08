@@ -299,6 +299,7 @@ def track_price(t_tracking):
         except:
             pass
     finalbalance = profit+loss
+    finalbalance = round(finalbalance,2)
     send_msg('final balance is :',finalbalance)
 
 
