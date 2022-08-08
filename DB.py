@@ -71,10 +71,13 @@ class signals:
         for x in balance:
             ammount.append(balance[x])
         return x 
+    # def find_balance(col):
+    #     col = db[col]
+    #     find = col.find({})
 
 
 
-# x = signals.find('buy', 'ALPACAUSDT')
+# x = signals.free_balance('balance')
 # print(x)
 
 

@@ -214,13 +214,26 @@
 
 # from DB import signals
 
-# db_ticker = signals.find('buy', 'ALPACAUSDT')
+# ammount = signals.free_balance('balance')
 
-# db_ticker_name = db_ticker[0]
-# db_ticker_price = db_ticker[1]
-# db_ticker_tp1 = db_ticker[2]
-# db_ticker_SL = db_ticker[3]
-# # db_balance = db_ticker[4]
-# # db_balance = float(db_balance)
+# balance = float(ammount)
 
-# print(db_ticker_name)
+# new_balance = round((balance/6),2)
+# new_balance2 = round((balance/5),2)
+# new_balance3 = round((balance/4),2)
+# new_balance4 = round((balance/2),2)
+# new_balance5 = round(balance,2)
+
+# print('balance :',balance)
+# if new_balance >= 10.5:
+#     print('1')
+# elif new_balance2 >= 10.5:
+#     print('2')
+# elif new_balance3 >= 10.5:
+#     print('3')
+# elif new_balance4 >= 10.5:
+#     print('4')
+# elif new_balance5 >= 10.5:
+#     print('5')
+
+    
