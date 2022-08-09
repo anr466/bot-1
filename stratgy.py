@@ -170,7 +170,7 @@ def TA(tikers):
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>60 and cci_buy>200 and cci_buy<250 and adx_buy>50 and adx_buy<70:
                     #strargy1
                     if x.endswith("USDT"): #or x.endswith("BUSD"):
-                        
+                        send_msg('text')
         
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)    
@@ -209,7 +209,7 @@ def TA(tikers):
 
                             new_ammount = balance-new_balance2
                             send_msg(f'balance is {new_ammount}')
-                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance2}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance2}\nالرصيد الحالي ==>${new_ammount}\n\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance2)
                             signals.clear_all('balance')
                             signals.add_balance('balance', new_ammount)
@@ -217,7 +217,7 @@ def TA(tikers):
 
                             new_ammount = balance-new_balance3
                             send_msg(f'balance is {new_ammount}')
-                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance3}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance3}\nالرصيد الحالي ==>${new_ammount}\n\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance3)
                             signals.clear_all('balance')
                             signals.add_balance('balance', new_ammount)
@@ -225,7 +225,7 @@ def TA(tikers):
 
                             new_ammount = balance-new_balance4
                             send_msg(f'balance is {new_ammount}')
-                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance4}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance4}\nالرصيد الحالي ==>${new_ammount}\n\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance4)
                             signals.clear_all('balance')
                             signals.add_balance('balance', new_ammount)
@@ -234,12 +234,13 @@ def TA(tikers):
 
                             new_ammount = balance-new_balance5
                             send_msg(f'balance is {new_ammount}')
-                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance5}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
+                            send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance5}\nالرصيد الحالي ==>${new_ammount}\n\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance5)
                             signals.clear_all('balance')
                             signals.add_balance('balance', new_ammount)  
                         else:
-                            send_msg('الرصيد لا يسمح بالشراء') 
+                            send_msg(f'الرصيد لا يسمح بالشراء : {balance}')
+
 
 
         except:
@@ -263,44 +264,37 @@ def track_price(t_tracking):
             db_ticker_price = db_ticker[1]
             db_ticker_tp1 = db_ticker[2]
             db_ticker_SL = db_ticker[3]
-            ammount = signals.free_balance('balance')
-            balance = float(ammount)
-
-
+            db_balance = db_ticker[4]
             fee = 0.2
 
+            
 
-            if x == db_ticker_name:
-                
+            if x == db_ticker_name:    
                 if price_cal >= db_ticker_tp1:
-
-                    profit = balance+fee
-                   
+                    profit = db_balance+fee
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")
                     # send_msg(f'balance is {freebalance}')
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,profit)
                     signals.add_balance('balance', profit)
                     signals.delete_one('buy', x)
+
                     
                 elif price_cal <= db_ticker_SL:
-
                     loss = db_balance-fee
-                   
                     send_msg(f"تم البيع على وقف الخسارة ==>${x}")
                     # send_msg(f'balance is {freebalance}')
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,loss)
                     signals.add_balance('balance', loss)
                     signals.delete_one('buy', x)
-            
+            ammount = signals.free_balance('balance')
 
-
-
-           
+            ammount = float(ammount)
+            send_msg(f'total balance is : {ammount}')
+     
         except:
             pass
-    finalbalance = profit+loss
-    finalbalance = round(finalbalance,2)
-    send_msg('final balance is :',finalbalance)
+
+
 
 
 

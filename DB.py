@@ -33,7 +33,7 @@ class signals:
         db_ticker = []
         db_price = []    
         for x in find:
-            tickers[x["Tickers"]] = [x["Tickers"],x["price"],x["TP1"],x["SL"]]
+            tickers[x["Tickers"]] = [x["Tickers"],x["price"],x["TP1"],x["SL"],x['balance']]
         if ticker in tickers:
             db_ticker.append(tickers[ticker])
         for x in db_ticker:
@@ -44,7 +44,8 @@ class signals:
         col = db[coll]
         find = col.find({})
         for x in find:
-            print(x)
+            pass
+        return x
     def delete_one(col , ticker):
         col = db[col]
         delete = col.delete_many( { "Tickers": f'{ticker}'} )
@@ -58,6 +59,7 @@ class signals:
             tickers[x["Tickers"]] = [x["Tickers"]]
         for x in tickers:
             db_ticker.append(x)
+        return len(db_ticker)
       
         return db_ticker
     def free_balance(col):
@@ -71,15 +73,9 @@ class signals:
         for x in balance:
             ammount.append(balance[x])
         return x 
-    # def find_balance(col):
-    #     col = db[col]
-    #     find = col.find({})
 
 
 
-# x = signals.free_balance('balance')
-# print(x)
+x = signals.free_balance('balance')
 
-
-# y = signals.find(col, ticker)
-
+print(x)

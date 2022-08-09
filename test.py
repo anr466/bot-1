@@ -214,12 +214,13 @@
 
 # from DB import signals
 
-# ammount = signals.free_balance('balance')
+# db_ticker = signals.find('buy', 'btc')
 
-# balance = float(ammount)
 
-# fee = 0.2
+# db_ticker_name = db_ticker[0]
+# db_ticker_price = db_ticker[1]
+# db_ticker_tp1 = db_ticker[2]
+# db_ticker_SL = db_ticker[3]
+# db_balance = db_ticker[4]
 
-# final = balance+fee
-
-# print(final)
+# print(db_balance)
