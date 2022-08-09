@@ -170,7 +170,7 @@ def TA(tikers):
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>60 and cci_buy>200 and cci_buy<250 and adx_buy>50 and adx_buy<70:
                     #strargy1
                     if x.endswith("USDT"): #or x.endswith("BUSD"):
-                        send_msg('text')
+                        # send_msg('text')
         
                         price_now = fo.get_ticker_price(x)
                         price_cal = fo.format_price(x , price_now)    
@@ -286,16 +286,21 @@ def track_price(t_tracking):
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,loss)
                     signals.add_balance('balance', loss)
                     signals.delete_one('buy', x)
-            ammount = signals.free_balance('balance')
-
-            ammount = float(ammount)
-            send_msg(f'total balance is : {ammount}')
+            
      
         except:
             pass
 
 
+def summary():
+    ammount = signals.free_balance('balance')
+    ammount = float(ammount)
+    send_msg(f'اجمالي الرصيد : {ammount}')
+    numprofit = signals.num_table('profit')
+    numloss = signals.num_table('loss')
+    send_msg(f'اجمالي عدد الصفقات الناجحه : {numprofit} \n اجمالي عدد الصفقات الخاسرة : {numloss}')
 
+    
 
 
 
@@ -325,6 +330,7 @@ def hd():
     three_minute = [0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57]
     five_minute = [0,5,10,15,20,25,30,35,40,45,50,55]
     _15_mintue = [0,15,30,45]
+    one_hour = [0]
     time_srv = Clnt.get_server_time()#for binance time
     time = pd.to_datetime(time_srv["serverTime"], unit = "ms")
     min_ = time.strftime("%M")
@@ -335,11 +341,10 @@ def hd():
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
-    # for i in three_minute:
-    #     if min_ == i and sec_ == 30:
-    #         ti.sleep(5)
-    #         threading.Thread(target=track_price , args=([busd])).start()
-    #         threading.Thread(target=track_price , args=([usdt])).start()
+    for i in three_minute:
+        if min_ == i and sec_ == 0:
+            summary()
+
     
 
 
