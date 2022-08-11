@@ -353,12 +353,16 @@ def track_price(t_tracking):
                 price_now = fo.get_ticker_price(x)
                 price_cal = fo.format_price(x , price_now)
 
-                balance = signals.free_balance('balance')
+                
+                ammount = signals.free_balance('balance')
+                balance = float(ammount)
+                balance = round(balance,2)
+
                 send_msg('balance :',balance)
 
              
                 if price_cal >= db_ticker_tp1:
-                    profit = db_balance+fee
+                    profit = (db_balance+fee+balance)
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")
                     # send_msg(f'balance is {freebalance}')
                     signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,profit)
@@ -369,7 +373,7 @@ def track_price(t_tracking):
                     send_msg(f'الرصيد بعد البيع {balance}')
 
                 elif price_cal <= db_ticker_SL:
-                    loss = db_balance-fee
+                    loss = (db_balance-fee+balance)
                     send_msg(f"تم البيع على وقف الخسارة ==>${x}")
                     # send_msg(f'balance is {freebalance}')
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,loss)

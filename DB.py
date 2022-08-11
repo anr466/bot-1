@@ -117,7 +117,7 @@ class signals:
 # signals.clear_all('profit')
 # signals.clear_all('loss')
 
-# # # # h = signals.buy_balance('balance',15)
+# # # # # h = signals.buy_balance('balance',15)
 
 # signals.add_balance('balance',150)
 
