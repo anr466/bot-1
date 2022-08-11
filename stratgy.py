@@ -353,14 +353,13 @@ def track_price(t_tracking):
                 price_now = fo.get_ticker_price(x)
                 price_cal = fo.format_price(x , price_now)
 
-                
                 ammount = signals.free_balance('balance')
                 balance = float(ammount)
                 balance = round(balance,2)
 
                 send_msg('balance :',balance)
 
-             
+
                 if price_cal >= db_ticker_tp1:
                     profit = (db_balance+fee+balance)
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")
@@ -409,7 +408,7 @@ def lunch():
     # threading.Thread(target=TA , args=([others])).start()
     # threading.Thread(target=track_price , args=([busd])).start()
     
-    threading.Thread(target=track_price , args=([usdt])).start()
+    # threading.Thread(target=track_price , args=([usdt])).start()
 
     ti.sleep(60)
 
@@ -432,14 +431,16 @@ def hd():
     for i in two_minute:
         if min_ == i and sec_ == 3:
             lunch()
-    for i in one_hour:
-        if min_ == i and sec_ == 0:
-            summary()
-            ti.sleep(1)
-    # for i in one_minute:
+        else:
+            for i in one_minute:
+                if min_ == i and sec_ == 0:
+                    threading.Thread(target=track_price , args=([usdt])).start()
+                    ti.sleep(1)
+    # for i in one_hour:
     #     if min_ == i and sec_ == 0:
-    #         threading.Thread(target=track_price , args=([usdt])).start()
+    #         summary()
     #         ti.sleep(1)
+    
 
     
 
