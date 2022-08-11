@@ -428,6 +428,7 @@ def hd():
     for i in one_minute:
         if min_ == i and sec_ == 0:
             threading.Thread(target=track_price , args=([usdt])).start()
+            ti.sleep(1)
 
     
 
