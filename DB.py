@@ -91,6 +91,22 @@ class signals:
         new_balance = (c-amount)
 
         return new_balance
+    def sell_balance(col,amount):
+        amount = float(amount)
+        col = db[col]
+        find = col.find({})
+        balance = {}
+        ammount = []
+        
+        for x in find:
+            balance[x["balance"]] = x["balance"]
+        for y in balance:
+            ammount.append(y)
+        
+        c = ammount[0]
+        new_balance = (c+amount)
+
+        return new_balance
 
 
         # data = col.insert_one({"balance":summ})
@@ -101,7 +117,7 @@ class signals:
 # signals.clear_all('profit')
 # signals.clear_all('loss')
 
-# # h = signals.buy_balance('balance',15)
+# # # # h = signals.buy_balance('balance',15)
 
 # signals.add_balance('balance',150)
 
