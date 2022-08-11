@@ -18,6 +18,7 @@ class signals:
         return data
     def add_balance(col ,amount):
         col = db[col]
+        col.delete_many({})
         data = col.insert_one({"balance":amount})
         return data
     
@@ -71,11 +72,46 @@ class signals:
             balance[x["balance"]] = [x["balance"]]
       
         for x in balance:
-            ammount.append(balance[x])
-        return x 
+            ammount.append(x)
+        return ammount[0]
+
+    def buy_balance(col,amount):
+        amount = float(amount)
+        col = db[col]
+        find = col.find({})
+        balance = {}
+        ammount = []
+        
+        for x in find:
+            balance[x["balance"]] = x["balance"]
+        for y in balance:
+            ammount.append(y)
+        
+        c = ammount[0]
+        new_balance = (c-amount)
+
+        return new_balance
+
+
+        # data = col.insert_one({"balance":summ})
+    
+    
+# signals.find_all('balance')
+# signals.clear_all('balance')
+
+h = signals.buy_balance('balance',15)
+
+signals.add_balance('balance',150)
 
 
 
-x = signals.free_balance('balance')
+u = signals.free_balance('balance')
 
-print(x)
+# print(s)
+# print(u)
+
+# print('new balance',h )
+# print('add new balance',s)
+print('free new balance ',u)
+
+# print('all col balance :' , n)
