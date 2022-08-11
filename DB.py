@@ -99,19 +99,19 @@ class signals:
 # signals.find_all('balance')
 # signals.clear_all('balance')
 
-h = signals.buy_balance('balance',15)
+# h = signals.buy_balance('balance',15)
 
-signals.add_balance('balance',150)
+# signals.add_balance('balance',150)
 
 
 
-u = signals.free_balance('balance')
+# u = signals.free_balance('balance')
 
 # print(s)
 # print(u)
 
 # print('new balance',h )
 # print('add new balance',s)
-print('free new balance ',u)
+# print('free new balance ',u)
 
 # print('all col balance :' , n)

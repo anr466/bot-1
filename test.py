@@ -217,3 +217,8 @@
 # x = signals.
 
 # print(x)
+
+# x = 20
+# fee = (2*x) / 100
+
+# print(fee)
