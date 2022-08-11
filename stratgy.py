@@ -357,9 +357,6 @@ def track_price(t_tracking):
                 balance = float(ammount)
                 balance = round(balance,2)
 
-                send_msg('balance :',balance)
-
-
                 if price_cal >= db_ticker_tp1:
                     profit = (db_balance+fee+balance)
                     send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")
