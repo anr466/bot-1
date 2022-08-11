@@ -429,9 +429,9 @@ def hd():
         if min_ == i and sec_ == 3:
             lunch()
         else:
-            threading.Thread(target=track_price , args=([usdt])).start()
+            track_price(usdt)
 
-       
+
     # for i in one_hour:
     #     if min_ == i and sec_ == 0:
     #         summary()
