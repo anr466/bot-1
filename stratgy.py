@@ -203,8 +203,15 @@ def TA(tikers):
 
                         if new_balance10 >= 10.5:
 
+                            
+
                             buy = signals.buy_balance('balance',new_balance10)
-                            signals.add_balance('balance',buy)           
+                            signals.add_balance('balance',buy) 
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+
+
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance10}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance10)      
 
@@ -212,20 +219,34 @@ def TA(tikers):
 
                             buy = signals.buy_balance('balance',new_balance9)
                             signals.add_balance('balance',buy)
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+
+
+                            
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance9}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance9)
 
                         elif new_balance8 >= 10.5:
 
                             buy = signals.buy_balance('balance',new_balance8)
-                            signals.add_balance('balance',buy)                      
+                            signals.add_balance('balance',buy) 
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+                                                
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance8}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance8)
 
                         elif new_balance7 >= 10.5:
 
                             buy = signals.buy_balance('balance',new_balance7)
-                            signals.add_balance('balance',buy)                        
+                            signals.add_balance('balance',buy)
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+                       
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance7}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance7)
 
@@ -234,6 +255,10 @@ def TA(tikers):
 
                             buy = signals.buy_balance('balance',new_balance6)
                             signals.add_balance('balance',buy)
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance6}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance6)
         
@@ -241,7 +266,11 @@ def TA(tikers):
                         elif new_balance5 >= 10.5:
 
                             buy = signals.buy_balance('balance',new_balance5)
-                            signals.add_balance('balance',buy)                          
+                            signals.add_balance('balance',buy)
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+                      
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance5}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance5)
                             
@@ -249,7 +278,11 @@ def TA(tikers):
                         elif new_balance4 >= 10.5:
 
                             buy = signals.buy_balance('balance',new_balance4)
-                            signals.add_balance('balance',buy)                            
+                            signals.add_balance('balance',buy)
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+                         
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance4}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance4)
                             
@@ -257,7 +290,11 @@ def TA(tikers):
                         elif new_balance3 >= 10.5:
 
                             buy = signals.buy_balance('balance',new_balance3)
-                            signals.add_balance('balance',buy)      
+                            signals.add_balance('balance',buy)
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+     
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance3}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance3)
                             
@@ -266,6 +303,10 @@ def TA(tikers):
 
                             buy = signals.buy_balance('balance',new_balance2)
                             signals.add_balance('balance',buy)
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance2}\n\nالرصيد المتبقي {balance}\n\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance2)
                             
@@ -274,6 +315,10 @@ def TA(tikers):
 
                             buy = signals.buy_balance('balance',new_balance1)
                             signals.add_balance('balance',buy) 
+                            ammount = signals.free_balance('balance')
+                            balance = float(ammount)
+                            balance = round(balance,2)
+
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance1}\nالرصيد المتبقي {balance}\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance1)
                             

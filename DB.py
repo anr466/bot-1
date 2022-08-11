@@ -97,15 +97,17 @@ class signals:
     
     
 # signals.find_all('balance')
-# signals.clear_all('balance')
+# signals.clear_all('buy')
+# signals.clear_all('profit')
+# signals.clear_all('loss')
 
-# h = signals.buy_balance('balance',15)
+# # h = signals.buy_balance('balance',15)
 
 # signals.add_balance('balance',150)
 
 
 
-# u = signals.free_balance('balance')
+# s= signals.free_balance('balance')
 
 # print(s)
 # print(u)
