@@ -434,21 +434,26 @@ def hd():
             lunch()
 
 
-@bot.message_handler(func=lambda message: True)
-def run():
-    while True:
-        hd()
-        def t_mer(message):
+
+while True:
+    hd()
+
+
+# @bot.message_handler(func=lambda message: True)
+# def run():
+#     while True:
+#         hd()
+#         def t_mer(message):
         
-            balance = signals.free_balance('balance')
-            text = message.text
-            text = text.lower()
-            chid = message.chat.id
-            if text == "bl":
-                bot.send_message(chid,f"balance is {balance}")
-            elif text == "sum":
-                bot.send_message(chid,f"{summary()}")
-        bot.polling()
+#             balance = signals.free_balance('balance')
+#             text = message.text
+#             text = text.lower()
+#             chid = message.chat.id
+#             if text == "bl":
+#                 bot.send_message(chid,f"balance is {balance}")
+#             elif text == "sum":
+#                 bot.send_message(chid,f"{summary()}")
+#         bot.polling()
 
 
 
