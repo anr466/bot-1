@@ -29,7 +29,7 @@ class signals:
 
     def find(col,ticker):
         col = db[col]
-        find = col.find({})
+        find = col.find({},{'_id': False})
         tickers= {}
         db_ticker = []
         db_price = []    
@@ -43,10 +43,11 @@ class signals:
         return db_price
     def find_all(coll):
         col = db[coll]
-        find = col.find({})
+        find = col.find({},{'_id': False})
+        xx = []
         for x in find:
-            pass
-        return x
+            xx.append(x.values())
+        return xx
     def delete_one(col , ticker):
         col = db[col]
         delete = col.delete_many( { "Tickers": f'{ticker}'} )
@@ -61,19 +62,14 @@ class signals:
         for x in tickers:
             db_ticker.append(x)
         return len(db_ticker)
-      
-        return db_ticker
+
     def free_balance(col):
         col = db[col]
         find = col.find({})
-        balance = {}
-        ammount = []
         for x in find:
-            balance[x["balance"]] = [x["balance"]]
-      
-        for x in balance:
-            ammount.append(x)
-        return ammount[0]
+            balance = x.get('balance')
+        balance = round(balance,1)
+        return balance
 
     def buy_balance(col,amount):
         amount = float(amount)
@@ -108,8 +104,20 @@ class signals:
 
         return new_balance
 
+    def getbalance(col,nametable):
+        nametable = str(nametable)
+        col = db[col]
+        find = col.find({})
+        for i in find:
+            pass
+        return i.get(nametable)
 
-        # data = col.insert_one({"balance":summ})
+
+
+# x = signals.free_balance('balance')
+# # x= sum(x)
+# print(x)
+
     
     
 # signals.find_all('balance')
@@ -120,7 +128,9 @@ class signals:
 # # # # # h = signals.buy_balance('balance',15)
 
 # signals.add_balance('balance',150)
-
+# signals.add('profit', '2344', 'btc', '5', '5', '5', '10')
+# signals.add('profit', '2344', 'eth', '5', '5', '5', '10')
+# signals.add('profit', '2344', 'ada', '5', '5', '5', '10')
 # signals.clear_all('buy')
 # signals.clear_all('profit')
 # signals.clear_all('loss')

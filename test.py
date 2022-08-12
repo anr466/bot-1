@@ -212,11 +212,35 @@
 # #     return sum(b)
          
 
-# from DB import signals
+from DB import signals
 
-# x = signals.
 
+tick = ['btc','eth','ada']
+
+# x= signals.add('profit', '2344', 'btc', '5', '5', '5', '10')
+# y = signals.add('profit', '2344', 'eth', '5', '5', '5', '10')
+# z = signals.add('profit', '2344', 'xxx', '5', '5', '5', '10')
+# # x = signals.find_all('profit')
+# print(x,y,z)
+
+# v = []
+# for i in tick:
+    
+#     x = signals.find('profit', i)
+#     db_balance = x[4]
+#     db_balance = float(db_balance)
+#     fee = (2*db_balance) / 100
+#     fee = float(fee)
+#     pl = (db_balance+fee)
+#     v.append(pl)
+# x = signals.free_balance('balance')
+
+# x= round(sum(x),1)
 # print(x)
+
+
+
+
 
 # x = 20
 # fee = (2*x) / 100

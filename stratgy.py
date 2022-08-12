@@ -336,6 +336,8 @@ def track_price(t_tracking):
     now = datetime.now()
     dt = now.strftime("%d-%m-%y  %H:%M:%S")
 
+    balance = []
+
     for x in t_tracking:
         try:
             
@@ -346,41 +348,36 @@ def track_price(t_tracking):
             db_ticker_price = db_ticker[1]
             db_ticker_tp1 = db_ticker[2]
             db_ticker_SL = db_ticker[3]
-            db_balance = db_ticker[4]
+            db_balance = x[4]
+            db_balance = float(db_balance)
             fee = (2*db_balance) / 100
+            fee = float(fee)
+            
+            
 
             if x == db_ticker_name:
                 price_now = fo.get_ticker_price(x)
                 price_cal = fo.format_price(x , price_now)
 
-                ammount = signals.free_balance('balance')
-                balance = float(ammount)
-                balance = round(balance,2)
-
                 if price_cal >= db_ticker_tp1:
-                    profit = (db_balance+fee+balance)
-                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")
-                    # send_msg(f'balance is {freebalance}')
-                    signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,profit)
-                    x = signals.sell_balance('balance', profit)
-                    signals.add_balance('balance', x)
-                    balance = signals.free_balance('balance')
+                    
+                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")            
+                    signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
+                    pl = (db_balance+fee)
+                    balance.append(pl)
                     signals.delete_one('buy', x)
-                    send_msg(f'الرصيد بعد البيع {balance}')
-
-                elif price_cal <= db_ticker_SL:
-                    loss = (db_balance-fee+balance)
-                    send_msg(f"تم البيع على وقف الخسارة ==>${x}")
-                    # send_msg(f'balance is {freebalance}')
-                    signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,loss)
-                    x = signals.sell_balance('balance', loss)
-                    signals.add_balance('balance', x)
-                    balance = signals.free_balance('balance')
-                    signals.delete_one('buy', x)
-                    send_msg(f'الرصيد بعد البيع {balance}') 
+                elif price_cal <= db_ticker_SL:             
+                    send_msg(f"تم البيع على وقف الخسارة ==>${x}")             
+                    signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
+                    pl = (db_balance-fee)
+                    balance.append(pl)            
+                    signals.delete_one('buy', x)              
         except:
             pass
-
+    x= round(sum(balance),1)
+    signals.add_balance('balance', x)
+    balance = signals.free_balance('balance')
+    send_msg(f'balance is : {balance}')
 
 def summary():
     ammount = signals.free_balance('balance')
