@@ -222,21 +222,28 @@ tick = ['btc','eth','ada']
 # z = signals.add('profit', '2344', 'xxx', '5', '5', '5', '10')
 # # x = signals.find_all('profit')
 # print(x,y,z)
-
-# v = []
-# for i in tick:
-    
-#     x = signals.find('profit', i)
-#     db_balance = x[4]
-#     db_balance = float(db_balance)
-#     fee = (2*db_balance) / 100
-#     fee = float(fee)
-#     pl = (db_balance+fee)
-#     v.append(pl)
-# x = signals.free_balance('balance')
-
-# x= round(sum(x),1)
-# print(x)
+def collect_balance(ticker):
+    v = []
+    for i in ticker:
+        
+        x = signals.find('profit', i)
+        db_balance = x[4]
+        db_balance = float(db_balance)
+        fee = (2*db_balance) / 100
+        fee = float(fee)
+        pl = (db_balance+fee)
+        v.append(pl)
+        x = signals.find('loss', i)
+        db_balance = x[4]
+        db_balance = float(db_balance)
+        fee = (2*db_balance) / 100
+        fee = float(fee)
+        pl = (db_balance+fee)
+        v.append(pl)
+    x= round(sum(balance),1)
+    signals.add_balance('balance', x)
+    balance = signals.free_balance('balance')
+    send_msg(f'balance is : {balance}')
 
 
 

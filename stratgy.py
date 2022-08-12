@@ -339,11 +339,8 @@ def track_price(t_tracking):
     balance = []
 
     for x in t_tracking:
-        try:
-            
-            db_ticker = signals.find('buy', x)
-        
-            
+        try:         
+            db_ticker = signals.find('buy', x)        
             db_ticker_name = db_ticker[0]
             db_ticker_price = db_ticker[1]
             db_ticker_tp1 = db_ticker[2]
@@ -352,8 +349,6 @@ def track_price(t_tracking):
             db_balance = float(db_balance)
             fee = (2*db_balance) / 100
             fee = float(fee)
-            
-            
 
             if x == db_ticker_name:
                 price_now = fo.get_ticker_price(x)
@@ -371,21 +366,49 @@ def track_price(t_tracking):
                     signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
                     pl = (db_balance-fee)
                     balance.append(pl)            
-                    signals.delete_one('buy', x)              
+                    signals.delete_one('buy', x)  
+                        
         except:
             pass
+    buy_sell_balance= round(sum(balance),1)
+    exitbalance =signals.free_balance('balance')
+    new_free_balance = exitbalance+buy_sell_balance
+    signals.add_balance('balance', new_free_balance)
+    balance = signals.free_balance('balance')
+    send_msg(f'balance is : {balance}')
+
+def collect_balance(ticker):
+    v = []
+    for i in ticker:
+        
+        x = signals.find('profit', i)
+        db_balance = x[4]
+        db_balance = float(db_balance)
+        fee = (2*db_balance) / 100
+        fee = float(fee)
+        pl = (db_balance+fee)
+        v.append(pl)
+        x = signals.find('loss', i)
+        db_balance = x[4]
+        db_balance = float(db_balance)
+        fee = (2*db_balance) / 100
+        fee = float(fee)
+        pl = (db_balance+fee)
+        v.append(pl)
     x= round(sum(balance),1)
+    exitbalance =signals.free_balance('balance')
     signals.add_balance('balance', x)
     balance = signals.free_balance('balance')
     send_msg(f'balance is : {balance}')
 
+    
 def summary():
     ammount = signals.free_balance('balance')
     numprofit = signals.num_table('profit')
     numloss = signals.num_table('loss')
     send_msg(f'اجمالي الرصيد الحالي : {ammount}\n اجمالي عدد الصفقات الناجحه: {numprofit} \n اجمالي عدد الصفقات الخاسرة : {numloss}')
 
-    
+ 
 
 
 
@@ -426,6 +449,7 @@ def hd():
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
+        
         
 
 

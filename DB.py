@@ -119,23 +119,24 @@ class signals:
 # print(x)
 
     
-    
-# signals.find_all('balance')
+
+# x= signals.find_all('profit')
+# print(x)
 # signals.clear_all('buy')
 # signals.clear_all('profit')
 # signals.clear_all('loss')
-
+# signals.clear_all('balance')
 # # # # # h = signals.buy_balance('balance',15)
 
 # signals.add_balance('balance',150)
 # signals.add('profit', '2344', 'btc', '5', '5', '5', '10')
 # signals.add('profit', '2344', 'eth', '5', '5', '5', '10')
 # signals.add('profit', '2344', 'ada', '5', '5', '5', '10')
-# signals.clear_all('buy')
+# signals.delete_one('profit', 'btc')
 # signals.clear_all('profit')
 # signals.clear_all('loss')
 # signals.clear_all('balance')
-# signals.add_balance('balance', 150)
+signals.add_balance('balance', 150)
 # s= signals.free_balance('balance')
 
 # print(s)
