@@ -331,57 +331,59 @@ def TA(tikers):
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance1}\nالرصيد المتبقي {balance}\nindicators\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance1)
                             
-                        else:
-                            send_msg(f'الرصيد لا يسمح بالشراء : {balance}')
+                        
         except:
             pass                   
 
 
 
 def track_price(t_tracking):
-    now = datetime.now()
-    dt = now.strftime("%d-%m-%y  %H:%M:%S")
+    try:
+            
+        now = datetime.now()
+        dt = now.strftime("%d-%m-%y  %H:%M:%S")
 
-    balance = []
+        balance = []
 
-    for x in t_tracking:
-        try:         
-            db_ticker = signals.find('buy', x)        
-            db_ticker_name = db_ticker[0]
-            db_ticker_price = db_ticker[1]
-            db_ticker_tp1 = db_ticker[2]
-            db_ticker_SL = db_ticker[3]
-            db_balance = x[4]
-            db_balance = float(db_balance)
-            fee = (2*db_balance) / 100
-            fee = float(fee)
-
-            if x == db_ticker_name:
-                price_now = fo.get_ticker_price(x)
-                price_cal = fo.format_price(x , price_now)
-
-                if price_cal >= db_ticker_tp1:
+        for x in t_tracking:
                     
-                    send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")            
-                    signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
-                    pl = (db_balance+fee)
-                    balance.append(pl)
-                    signals.delete_one('buy', x)
-                elif price_cal <= db_ticker_SL:             
-                    send_msg(f"تم البيع على وقف الخسارة ==>${x}")             
-                    signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
-                    pl = (db_balance-fee)
-                    balance.append(pl)            
-                    signals.delete_one('buy', x)  
+                db_ticker = signals.find('buy', x)        
+                db_ticker_name = db_ticker[0]
+                db_ticker_price = db_ticker[1]
+                db_ticker_tp1 = db_ticker[2]
+                db_ticker_SL = db_ticker[3]
+                db_balance = x[4]
+                db_balance = float(db_balance)
+                fee = (2*db_balance) / 100
+                fee = float(fee)
+
+                if x == db_ticker_name:
+                    price_now = fo.get_ticker_price(x)
+                    price_cal = fo.format_price(x , price_now)
+
+                    if price_cal >= db_ticker_tp1:
                         
-        except:
-            pass
-    buy_sell_balance= round(sum(balance),1)
-    exitbalance =signals.free_balance('balance')
-    new_free_balance = exitbalance+buy_sell_balance
-    signals.add_balance('balance', new_free_balance)
-    # b = signals.free_balance('balance')
-    # send_msg(f'balance is ===> {b}')
+                        send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")            
+                        signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
+                        pl = (db_balance+fee)
+                        balance.append(pl)
+                        signals.delete_one('buy', x)
+                    elif price_cal <= db_ticker_SL:             
+                        send_msg(f"تم البيع على وقف الخسارة ==>${x}")             
+                        signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
+                        pl = (db_balance-fee)
+                        balance.append(pl)            
+                        signals.delete_one('buy', x)  
+                            
+            
+        buy_sell_balance= round(sum(balance),1)
+        exitbalance =signals.free_balance('balance')
+        new_free_balance = exitbalance+buy_sell_balance
+        signals.add_balance('balance', new_free_balance)
+        # b = signals.free_balance('balance')
+        # send_msg(f'balance is ===> {b}')
+    except:
+        pass
     
 
 
