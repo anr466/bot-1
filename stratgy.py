@@ -338,7 +338,7 @@ def TA(tikers):
 
 
 def track_price(t_tracking):
-    try:
+    
             
         now = datetime.now()
         dt = now.strftime("%d-%m-%y  %H:%M:%S")
@@ -374,16 +374,14 @@ def track_price(t_tracking):
                         pl = (db_balance-fee)
                         balance.append(pl)            
                         signals.delete_one('buy', x)  
-                            
-            
+   
         buy_sell_balance= round(sum(balance),1)
         exitbalance =signals.free_balance('balance')
         new_free_balance = exitbalance+buy_sell_balance
         signals.add_balance('balance', new_free_balance)
         # b = signals.free_balance('balance')
         # send_msg(f'balance is ===> {b}')
-    except:
-        pass
+
     
 
 
