@@ -434,8 +434,9 @@ def hd():
             ti.sleep(5)
             lunch()
         
-   
-
+while True:
+    hd()
+    
 
 
 @bot.message_handler(func=lambda message: True)  
@@ -449,10 +450,8 @@ def t_mer(message):
         bot.send_message(chid,f"balance is {balance}")
     elif text == "sum":
         bot.send_message(chid,f"{summary()}")
+    return bot.polling()
     
-while True:
-    hd()
-    bot.polling()
 
 
 # while True:
