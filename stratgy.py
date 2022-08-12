@@ -380,32 +380,10 @@ def track_price(t_tracking):
     exitbalance =signals.free_balance('balance')
     new_free_balance = exitbalance+buy_sell_balance
     signals.add_balance('balance', new_free_balance)
-    balance = signals.free_balance('balance')
+    b = signals.free_balance('balance')
+    send_msg(f'balance is ===> {b}')
     
-
-def collect_balance(ticker):
-    v = []
-    for i in ticker:
-        
-        x = signals.find('profit', i)
-        db_balance = x[4]
-        db_balance = float(db_balance)
-        fee = (2*db_balance) / 100
-        fee = float(fee)
-        pl = (db_balance+fee)
-        v.append(pl)
-        x = signals.find('loss', i)
-        db_balance = x[4]
-        db_balance = float(db_balance)
-        fee = (2*db_balance) / 100
-        fee = float(fee)
-        pl = (db_balance+fee)
-        v.append(pl)
-    x= round(sum(balance),1)
-    exitbalance =signals.free_balance('balance')
-    signals.add_balance('balance', x)
-    balance = signals.free_balance('balance')
-    send_msg(f'balance is : {balance}')
+    
 
     
 def summary():
@@ -462,18 +440,19 @@ def hd():
 
 @bot.message_handler(func=lambda message: True)  
 def t_mer(message):
-    hd()
+    
     balance = signals.free_balance('balance')
     text = message.text
+    text = text.lower()
     chid = message.chat.id
     if text == "bl":
         bot.send_message(chid,f"balance is {balance}")
     elif text == "sum":
         bot.send_message(chid,f"{summary()}")
-    # else:
-    #     bot.send_message(chid,"اشتغل")
-
-bot.infinity_polling()
+    
+while True:
+    hd()
+    bot.polling()
 
 
 # while True:
