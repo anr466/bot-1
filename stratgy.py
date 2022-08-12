@@ -346,6 +346,7 @@ def track_price(t_tracking):
         balance = []
 
         for x in t_tracking:
+            try:
                     
                 db_ticker = signals.find('buy', x)        
                 db_ticker_name = db_ticker[0]
@@ -368,12 +369,19 @@ def track_price(t_tracking):
                         pl = (db_balance+fee)
                         balance.append(pl)
                         signals.delete_one('buy', x)
+                        b = signals.free_balance('balance')
+                        send_msg(f'balance is ===> {b}')
+
                     elif price_cal <= db_ticker_SL:             
                         send_msg(f"تم البيع على وقف الخسارة ==>${x}")             
                         signals.add('loss', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
                         pl = (db_balance-fee)
                         balance.append(pl)            
-                        signals.delete_one('buy', x)  
+                        signals.delete_one('buy', x)
+                        b = signals.free_balance('balance')
+                        send_msg(f'balance is ===> {b}')
+            except:
+                pass 
    
         buy_sell_balance= round(sum(balance),1)
         exitbalance =signals.free_balance('balance')
