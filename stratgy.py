@@ -381,7 +381,7 @@ def track_price(t_tracking):
     new_free_balance = exitbalance+buy_sell_balance
     signals.add_balance('balance', new_free_balance)
     balance = signals.free_balance('balance')
-    send_msg(f'balance is : {balance}')
+    
 
 def collect_balance(ticker):
     v = []
