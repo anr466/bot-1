@@ -436,7 +436,7 @@ def hd():
     min_ = int(min_)
     sec_ = time.strftime("%S")
     sec_ = int(sec_)
-    for i in one_minute:
+    for i in two_minute:
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()

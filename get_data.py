@@ -1,6 +1,5 @@
 from binance_client import Clnt
 import pandas as pd
-import pandas_ta as ta
 import numpy as np
 columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'IGNORE', 'Quote_Volume', 'Number of trades', 'Taker buy base asset volume', 'Taker buy quote asset volume', 'Can be ignored']
 
@@ -45,9 +44,10 @@ def get_klines(pair,interval,depth):
 
 
 
-df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
 
+# df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
 
+# print(df)
 
 def RSI(data: pd.DataFrame, window_length=14) -> pd.Series:
     """
@@ -80,4 +80,3 @@ def Stochastic_RSI(data: pd.DataFrame, window_length=14) -> pd.Series:
 
 
 
-# print(df)
