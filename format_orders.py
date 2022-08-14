@@ -1,5 +1,5 @@
 from ticker_rules import rules
-from binance_client import Clnt
+from Bclient import Clnt
 
 #set price format
 def format_price(ticker, price):

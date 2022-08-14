@@ -1,4 +1,4 @@
-from binance_client import Clnt
+from Bclient import Clnt
 import pandas as pd
 import numpy as np
 columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'IGNORE', 'Quote_Volume', 'Number of trades', 'Taker buy base asset volume', 'Taker buy quote asset volume', 'Can be ignored']

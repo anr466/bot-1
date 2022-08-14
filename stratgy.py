@@ -1,6 +1,6 @@
 
 from tradingview_ta import TA_Handler, Interval, Exchange
-from binance_client import Clnt
+from Bclient import Clnt
 import ticker_rules as tk
 import get_data as gd
 import pandas_ta as ta
@@ -92,7 +92,7 @@ def TA(tikers):
             coins.set_symbol_as(x)
             coins.set_exchange_as_crypto_or_stock('Binance')
             coins.set_screener_as_crypto()
-            coins.set_interval_as(Interval.INTERVAL_5_MINUTES)
+            coins.set_interval_as(Interval.INTERVAL_4_HOURS)
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
             RSI = indicators["RSI"]
@@ -174,6 +174,10 @@ def TA(tikers):
 
                 stoch = gd.Stochastic_RSI(df)
                 stoch = stoch[-1]
+
+                
+
+                
                 
 
                 if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>60 and cci_buy>200 and cci_buy<250 and adx_buy>50 and adx_buy<70:
@@ -338,8 +342,6 @@ def TA(tikers):
 
 
 def track_price(t_tracking):
-    
-            
         now = datetime.now()
         dt = now.strftime("%d-%m-%y  %H:%M:%S")
 
@@ -353,14 +355,16 @@ def track_price(t_tracking):
                 db_ticker_price = db_ticker[1]
                 db_ticker_tp1 = db_ticker[2]
                 db_ticker_SL = db_ticker[3]
-                db_balance = x[4]
+                db_balance = db_ticker[4]
                 db_balance = float(db_balance)
                 fee = (2*db_balance) / 100
-                fee = float(fee)
+                fee = round(float(fee),1)
+                
 
                 if x == db_ticker_name:
                     price_now = fo.get_ticker_price(x)
                     price_cal = fo.format_price(x , price_now)
+                    
 
                     if price_cal >= db_ticker_tp1:
                         
@@ -369,8 +373,8 @@ def track_price(t_tracking):
                         pl = (db_balance+fee)
                         balance.append(pl)
                         signals.delete_one('buy', x)
-                        b = signals.free_balance('balance')
-                        send_msg(f'balance is ===> {b}')
+                        # b = signals.free_balance('balance')
+                        # send_msg(f'balance is ===> {b}')
 
                     elif price_cal <= db_ticker_SL:             
                         send_msg(f"تم البيع على وقف الخسارة ==>${x}")             
@@ -378,8 +382,8 @@ def track_price(t_tracking):
                         pl = (db_balance-fee)
                         balance.append(pl)            
                         signals.delete_one('buy', x)
-                        b = signals.free_balance('balance')
-                        send_msg(f'balance is ===> {b}')
+                        # b = signals.free_balance('balance')
+                        # send_msg(f'balance is ===> {b}')
             except:
                 pass 
    
@@ -387,10 +391,9 @@ def track_price(t_tracking):
         exitbalance =signals.free_balance('balance')
         new_free_balance = exitbalance+buy_sell_balance
         signals.add_balance('balance', new_free_balance)
-        # b = signals.free_balance('balance')
-        # send_msg(f'balance is ===> {b}')
+       
 
-    
+
 
 
     
@@ -400,28 +403,23 @@ def summary():
     numloss = signals.num_table('loss')
     send_msg(f'اجمالي الرصيد الحالي : {ammount}\n اجمالي عدد الصفقات الناجحه: {numprofit} \n اجمالي عدد الصفقات الخاسرة : {numloss}')
 
- 
-
-
 
 
 def lunch():
     # send_msg('work')
     threading.Thread(target=TA , args=([usdt])).start()
-   
-    # threading.Thread(target=TA , args=([btc])).start()
-    # threading.Thread(target=TA , args=([busd])).start()
+ 
+#     # threading.Thread(target=TA , args=([btc])).start()
+#     # threading.Thread(target=TA , args=([busd])).start()
     
-    # threading.Thread(target=TA , args=([eth])).start()
-    # threading.Thread(target=TA , args=([bnb])).start()
-    # threading.Thread(target=TA , args=([others])).start()
-    # threading.Thread(target=track_price , args=([busd])).start()
+#     # threading.Thread(target=TA , args=([eth])).start()
+#     # threading.Thread(target=TA , args=([bnb])).start()
+#     # threading.Thread(target=TA , args=([others])).start()
+#     # threading.Thread(target=track_price , args=([busd])).start()
     
-    threading.Thread(target=track_price , args=([usdt])).start()
+#     # threading.Thread(target=track_price , args=([usdt])).start()
 
     ti.sleep(60)
-
-
 
 def hd():
     one_minute = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
@@ -440,6 +438,12 @@ def hd():
         if min_ == i and sec_ == 3:
             ti.sleep(5)
             lunch()
+        elif min_ == 31 and sec_ == 0:
+            summary()
+        else:
+            ti.sleep(1)
+            threading.Thread(target=track_price , args=([usdt])).start()
+
 
 
 
@@ -448,20 +452,18 @@ while True:
 
 
 # @bot.message_handler(func=lambda message: True)
-# def run():
-#     while True:
-#         hd()
-#         def t_mer(message):
-        
-#             balance = signals.free_balance('balance')
-#             text = message.text
-#             text = text.lower()
-#             chid = message.chat.id
-#             if text == "bl":
-#                 bot.send_message(chid,f"balance is {balance}")
-#             elif text == "sum":
-#                 bot.send_message(chid,f"{summary()}")
-#         bot.polling()
+
+# def t_mer(message):
+
+#     balance = signals.free_balance('balance')
+#     text = message.text
+#     text = text.lower()
+#     chid = message.chat.id
+#     if text == "bl":
+#         bot.send_message(chid,f"balance is {balance}")
+#     elif text == "sum":
+#         bot.send_message(chid,f"{summary()}")
+# bot.polling()
 
 
 

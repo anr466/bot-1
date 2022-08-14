@@ -29,7 +29,7 @@ class signals:
 
     def find(col,ticker):
         col = db[col]
-        find = col.find({},{'_id': False})
+        find = col.find({})
         tickers= {}
         db_ticker = []
         db_price = []    
@@ -66,9 +66,11 @@ class signals:
     def free_balance(col):
         col = db[col]
         find = col.find({})
+        
         for x in find:
             balance = x.get('balance')
-        balance = round(balance,1)
+        if balance<=0:
+            balance = 0
         return balance
 
     def buy_balance(col,amount):
@@ -118,9 +120,8 @@ class signals:
 # # x= sum(x)
 # print(x)
 
-    
 
-# x= signals.find_all('profit')
+# x= signals.find_all('buy')
 # print(x)
 # signals.clear_all('buy')
 # signals.clear_all('profit')
