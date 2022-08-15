@@ -66,11 +66,11 @@ class signals:
     def free_balance(col):
         col = db[col]
         find = col.find({})
-        b = []
-        for x in find:
-            b.append(x.get('balance'))
-        b= b[0]
-        return b
+        
+        for i in find:
+            pass
+        return i.get('balance')
+        
 
 
     def buy_balance(col,amount):
@@ -116,9 +116,9 @@ class signals:
 
 
 
-# x = signals.free_balance('balance')
-# # x= sum(x)
-# print(x)
+x = signals.free_balance('balance')
+# x= sum(x)
+print(x)
 
 
 # x= signals.find_all('buy')
