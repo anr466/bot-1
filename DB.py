@@ -86,8 +86,9 @@ class signals:
             ammount.append(y)
         
         c = ammount[0]
-        new_balance = (c-amount)
+        if c >=0:
 
+            new_balance = (c-amount)
         return new_balance
     def sell_balance(col,amount):
         amount = float(amount)
@@ -137,7 +138,7 @@ class signals:
 # signals.clear_all('profit')
 # signals.clear_all('loss')
 # signals.clear_all('balance')
-# signals.add_balance('balance', 150)
+# signals.add_balance('balance', 1500)
 # s= signals.free_balance('balance')
 
 # print(s)

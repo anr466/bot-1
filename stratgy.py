@@ -28,9 +28,6 @@ def send_msg(text):
     response = requests.get(req)
     return response.json()
 
-
-
-
 def vwap(df , period):
     kline = df
     # calaculate average price for high , low , close
@@ -355,8 +352,8 @@ def track_price(t_tracking):
                         signals.delete_one('buy', x)
                         ti.sleep(10)
                         b = signals.free_balance('balance')
-                        if b>=0:
-                            send_msg(f'balance is ===> {b}')
+                        
+                        send_msg(f'balance is ===> {b}')
 
                     elif price_cal <= db_ticker_SL:             
                         send_msg(f"تم البيع على وقف الخسارة ==>${x}")             
@@ -367,8 +364,8 @@ def track_price(t_tracking):
                         signals.delete_one('buy', x)
                         ti.sleep(10)
                         b = signals.free_balance('balance')
-                        if b>=0:
-                            send_msg(f'balance is ===> {b}')
+                        
+                        send_msg(f'balance is ===> {b}')
             except:
                 pass 
    
@@ -377,9 +374,7 @@ def track_price(t_tracking):
         new_free_balance = exitbalance+buy_sell_balance
         signals.add_balance('balance', new_free_balance)
         # signals.add_balance('finalbalance', new_free_balance)
-        b = signals.free_balance('balance')
-        if b>=0:
-            send_msg(f'balance is ===> {b}')
+        
        
        
 
