@@ -58,8 +58,10 @@ for i in tk.rules:
 
 
 usdt = []
+list_buy = []
 bnb = []
 busd = []
+busdt = []
 eth = []
 btc = []
 others = []
@@ -86,15 +88,16 @@ def TA(tikers):
         
         try:
             #data frame
-            df = gd.get_klines(x ,'1m' ,'12 hours ago UTC')
+            df = gd.get_klines(x ,'1m' ,'15 minutes ago UTC')
             # trading view
             coins = TA_Handler()
             coins.set_symbol_as(x)
             coins.set_exchange_as_crypto_or_stock('Binance')
             coins.set_screener_as_crypto()
-            coins.set_interval_as(Interval.INTERVAL_5_MINUTES)
+            coins.set_interval_as(Interval.INTERVAL_1_HOUR)
             summary = (coins.get_analysis().summary)
             indicators = coins.get_analysis().indicators 
+            # print(df)
             RSI = indicators["RSI"]
             RSI = round(RSI,1)
             CCI = indicators["CCI20"]
@@ -163,7 +166,7 @@ def TA(tikers):
                 stoch = gd.Stochastic_RSI(df)
                 stoch = stoch[-1]        
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and cci_buy>150 and cci_buy<300 and adx_buy>60:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and RSI>70 and CCI>200 and ADX_POSITIVE>50:
                     #strargy1
                     if x.endswith("USDT") or x.endswith("BUSD"):
                         # send_msg('text')
@@ -197,6 +200,9 @@ def TA(tikers):
 
                         if new_balance10 >= 10.5:
 
+                            #add x to buy_list 
+                            list_buy.append(x)
+
                             buy = signals.buy_balance('balance',new_balance10)
                             signals.add_balance('balance',buy) 
                             balance = signals.free_balance('balance')
@@ -206,6 +212,9 @@ def TA(tikers):
 
                         elif new_balance9 >= 10.5:
 
+                            #add x to buy_list 
+                            list_buy.append(x)
+
                             buy = signals.buy_balance('balance',new_balance9)
                             signals.add_balance('balance',buy)
                             balance = signals.free_balance('balance')  
@@ -214,6 +223,9 @@ def TA(tikers):
 
                         elif new_balance8 >= 10.5:
 
+                            #add x to buy_list 
+                            list_buy.append(x)
+
                             buy = signals.buy_balance('balance',new_balance8)
                             signals.add_balance('balance',buy) 
                             balance = signals.free_balance('balance')                    
@@ -221,6 +233,9 @@ def TA(tikers):
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance8)
 
                         elif new_balance7 >= 10.5:
+
+                            #add x to buy_list 
+                            list_buy.append(x)
 
                             buy = signals.buy_balance('balance',new_balance7)
                             signals.add_balance('balance',buy)
@@ -231,6 +246,9 @@ def TA(tikers):
                      
                         elif new_balance6 >= 10.5:
 
+                            #add x to buy_list 
+                            list_buy.append(x)
+
                             buy = signals.buy_balance('balance',new_balance6)
                             signals.add_balance('balance',buy)
                             balance = signals.free_balance('balance')
@@ -239,6 +257,9 @@ def TA(tikers):
         
                             
                         elif new_balance5 >= 10.5:
+
+                            #add x to buy_list 
+                            list_buy.append(x)
 
                             buy = signals.buy_balance('balance',new_balance5)
                             signals.add_balance('balance',buy)
@@ -249,6 +270,9 @@ def TA(tikers):
                             
                         elif new_balance4 >= 10.5:
 
+                            #add x to buy_list 
+                            list_buy.append(x)
+
                             buy = signals.buy_balance('balance',new_balance4)
                             signals.add_balance('balance',buy)
                             balance = signals.free_balance('balance') 
@@ -257,6 +281,9 @@ def TA(tikers):
                             
                    
                         elif new_balance3 >= 10.5:
+
+                            #add x to buy_list 
+                            list_buy.append(x)
 
                             buy = signals.buy_balance('balance',new_balance3)
                             signals.add_balance('balance',buy)
@@ -267,6 +294,9 @@ def TA(tikers):
                             
                         elif new_balance2 >= 10.5:
 
+                            #add x to buy_list 
+                            list_buy.append(x)
+
                             buy = signals.buy_balance('balance',new_balance2)
                             signals.add_balance('balance',buy)
                             balance = signals.free_balance('balance')
@@ -276,17 +306,24 @@ def TA(tikers):
                             
                         elif new_balance1 >= 10.5:
 
+                            #add x to buy_list 
+                            list_buy.append(x)
+
                             buy = signals.buy_balance('balance',new_balance1)
                             signals.add_balance('balance',buy) 
                             balance = signals.free_balance('balance')
                             send_msg(f' \n شراء==> ${x} \nالسعر الحالي==> {price_cal} \nالوقت==> {timestap[0]} \nالهدف==> {tp1}\nوقف الخسارة==> {stopprice}\n مبلغ الشراء ==>${new_balance1}\nالرصيد المتبقي {balance}\nindicators\nrsi = {RSI} \ncci = {CCI} \nADX = {ADX_POSITIVE} \nmacd = {MACD} \n mycode \nrsi_buy = {rsi_buy} \nadx_buy = {adx_buy} \nmacd_buy = {buy_macd} \nstoch = {stoch} \nrsi_fun = {rsi_fun} \ncci = {cci_buy} \n histogram = {histogram} \n vwap = {crosss_buy}')
                             signals.add('buy', dt=dt,tickers= x,price_now= price_cal,tp1= tp1,sl= stopprice,amount=new_balance1)
-                        else:
-                            send_msg('balance is 0')
+                        
         except:
             pass                    
                         
                           
+
+def targetbalance(goal,new_balance):
+    target = (new_balance / goal) * 100
+    target = round(target,1)
+    return target
 
 
 
@@ -321,7 +358,8 @@ def track_price(t_tracking):
                         balance.append(pl)
                         signals.delete_one('buy', x)
                         b = signals.free_balance('balance')                 
-                        send_msg(f'balance is ===> {b}')
+                        send_msg(f'balance after sell ===> {b}')
+                        
 
                     elif price_cal <= db_ticker_SL:             
                         send_msg(f"تم البيع على وقف الخسارة ==>${x}")             
@@ -330,20 +368,23 @@ def track_price(t_tracking):
                         balance.append(pl) 
                         signals.delete_one('buy', x)    
                         b = signals.free_balance('balance')
-                        send_msg(f'balance is ===> {b}')
+                        send_msg(f'balance after sell ===> {b}')
+                        
+                        
             except:
                 pass 
    
         buy_sell_balance= round(sum(balance),1)
-        sellbalance = buy_sell_balance+buy_sell_balance
         exitbalance =signals.free_balance('balance')
+        profitbalance = signals.free_balance('sellbalance')
         new_free_balance = exitbalance+buy_sell_balance
+        # new_profit_balance = profitbalance+new_free_balance
         signals.add_balance('balance', new_free_balance)
-        signals.add_balance('sellbalance', sellbalance)
+        signals.add_balance('sellbalance', new_free_balance)
+        f = signals.free_balance('sellbalance')
+        # x = targetbalance(1500, f)
+        send_msg(f'profit balance {f} ')
         # b = signals.free_balance('balance')
-        # f = signals.free_balance('sellbalance')
-        # x = (100 * (f-b)/b)
-        # send_msg(f'balance is ===> {b} \n sell balance is : {sellbalance}')
         
 
 
@@ -375,17 +416,17 @@ def telegbot():
 def lunch():
     # send_msg('work')
     threading.Thread(target=TA , args=([usdt])).start()
-    threading.Thread(target=TA , args=([busd])).start()
-    track_price(busd)
-    track_price(usdt)
-    telegbot()
+    # threading.Thread(target=TA , args=([busd])).start()
+    track_price(list_buy)
+    
+    # telegbot()
 
     # ti.sleep(60)
 
 
 while True:
     lunch()
-
+# track_price(usdt)
 
 
 # def hd():

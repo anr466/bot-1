@@ -125,9 +125,9 @@ class signals:
 
 
 
-x = signals.free_balance('balance')
-# x= sum(x)
-print(x)
+# x = signals.free_balance('sellbalance')
+# # x= sum(x)
+# print(x)
 
 
 # x= signals.find_all('buy')
