@@ -198,3 +198,18 @@
 
 # target = list(target.values())[0]
 
+# import ticker_rules as tk 
+
+# usdt = []
+# for i in tk.rules:
+#     if "USDT" in i :
+#         usdt.append(i)
+
+# buy = [{}]
+
+# for i in usdt:
+#     if "BTCUSDT" in i :
+#         buy.append(i)
+
+        
+# print(buy)

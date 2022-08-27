@@ -76,11 +76,6 @@ class signals:
         x = round(x)
         return x
         
-
-        
-        
-
-
     def buy_balance(col,amount):
         amount = float(amount)
         col = db[col]
@@ -98,36 +93,45 @@ class signals:
 
             new_balance = (c-amount)
         return new_balance
-    def sell_balance(col,amount):
-        amount = float(amount)
+    def buy_ticker(col,ticker):
+        col = db[col]
+        data = col.insert_one({"ticker":ticker})
+        return data
+
+    def tracking_ticker(col,ticker):
         col = db[col]
         find = col.find({})
         balance = {}
         ammount = []
-        
+        buy_list = []
         for x in find:
-            balance[x["balance"]] = x["balance"]
+            balance[x["ticker"]] = x["ticker"]
         for y in balance:
             ammount.append(y)
         
-        c = ammount[0]
-        new_balance = (c+amount)
-
-        return new_balance
-
-    def getbalance(col,nametable):
-        nametable = str(nametable)
-        col = db[col]
-        find = col.find({})
-        for i in find:
-            pass
-        return i.get(nametable)
+        return ammount
+        
+    def buy_list():
+        col = db['buy']
+        find = col.find({},{'_id': False})
+        buylist= []
+        for x in find:
+            buylist.append(x.get('Tickers'))
+        
+        return buylist
 
 
 
-# x = signals.free_balance('sellbalance')
-# # x= sum(x)
+# x = signals.buy_list()
 # print(x)
+
+
+
+
+# signals.buy_ticker('buytik','xxxx')
+# x = signals.tracking_ticker('buytik', 'BTCUSDT')
+# print(x)
+
 
 
 # x= signals.find_all('buy')
@@ -143,18 +147,7 @@ class signals:
 # signals.add('profit', '2344', 'eth', '5', '5', '5', '10')
 # signals.add('profit', '2344', 'ada', '5', '5', '5', '10')
 # signals.delete_one('profit', 'btc')
-# signals.clear_all('profit')
-# signals.clear_all('buy')
-# signals.clear_all('loss')
-# signals.clear_all('balance')
+
 # signals.add_balance('balance', 1500)
 # s= signals.free_balance('balance')
 
-# print(s)
-# print(u)
-
-# print('new balance',h )
-# print('add new balance',s)
-# print('free new balance ',u)
-
-# print('all col balance :' , n)

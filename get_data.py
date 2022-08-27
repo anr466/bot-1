@@ -45,7 +45,7 @@ def get_klines(pair,interval,depth):
 
 
 
-# df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
+df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
 
 # print(df)
 
@@ -78,5 +78,6 @@ def Stochastic_RSI(data: pd.DataFrame, window_length=14) -> pd.Series:
     rsi = RSI(data=df_, window_length=window_length)
     return (rsi - rsi.rolling(window_length).min()) / (rsi.rolling(window_length).max() - rsi.rolling(window_length).min())
 
-
-
+# #exampel 
+# StochRSI = Stochastic_RSI(df)# df = dataframe
+# print(StochRSI)
