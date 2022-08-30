@@ -1,7 +1,6 @@
 # import get_rules
 # from ticker_rules import rules
-# import format_orders as fo
-# import os
+import format_orders as fo
 
 # tickers = []
 # minPrice = []
@@ -184,9 +183,10 @@
                     
 
 
-# x = "ADAUSDT"
-# price_now = fo.get_ticker_price(x)
-# price_cal = fo.format_price(x , price_now)
+x = "ADAUSDT"
+price_now = fo.get_ticker_price(x)
+price_cal = fo.format_price(x , price_now)
+
 
 # target = fo.price_calculator(x , price_now , tp1 =2.5 ,tp2 =5)
 # profit = list(target.values())[0]

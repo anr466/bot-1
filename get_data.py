@@ -34,7 +34,7 @@ def get_klines(pair,interval,depth):
         df['Low'] = pd.to_numeric(df['Low'])
         df['Volume'] = pd.to_numeric(df['Volume'])
    
-        df.dropna(inplace=True)
+        # df.dropna(inplace=True)
         for i in range(6 , len(columns)):
              del df[columns[i]]
 

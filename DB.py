@@ -139,6 +139,7 @@ class signals:
 # signals.clear_all('buy')
 # signals.clear_all('profit')
 # signals.clear_all('loss')
+# signals.clear_all('sellbalance')
 # signals.clear_all('balance')
 # # # # # h = signals.buy_balance('balance',15)
 
@@ -149,5 +150,6 @@ class signals:
 # signals.delete_one('profit', 'btc')
 
 # signals.add_balance('balance', 1500)
+# signals.add_balance('sellbalance', 0)
 # s= signals.free_balance('balance')
 
