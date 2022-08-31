@@ -147,7 +147,7 @@ def TA(tikers):
                 stoch = round(stoch,1) 
                 
 
-                if summary['RECOMMENDATION'] == "STRONG_BUY" and rsi_fun>70 and adx_buy>60 and cci_buy>250:
+                if summary['RECOMMENDATION'] == "STRONG_BUY" and RSI>60 and ADX_POSITIVE>55 and CCI>150:
                     #strargy1
 
                     buy_list = signals.buy_list()
@@ -161,7 +161,7 @@ def TA(tikers):
                             timestap = []
                             timestap.append(c)
                         
-                        target = fo.price_calculator(x , price_now , tp1 = 3)
+                        target = fo.price_calculator(x , price_now , tp1 = 2.5)
                         stoploss = fo.price_calculator(x , price_now , tp1 = -5)
                         tp1 = list(target.values())[0]
                         stopprice = list(stoploss.values())[0]
@@ -293,8 +293,8 @@ def TA(tikers):
                           
 
 def targetbalance(goal,new_balance):
-    target = (new_balance / goal) * 100
-    target = float(round(target,1))
+    target = float((new_balance / goal) * 100)
+    target = round(target,1)
     return target
 
 
@@ -318,7 +318,7 @@ def track_price():
                     db_ticker_SL = db_ticker[3]
                     db_balance = db_ticker[4]
                     db_balance = float(db_balance)
-                    fee = (2*db_balance) / 100
+                    fee = (2.5*db_balance) / 100
                     fee = round(float(fee),1)
                     print(x)
                     
