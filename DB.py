@@ -122,7 +122,7 @@ class signals:
 
 
 
-# x = signals.buy_list()
+# x = signals.find_all('profit')
 # print(x)
 
 

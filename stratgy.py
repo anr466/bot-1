@@ -160,7 +160,7 @@ def TA(tikers):
                         for c in df['Close'].index:
                             timestap = []
                             timestap.append(c)
-                        
+                       
                         target = fo.price_calculator(x , price_now , tp1 = 2.5)
                         stoploss = fo.price_calculator(x , price_now , tp1 = -5)
                         tp1 = list(target.values())[0]
@@ -377,7 +377,7 @@ def summary():
         numprofit = signals.num_table('profit')
         numloss = signals.num_table('loss')
         still = signals.num_table('buy')
-        send_msg(f'اجمالي الرصيد الحالي : {ammount}\n اجمالي عدد الصفقات الناجحه: {numprofit} \n اجمالي عدد الصفقات الخاسرة : {numloss} \n مبلغ الربح : {profitbalance} \n عدد الصفقات المعلقه : {still}\n نسبة الربح من رآس المال %{p} \n \n ')
+        send_msg(f'اجمالي الرصيد الحالي : {ammount}\n اجمالي عدد الصفقات الناجحه: {numprofit} \n اجمالي عدد الصفقات الخاسرة : {numloss} \n مبلغ الربح : {profitbalance} \n عدد الصفقات المعلقه : {still}\n نسبة الربح من رآس المال % {p} \n \n ')
     except:
         pass   
 

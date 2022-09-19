@@ -1,12 +1,32 @@
 from get_data import get_klines
 import talib as ta
-
+import pandas_ta as pt
 import numpy as np
 
 
 df = get_klines('BTCUSDT', '1m', '1 hour ago')
 
 vwaplist = [48,200]
+
+
+def vwap1(df , period):
+    kline = df
+    # calaculate average price for high , low , close
+    kline['tp'] = pt.hlc3(high= kline['High'] , low= kline['Low'] ,close=kline['Close'])
+    kline['tpV'] = kline['tp'] * kline['Volume']
+    #using moving average
+    kline['mtpv'] = pt.sma(kline['tpV'] , length = period)
+    kline['mV'] = pt.sma(kline['Volume'] , length = period)
+    # calaulate vwap
+    kline['vwap'] = kline['mtpv'] /  kline['mV']
+    vwap = kline['vwap']
+    columns = kline.columns
+
+    for i in range(6 , len(columns)):
+        del kline[columns[i]]
+
+
+    return vwap
 
 
 
