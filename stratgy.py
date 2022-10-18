@@ -334,6 +334,7 @@ def track_price():
                         send_msg(f"تحقق هدف البيع للعملة   ==>${x}")#\n tp1 = {db_ticker_tp1}")            
                         signals.add('profit', dt, x, price_cal, db_ticker_tp1, db_ticker_SL,db_balance)
                         pl = (db_balance+fee)
+                        
                         balance.append(pl)
                         signals.delete_one('buy', x)
                         

@@ -213,3 +213,41 @@ price_cal = fo.format_price(x , price_now)
 
         
 # print(buy)
+
+# price_cal = 30000
+# db_ticker_price = 19000
+# db_balance = 100
+
+# earn = round((price_cal - db_ticker_price),1)
+
+# profit_amount = round((db_balance+earn),1)
+# loss_amount = round((db_ticker_price - price_cal))
+
+# #calculate percantge earn money
+# profit_pct = round(((earn / db_ticker_price) * 100),1)
+# loss_pct = round(((loss_amount / db_ticker_price) * 100),1)
+
+# print('price sell :' , price_cal)
+# print(f'earn : {earn}' )
+# print('price buy :' , db_ticker_price)
+# print('profit amount : ' , profit_amount)
+# print('loss amount  : ' , loss_amount)
+
+# print(f'persantge earn :  {profit_pct}%')
+# print(f'parcantge loss :  {loss_pct}%')
+
+
+from DB import signals
+
+x = signals.free_balance('balance')
+
+
+b = x - 100
+
+n = x - b
+
+
+
+print(x)
+print(b)
+print(n)

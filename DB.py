@@ -113,7 +113,7 @@ class signals:
         
     def buy_list():
         col = db['buy']
-        find = col.find({},{'_id': False})
+        find = col.find({})
         buylist= []
         for x in find:
             buylist.append(x.get('Tickers'))
@@ -122,7 +122,7 @@ class signals:
 
 
 
-# x = signals.find_all('profit')
+# x = signals.find_all('buy')
 # print(x)
 
 
@@ -137,19 +137,13 @@ class signals:
 # x= signals.find_all('buy')
 # print(x)
 # signals.clear_all('buy')
-# signals.clear_all('profit')
-# signals.clear_all('loss')
-# signals.clear_all('sellbalance')
 # signals.clear_all('balance')
-# # # # # h = signals.buy_balance('balance',15)
 
-# signals.add_balance('balance',150)
-# signals.add('profit', '2344', 'btc', '5', '5', '5', '10')
-# signals.add('profit', '2344', 'eth', '5', '5', '5', '10')
-# signals.add('profit', '2344', 'ada', '5', '5', '5', '10')
-# signals.delete_one('profit', 'btc')
 
-# signals.add_balance('balance', 1500)
-# signals.add_balance('sellbalance', 0)
-# s= signals.free_balance('balance')
+# signals.add_balance('balance',1000)
+# signals.add_balance('sumexit',0)
+# signals.add_balance('sumeentry',0)
+# signals.add_balance('sumfree',0)
+# signals.add_balance('profit_amount',0)
+
 
