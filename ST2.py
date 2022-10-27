@@ -39,6 +39,10 @@ def send_photo(path):
 
 def St_buy(ticker):
 
+
+    #جمع مبلغ الشراء 
+    entry = []
+
     for x in ticker:
         if x.endswith("USDT"):
             try:
@@ -115,17 +119,23 @@ def St_buy(ticker):
                             balance = float(balance)
 
                             
-                            free_blanace = balance - 100
+                            free_blanace = balance - 50
 
                             print('free balance ' , free_blanace)
                             buy_amount = balance - free_blanace
                             print('buy amount' , buy_amount)
 
-                            if  free_blanace>=0 and buy_amount >= 10.5 :
+                            if free_blanace>=0 and buy_amount >= 10.5 :
                                 buy = signals.buy_balance('balance',buy_amount)
                                 signals.add_balance('balance',buy) 
                                 balance = signals.free_balance('balance')
                                 print(f'buy signal {x}')
+
+                                #جمع عمليات الشراء
+                                entry.append(buy_amount)
+
+
+
 
                                 # f = figure(x)
                                 # print(f)
@@ -305,11 +315,15 @@ def St_buy(ticker):
                      
             except:
                 pass
-
+    q= round(sum(entry),1)
+    r =signals.free_balance('entry')
+    u = r+q
+    signals.add_balance('entry', u)
+    
 
 
 def st_sell():
-    try:
+    # try:
             
 
         buy_list = signals.buy_list()
@@ -365,6 +379,9 @@ def st_sell():
 
                     buy= df.iloc[-1:]["buy_EMAbb"]
                     sell = df.iloc[-1:]['sell_EMAbb']
+                    print(x)
+
+                    
 
                     for i in sell:
                                 
@@ -372,21 +389,22 @@ def st_sell():
 
                         
 
-                            # print(f'sell signal {x}')
+                            print(f'sell signal {x}')
 
                             now = datetime.now()
                             dt = now.strftime("%d-%m-%y  %H:%M:%S")
 
                             #include Db buy ticker
-                            db_ticker = signals.find('buy', x)        
-                            db_ticker_name = db_ticker[0]
-                            db_ticker_price = db_ticker[1]
+                            db_ticker = signals.find('buy', x) 
+                            db_buy_time = db_ticker[0]       
+                            db_ticker_name = db_ticker[1]
+                            db_ticker_price = db_ticker[2]
                             db_ticker_price= float(db_ticker_price)
-                            db_ticker_tp1 = db_ticker[2]
+                            db_ticker_tp1 = db_ticker[3]
                             db_ticker_tp1 = float(db_ticker_tp1)
-                            db_ticker_SL = db_ticker[3]
+                            db_ticker_SL = db_ticker[4]
                             db_ticker_SL = float(db_ticker_SL)
-                            db_balance = db_ticker[4]
+                            db_balance = db_ticker[5]
                             db_balance = float(db_balance)
 
                             
@@ -419,26 +437,32 @@ def st_sell():
 
                             #حساب مبلغ البيع مع خصم العموله
                             fees = ((profit_amount*99.9)/100)
+                            fees = round(fees,1)
                             #خصم مبلغ الشراء من مبلغ البيع مع العموله
                             amount_free = (fees - db_balance)
                             #صافي الربح
                             amount_free = round(amount_free,1)
+
+                            
+
+
+                            
 
 
                             
                             if price_now > db_ticker_price and profit_amount> db_balance:
 
                                 if price_now > db_ticker_tp1:
-                                    send_msg(f'تم البيع الاستراتجية وتحقق الهدف للعملة : {x} \n سعر الشراء : {db_ticker_price} \n سعر البيع : {price_now} \n مبلغ الدخول : {db_balance} \n مبلغ الخروج : {fees} \n نسبة تغيير السعر : {pct_amount}% \n  المربح : {amount_free} \n  --------------------\n' )
-                                    # جمع مبلغ الخروج
-                                    all_exit_op.append(fees)
-                                    #جمع مبلغ الدخول
-                                    all_entry_op.append(db_balance)
+                                    send_msg(f'تم البيع وتحقق الهدف للعملة : {x} \n سعر الشراء : {db_ticker_price} \n سعر البيع : {price_now} \n مبلغ الدخول : {db_balance} \n مبلغ الخروج : {fees} \n نسبة تغيير السعر : {pct_amount}% \n  المربح : {amount_free} \n  -------<-Target->--------\n' )
+
                                     #جمع الارباح 
                                     free_balance.append(amount_free)
-                                    #جمع رصيد المبيعات
+                                    #مبلغ الخروج مع احتساب العموله
                                     balance.append(fees)
 
+                                    all_entry_op.append(fees)
+                                    
+                                    signals.add('sell', dt, x, price_now, tp1 = db_ticker_tp1, sl=db_ticker_SL, amount=db_balance)
 
                                     signals.delete_one('buy', x)
                                 else:
@@ -452,14 +476,12 @@ def st_sell():
                                     # ti.sleep(2)
                                     # os.remove('buy.jpg')
 
-                                    send_msg(f'تم البيع الاستراتجية وتحقق الهدف للعملة : {x} \n سعر الشراء : {db_ticker_price} \n سعر البيع : {price_now} \n مبلغ الدخول : {db_balance} \n مبلغ الخروج : {fees} \n نسبة تغيير السعر : {pct_amount}% \n  المربح : {amount_free} \n  --------------------\n' )
-                                    # جمع مبلغ الخروج
-                                    all_exit_op.append(fees)
-                                    #جمع مبلغ الدخول
-                                    all_entry_op.append(db_balance)
+                                    send_msg(f'تم البيع الاستراتجية للعملة : {x} \n سعر الشراء : {db_ticker_price} \n سعر البيع : {price_now} \n مبلغ الدخول : {db_balance} \n مبلغ الخروج : {fees} \n نسبة تغيير السعر : {pct_amount}% \n  المربح : {amount_free} \n  -------<-Stratgy->--------\n' )
+                                    signals.add('sell', dt, x, price_now, tp1 = db_ticker_tp1, sl=db_ticker_SL, amount=db_balance)
+
                                     #جمع الارباح 
                                     free_balance.append(amount_free)
-                                    #جمع رصيد المبيعات
+                                    #مبلغ الخروج مع احتساب العموله
                                     balance.append(fees)
 
                                     signals.delete_one('buy', x)
@@ -469,31 +491,14 @@ def st_sell():
         exitbalance =signals.free_balance('balance')
         new_free_balance = exitbalance+buy_sell_balance
         signals.add_balance('balance', new_free_balance)
-        #جمع الخروج
-        sum_exit = round(sum(all_exit_op),1)
-        f = signals.free_balance('sumexit')
-        v = round(f + sum_exit,1)
-        signals.add_balance('sumexit', v)
-        #جمع الدخول
-        sum_entry = round(sum(all_entry_op),1)
-        k = signals.free_balance('sumeentry')
-        l = round(k + sum_entry,1)
-        signals.add_balance('sumeentry', l)
         #جمع الارباح
         sum_free_balance = round(sum(free_balance),1)
         b = signals.free_balance('sumfree')
         a = round(b + sum_free_balance,1)
         signals.add_balance('sumfree', a)
-        # خسم الخروج من راس المال
-        ss = (v - l)
-        hh = signals.free_balance('profit_amount')
-        nn = round(hh+ss,1)
-        signals.add_balance('profit_amount', nn)
 
-
-
-    except:
-        pass
+    # except:
+    #     pass
 
 
 
@@ -503,13 +508,12 @@ def summary():
 
         ammount = signals.free_balance('balance')
         still = signals.num_table('buy')
-        entry = signals.free_balance('sumeentry')
-        exitt = signals.free_balance('sumexit')
+        sell = signals.num_table('sell')
         free = signals.free_balance('sumfree')
-        profit = signals.free_balance('profit_amount')
-        
-
-        send_msg(f'اجمالي الرصيد الحالي : {ammount} \n اجمالي عمليات الشراء المعلقه : {still}\n اجمالي عمليات الشراء : {entry} \nاجمالي عمليات البيع : {exitt}\n اجمالي الربح : {free}\n اجمالي الربح من راس المال : {profit} \n\n -----SELL----')
+        profit = signals.free_balance('entry')
+        sumprofit = (profit+free)
+  
+        send_msg(f' الرصيد المتاح : {ammount} \n  عمليات الشراء المعلقه : {still}\n  عمليات البيع المنفذه : {sell} \n\n المحفظة  :  {sumprofit}\n\n -----SELL----')
     except:
         pass   
 
@@ -566,15 +570,18 @@ def infiniteloop3():
 
 
 
-try:
-    thread1 = threading.Thread(target=infiniteloop1)
-    thread1.start()
+def run():
+    try:
 
-    thread2 = threading.Thread(target=infiniteloop2)
-    thread2.start()
+        thread1 = threading.Thread(target=infiniteloop1)
+        thread1.start()
 
-    thread3 = threading.Thread(target=infiniteloop3)
-    thread3.start()
-except:
-    pass
+        thread2 = threading.Thread(target=infiniteloop2)
+        thread2.start()
 
+        thread3 = threading.Thread(target=infiniteloop3)
+        thread3.start()
+    except:
+        pass
+
+run()
