@@ -34,7 +34,6 @@ def get_klines(pair,interval,depth):
         df['Low'] = pd.to_numeric(df['Low'])
         df['Volume'] = pd.to_numeric(df['Volume'])
     
-   
         # df.dropna(inplace=True)
         for i in range(6 , len(columns)):
              del df[columns[i]]
@@ -44,9 +43,6 @@ def get_klines(pair,interval,depth):
         return None
 
 
-
-
-df=get_klines("BTCUSDT",'15m','12 hours ago UTC')      
 
 # print(df)
 
@@ -82,3 +78,11 @@ def Stochastic_RSI(data: pd.DataFrame, window_length=14) -> pd.Series:
 # #exampel 
 # StochRSI = Stochastic_RSI(df)# df = dataframe
 # print(StochRSI)
+
+
+
+
+# df=get_klines("BTCUSDT",'15m','12 hours ago UTC')
+
+
+# print(df)

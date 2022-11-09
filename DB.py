@@ -110,9 +110,9 @@ class signals:
             ammount.append(y)
         
         return ammount
-        
-    def buy_list():
-        col = db['buy']
+      
+    def buy_list(col):
+        col = db[col]
         find = col.find({})
         buylist= []
         for x in find:
@@ -121,9 +121,6 @@ class signals:
         return buylist
 
 
-
-# x = signals.find_all('buy')
-# print(x)
 
 
 
@@ -134,13 +131,20 @@ class signals:
 
 
 
-# x= signals.find_all('buy')
+# x= signals.find_all('sumfree')
 # print(x)
-# signals.clear_all('buy')
-# signals.clear_all('sell')
-# signals.clear_all('balance')
-# signals.add_balance('balance',1000)
-# signals.add_balance('entry',0)
-# signals.add_balance('sumfree',0)
+
+def rest():
+
+    signals.clear_all('buy')
+    signals.clear_all('sell')
+    signals.clear_all('pump')
+    signals.clear_all('balance')
+    signals.clear_all('sumfree')
+    signals.clear_all('entry')
+    signals.add_balance('balance',1000)
+    signals.add_balance('entry',0)
+    signals.add_balance('sumfree',0)
 
 
+# rest()

@@ -3,12 +3,11 @@
 from get_data import get_klines 
 import pandas_ta as ta
 import numpy as np 
-import matplotlib  
-matplotlib.use('WebAgg')
-from matplotlib import pyplot as plt
 import time as ti
-from matplotlib.animation import FuncAnimation
-
+import numpy as np
+import matplotlib as mpl
+mpl.use('tkagg')    #YAAA!!  this finally makes the Damn thing work
+import matplotlib.pyplot as plt
 
 
 def figure(tickers):
@@ -89,10 +88,11 @@ def figure(tickers):
         ti.sleep(1)
         fig.clear()
         plt.close(fig)
+        
 
     return photo
 
 
 
 
- 
+figure('BNBUSDT')

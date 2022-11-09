@@ -237,20 +237,34 @@ price_cal = fo.format_price(x , price_now)
 # print(f'parcantge loss :  {loss_pct}%')
 
 
-from datetime import datetime
+# from datetime import datetime
 from DB import signals
 
 
 
 
-still = signals.num_table('buy') # 11 
+still = signals.num_table('buy') 
+sell = signals.num_table('sell')# 11 
 free = signals.free_balance('sumfree') # 17
-new_free_balance = signals.free_balance('balance')
+balance = signals.free_balance('balance')
 
-dd = ((new_free_balance + free))
-signals.add_balance('entry', 1000)
+# print(still)
+# print('---------')
+# print(free)
+# print('---------')
+# print(balance)
+# print('---------')
+# print(sell)
+# print('---------')
 
-x = signals.free_balance('entry')
-v = x+free
-b = v- new_free_balance
-print(x+free)
+# x = 1000
+# while True:
+
+#     a = x
+#     x = a- 50
+
+#     f = a - x
+
+#     if x>10.5:
+#         print(f)
+
